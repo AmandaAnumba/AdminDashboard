@@ -1,0 +1,9 @@
+## Virtual Environment setup
+To set up a new virtual environment with python3 on ac
+
+    $ virtualenv -p python3 _macEnv
+
+Activate the new virtual environment on mac
+
+    $ source _macEnv/bin/activate
+

@@ -1,0 +1,499 @@
+/* core styles for admin pages */
+@import 'modules/admin';
+@import 'modules/panels';
+
+
+
+/**
+ *  
+ * Table of Contents
+ * -----------------
+ *
+ * GENERAL PAGE STYLINGS ....... global variables, mixins, etc
+ * PAGE SETUP............... credit app form element and top title bar/legend
+ *
+**/
+
+
+/*------------------------------------*\
+    GENERAL STYLES
+\*------------------------------------*/
+#contentWrapper
+{
+	padding: 0 30px 30px;
+}
+
+$border: 1px solid darken(whitesmoke, 7%);
+.section-title 
+{
+	border: 1px solid #dcdcdc;
+	background-color: #FBFBFB;
+    color: #4a4a4a;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 12px 20px;
+
+	.count 
+	{
+		font-size: 12px;
+		font-weight: normal;
+	}
+}
+
+#widgets
+{
+	padding-left: 0;
+}
+
+
+
+
+/*------------------------------------*\
+    #SUMMARY
+\*------------------------------------*/
+#cycle 
+{
+	background: url(/static/images/selfReflection3.jpg) no-repeat;
+    background-position-y: 38%;
+    background-size: 50%;
+    height: 265px;
+    position: relative;
+    color: white;
+    margin: 0 -30px;
+    background-color: black;
+}
+
+a#currentCycle
+{
+	color: white;
+    position: absolute;
+    right: 7%;
+    top: 10%;
+    width: 500px;
+	
+	&:hover
+	{
+		.nav-multithumb
+		{
+    		width: 200px
+		}
+
+		.nav-multithumb .icon-wrap::after 
+		{
+		    width: 200px;
+		    -webkit-transition-delay: 0s;
+		    transition-delay: 0s
+		}
+
+		.nav-multithumb div 
+		{
+		    pointer-events: auto
+		}
+
+		.nav-multithumb div::after 
+		{
+		    opacity: 1;
+		    -webkit-transition-delay: 0.3s;
+		    transition-delay: 0.3s;
+		    -webkit-transform: translateY(0);
+		    transform: translateY(0)
+		}
+	}
+
+	hr 
+	{
+    	border-top: 1px solid $logoHighlightColor;
+	}
+}
+
+#cycle-count 
+{
+    margin-bottom: 10px;
+    font-family: "Noto Serif",sans-serif;
+    letter-spacing: 1.5px;
+    font-size: 14px;
+}
+
+#cycle-title 
+{
+    font-size: 2em;
+    letter-spacing: 1px;
+    font-weight: 300;
+    margin: 10px 0;
+    font-family: $sans-serif !important;
+
+    strong 
+    {
+    	font-family: 'Noto Serif', serif;
+    }
+}
+
+.cycle-description 
+{
+    font-size: 12px;
+    font-weight: 300;
+    font-family: $sans-serif !important;
+    letter-spacing: 0.5px;
+}
+
+.nav-multithumb 
+{
+    width: 60px;
+    height: 50px;
+
+	.icon-wrap 
+	{
+	    position: absolute;
+	    top: 85%;
+	    display: block;
+	    width: 32px;
+	    height: 32px;
+	    -webkit-transform: translateY(-50%);
+	    transform: translateY(-50%);
+	    right: 0;
+	}
+}
+
+.nav-multithumb .icon-wrap::after {
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 1px;
+    background: #fff;
+    content: '';
+    -webkit-transition: width 0.3s 0.2s;
+    transition: width 0.3s 0.2s;
+    right: -webkit-calc(100% - 10px);
+    right: calc(100% - 10px);
+}
+
+.nav-multithumb svg.icon {
+    fill: #fff;
+}
+
+.nav-multithumb div {
+    position: absolute;
+    right: 33px;
+    top: 81%;
+    width: 290px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: end;
+    pointer-events: none;
+    -webkit-box-align: end;
+    -webkit-align-items: flex-end;
+    align-items: flex-end;
+}
+
+.nav-multithumb div::after {
+    content: 'Browse This Cycle';
+    text-align: right;
+    position: absolute;
+    top: 100%;
+    left: 20px;
+    margin: 19px 0;
+    width: 100%;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    font-weight: 300;
+    font-size: 0.65em;
+    opacity: 0;
+    -webkit-transition: -webkit-transform 0.3s;
+    transition: transform 0.3s, opacity 0.4s;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+#stats 
+{
+	text-align: center;
+	margin: 25px 0;
+	
+	.container-fluid 
+	{
+		padding-left: 0;
+	}
+
+	.col-xs-3:first-child 
+	{
+		padding-left: 0;
+	}
+
+	.col-xs-3:last-child 
+	{
+		padding-right: 0;
+	}
+}
+
+.stat-card 
+{
+	color: #4a4a4a;
+
+	.stat-card__label
+	{
+		font-weight: bold;
+		text-transform: uppercase;
+		letter-spacing: 0.3px;
+		font-size: 11px;
+	}
+
+	.stat-card__value 
+	{
+		font-size: 30px;
+		font-weight: 300;
+	}
+}
+
+
+
+
+/*------------------------------------*\
+    #COMMENTS
+\*------------------------------------*/
+#reviewComments
+{
+    margin-top: 20px;
+    padding: 0;
+}
+
+#comments 
+{
+	border-left: $border;
+	border-right: $border;
+    background-color: white;
+    visibility: hidden;
+}
+
+.comment
+{
+	padding: 15px;
+
+	&:hover 
+	{
+		background-color: whitesmoke;
+		
+		.comment-btns 
+		{
+			display: block;
+		}
+	}
+}
+
+.comment-btns 
+{
+	display: none;
+	text-align: right;
+
+	.check 
+	{
+		color: #99CA8A;
+	}
+
+	.cross
+	{
+		color: indianred;
+	}
+	
+	.eye 
+	{
+		color: darken(#5bc0de, 5%);
+	}
+
+	.option
+	{
+		display: inline;
+		padding: 3px;
+		font-size: 20px;
+		cursor: pointer;
+	}
+}
+
+.comment-avatar
+{
+	float: left;
+}
+
+.comment-data
+{
+	margin-left: 65px;
+	font-size: 13px;
+
+	.container,
+	.col-xs-7,
+	.col-xs-5
+	{
+		padding: 0;
+	}
+}
+
+.comment__status
+{
+	text-transform: uppercase;
+	font-size: 12px;
+	letter-spacing: 0.7px;
+	color: #99CA8A;
+	margin-top: 5px;
+}
+
+
+
+
+/*------------------------------------*\
+    #DASHMESSAGE
+\*------------------------------------*/
+#dashMessage 
+{
+	width: 550px;
+	margin: 0 auto;
+	margin-bottom: 25px;
+	text-align: center;
+
+	h3 
+	{
+		margin-bottom:10px;
+		color:indianred;
+	}
+}
+
+
+
+
+/*------------------------------------*\
+    #UPDATES
+\*------------------------------------*/
+.xe-todo-list 
+{
+	background: #fff;
+	padding: 20px;
+	margin-bottom: 20px;
+	border: 1px solid #e7ecee;
+	position: relative;
+
+	.list-unstyled 
+	{
+		margin-bottom: 0;
+	}
+}
+
+.xe-header 
+{
+	display: table;
+	width: 100%;
+	border-bottom: 1px solid #eee;
+	margin-bottom: 15px;
+	padding-bottom: 8px;
+
+	.xe-label 
+	{
+		display: table-cell;
+		vertical-align: top;
+		padding-bottom: 8px;
+
+		span,
+		strong
+		{
+			font-size: 12px;
+			zoom: 1;
+			-webkit-opacity: .8;
+			-moz-opacity: .8;
+			opacity: .8;
+			-ms-filter: alpha(Opacity=80);
+			filter: alpha(opacity=80);
+			display: block;
+			line-height: 1.1;
+		}
+
+		strong 
+		{
+			font-size: 15px;
+		}
+	}
+}
+
+.xe-body 
+{
+	li 
+	{
+		margin: 2px 0;
+	}
+	
+	label 
+	{
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+}
+
+
+
+
+
+/*------------------------------------*\
+    RESPONSIVENESS
+\*------------------------------------*/
+@media only screen
+and (max-width : 480px) {
+	#widgets 
+	{
+	    padding: 0;
+	}
+	
+	#cycle 
+	{
+		height: auto;
+		margin: 0;
+		background-size: cover;
+	}
+
+	a#currentCycle 
+	{
+		color: white;
+	    position: relative;
+	    right: 0;
+	    top: 10%;
+	    width: auto;
+	    display: block;
+	    padding: 25px;
+	}
+
+	#stats 
+	{
+		.container-fluid,
+		.col-xs-3 
+		{
+			padding: 0;
+		}
+	}
+
+	#articles .section-title ul 
+	{
+	    padding-left: 0px;
+	    display: block;
+
+	    li 
+	    {
+		    padding: 3px 9px 3px 0;
+    		letter-spacing: 0.4px;
+
+		    &:last-child
+		    {
+		    	padding-right: 0;
+		    }
+		}
+	}
+
+	#reviewComments
+	{
+	    padding: 0 15px;
+	}
+}
+
+
+
+
+

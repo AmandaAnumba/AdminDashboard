@@ -1,0 +1,50 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="utf-8">  
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        
+        {% if data.page == 'login' %}
+            <title>Empire</title>
+        {%  else %}
+            <title>{% block title %}{% endblock title %}  |  Empire Dashboard</title>
+        {% endif %}
+
+        <meta name="author" content="ThreePillarMedia, LLC" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        <meta name="HandheldFriendly" content="true">
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Amanda Anumba" />
+        <meta name="theme-color" content="#FFFFFF" />
+        <meta name="msapplication-navbutton-color" content="#FFFFFF" />
+        <link rel="icon" href="{% static 'images/favicon.png' %}" />
+        <link rel="apple-touch-icon" href="{% static 'images/favicon.png' %}" />
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Raleway:400,300,200|Lora|Lato|Noto+Serif' rel='stylesheet' type='text/css' />
+        <script src="{% static 'js/modernizr.js' %}"></script>
+
+        {% block head %}{% endblock head %}
+
+        {% if data.hasPageCSS %}
+            <link rel="stylesheet" href="/static/css/{{ data.page }}.css?v={{ data.version }}" />
+        {% endif %}
+
+        <script>var log = {% if data.debug %}true{% else %}false{% endif %};</script>
+    </head>
+
+    <body>
+        <main>
+            {% block content %}{% endblock content %}
+        </main>
+
+        <footer>
+            {% block footer %}{% endblock footer %}
+
+            {% if data.hasPageJS %}
+                <script src="/static/js/{{ data.page }}.js?v={{ data.version }}"></script>
+            {% endif %}
+        </footer>
+    </body>
+</html>

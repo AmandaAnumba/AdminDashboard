@@ -1,0 +1,232 @@
+/* partials + variables */
+@import 'partials/colors',
+        'partials/mixins',
+        'partials/icons',
+        'partials/helpers';
+
+/* base */
+@import 'modules/base';
+
+/* modules */
+@import 'modules/inputs',
+        'modules/buttons',
+        'modules/loader',
+        'modules/tooltips';
+
+/* responsiveness   */
+@import 'partials/responsive';
+
+
+@font-face {
+    font-family: Xtreem;
+    src: url("/static/fonts/Xtreem.ttf");
+}
+
+
+/**
+ *  
+ * Table of Contents
+ * -----------------
+ *
+ * GENERAL PAGE STYLINGS ....... global variables, mixins, etc
+ * PAGE SETUP............... credit app form element and top title bar/legend
+ *
+**/
+
+
+/*------------------------------------*\
+    GENERAL STYLES
+\*------------------------------------*/
+body 
+{
+    position: relative;
+}
+
+.bg-img 
+{
+    @include bkg_img_overlay("/static/images/14.jpg", rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5));
+    height: 100vh;
+}
+
+.tooltip,
+.alert,
+.page-loader 
+{
+    display: none;
+}
+
+.page-loader 
+{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #fefefe;
+    z-index: 100000;
+}
+
+#logo
+{
+    font-family: Xtreem;
+    font-size: 80pt;
+}
+
+.alert#loginInfo 
+{
+    display: block !important;
+    margin-bottom: 15px !important;
+}
+
+
+/*------------------------------------*\
+    FORMS
+\*------------------------------------*/
+#formsWrapper 
+{
+    height: 485px;
+    margin: auto;
+    text-align: center;
+    @include stretch;
+
+    .form 
+    {
+        position: relative;
+        width: em(layout, 320px, $target);
+        padding: 2%;
+        margin: 0 auto;
+    }
+
+    #register 
+    {
+        padding-top: 0 !important;
+    }
+
+    .alert
+    {
+        width: 85%;
+        margin: 0 auto;
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+ 
+.form-input 
+{
+    margin: 9px 0 9px 0;
+}
+
+.additional-info, 
+.description  
+{
+    color: rgba(255,255,255,.6);
+    font-weight: 300;
+    font-size: 0.8em;
+    letter-spacing: 0.3px;
+    margin-top: 14px;
+}
+
+.btn-toggle 
+{
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.divider 
+{
+	padding: 0 7px;
+}
+
+.alert-icon 
+{
+    margin-right: 10px;
+}
+
+.icon-arrow-left 
+{
+    font-size: 2.2em;
+    vertical-align: middle;
+}
+
+.help-block 
+{
+    text-align: left;
+    display: none;
+    font-size: 0.45em;
+    color: white;
+    font-weight: 300;
+
+    &.filled 
+    {
+    	display: block;
+    }
+}
+
+
+
+
+/*------------------------------------*\
+    RESPONSIVENESS
+\*------------------------------------*/
+/* iPads (portrait and landscape) ----------- */
+@media only screen
+and (min-width : 769px)
+and (max-width : 1024px) {
+    #formsWrapper .form 
+    {
+        width: 60%;
+    }
+
+    .form-input 
+    {
+        height: 50px;
+    }
+}
+
+@media only screen
+and (max-width : 768px) {
+    .bg-img 
+    {
+        background: url("/static/images/15.jpg") no-repeat center center fixed;
+        @include background-size(cover);
+    }
+
+    #formsWrapper .form 
+    {   
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .alert 
+    {
+        width: 90%;
+    }
+
+    #logo 
+    {
+        color: #9E8991;
+        font-size: 73pt;
+    }
+
+    .form-input 
+    {
+        height: 45px;
+        background: white;
+        margin: 2px 0 2px 0;
+        color: black;
+    }
+
+    .additional-info, 
+    .description
+    {
+        text-align: center;
+    }
+}
+
+@media only screen
+and (min-width : 1300px) {
+    #formsWrapper 
+    {
+        height: 550px;
+    }
+}

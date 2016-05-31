@@ -1,0 +1,53 @@
+{% extends "_BaseAdminTemplate.html" %}
+
+
+{% block title %}Review{% endblock title %}
+
+
+{% block addtlContent %}
+	<div class="content-wrapper container-fluid">
+		<div id="articlesList" class="col-md-5">
+			<section class="section">
+				<div class="section-title">Articles To Be Reviewed</div>
+				<div class="articles b-b-none">
+					{% if articles %}
+						{%- for i in articles %}
+							<a href="/editor/r/{{ i['objectId'] }}">
+								<div class="article">
+									<div class="article-title">{{ i['title'] }}</div>
+									<div class="article-author">by {{ i['author'] }}</div>
+									<div class="article-date small">{{ i['releaseDate'] }}</div>
+								</div>
+							</a>
+						{% endfor -%}
+					{% else %}
+						<div class="text-xs-center wrapper-lg text-muted"><small>All good here!</small></div>
+					{% endif %}
+				</div>
+
+				<div class="section-title">My Drafts</div>
+				<div class="articles">
+					{% if drafts %}
+						{%- for x in drafts %}
+							<a href="/editor/r/{{ x['objectId'] }}">
+								<div class="article">
+									<div class="article-title">{{ x['title'] }}</div>
+									<div class="article-date small">{{ x['updatedAt'] }}</div>
+								</div>
+							</a>
+						{% endfor -%}
+					{% else %}
+						<div class="text-xs-center wrapper-lg text-muted"><small>All good here!</small></div>
+					{% endif %}
+				</div>
+			</section>
+		</div>
+
+	    <div id="preview" class="col-md-7">
+	    	<div id="previewPlaceholder">
+				<span class="icon icon-focus"></span>
+				<p>Article Preview</p>
+			</div>
+	    </div>
+	</div>
+{% endblock addtlContent %}

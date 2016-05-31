@@ -1,0 +1,30 @@
+/* partials + variables + responsiveness */
+@import '../partials/colors',
+		'../partials/mixins',
+		'../partials/icons',
+		'../partials/helpers',
+		'../partials/responsive';
+
+/* page components */
+@import 'base',
+		'header',
+		'loader',
+		'menu';
+
+/* vendor styles */
+@import '../third-party/pushmenu',
+		'../third-party/animate';
+
+/* general page styles */
+body { background: whitesmoke; }
+#content { margin-left: $menuWidth; }
+
+.flip 
+{
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    -ms-filter: fliph; /*IE*/
+    filter: fliph; /*IE*/
+}

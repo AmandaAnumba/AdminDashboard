@@ -1,0 +1,128 @@
+@mixin input($width, $bkg-color, $text-color, $padding, $font-size: $base-font-size, $height: 44px, $line: 22px) {
+	@include box-sizing(border-box);
+	position: relative;
+	background-color: $bkg-color;
+	padding: $padding;
+	line-height: $line;
+	height: $height;
+	width: $width;
+	color: $text-color;
+	border: none;
+	font-size: em(font,$font-size);
+}
+
+@mixin no-focus() {
+	outline: none !important;
+	border: none !important;
+	box-shadow: none !important;
+}
+
+
+// input
+.form-input {
+	// @include input(100%, white, #3e3e3e, 11px);
+	@include input(100%, rgba(255, 255, 255, 0.31), white, 11px);
+	margin: 7px 0;
+	// &:focus {
+	// 	@include box-shadow(rgba(0,0,0,.075) 0 1px 1px, rgba(102,175,233,.6) 0 0 8px inset);
+	// 	border-color: #66afe9;
+	// 	outline: 0;
+	// }
+
+	&:focus {
+		@include no-focus();
+	}
+}
+
+.clear-input {
+	@include input(100%, transparent, white, 11px 0, 14px);
+	margin: 9px 0;
+
+	&:focus {
+		@include no-focus();
+	}
+}
+
+.clear-input-large {
+	@include input(100%, transparent, black, 0, 25px, auto, 1);
+	text-align: center;
+	font-size: 2.7em !important;
+	// margin: 9px 0;
+
+	&:focus {
+		@include no-focus();
+	}
+}
+
+.clear-input-med {
+	@include input(100%, transparent, black, 0, 12px, auto, 1);
+	// margin: 9px 0;
+	font-size: 1.3em;
+	font-weight: 300;
+
+	&:focus {
+		@include no-focus();
+	}
+}
+
+.clear-input-small {
+	@include input(100%, transparent, black, 0, 12px, 30px, 1);
+	font-size: 1.6em !important;
+	font-weight: 300;
+
+	&:focus {
+		@include no-focus();
+	}
+}
+
+.clear-input-small2 {
+	@include input(100%, dimgray, white, 11px, 12px, auto, 1);
+	// margin: 9px 0;
+
+	&:focus {
+		@include no-focus();
+	}
+}
+
+.clear-input-small3 {
+	@include input(100%, transparent, white, 11px, 12px, auto, 1);
+	// margin: 9px 0;
+
+	&:focus {
+		@include no-focus();
+	}
+}
+
+
+
+// alerts
+// .alert 
+// {
+// 	border: 1px solid transparent;
+// 	border-radius: 4px;
+
+// 	&.success 
+// 	{
+// 		color: #3c763d;
+// 		background-color: #dff0d8;
+// 		border-color: #d6e9c6;
+// 	}
+
+// 	&.error 
+// 	{
+// 		color: #a94442;
+// 		background-color: #f2dede;
+// 		border-color: #ebccd1;
+// 	}
+// }
+
+
+.close:hover, 
+.close:focus 
+{
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+	filter: alpha(opacity=50);
+	opacity: .5;
+}

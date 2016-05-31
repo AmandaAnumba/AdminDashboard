@@ -1,0 +1,39 @@
+/* Screens ----------- */
+@media only screen
+and (max-width : 480px) {
+	#menuWrapper
+	{
+		display: none;
+	}
+	
+	#headerWrapper
+	{
+		height: 70px !important;
+
+		.header-title 
+		{
+			line-height: 70px !important;
+		}
+
+		.mini-nav
+		{
+		    display: none;
+		}
+	}
+	
+	#contentWrapper
+	{
+    	padding: 0 0 30px !important;
+	}
+
+	#sideMenu,
+	#sideMenuToggle 
+	{
+		display: block !important;
+	}
+
+	#content 
+	{
+		margin-left: 0 !important;
+	}
+}

@@ -1,0 +1,222 @@
+{% extends "_BaseAdminTemplate.html" %}
+
+
+{% block title %}Home{% endblock title %}
+
+
+{% block addtlContent %}
+    {% if message %}
+        <section id="dashMessage" class="panel panel-default">
+            <div class="panel-body">
+                <button type="button" class="close panel-close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+
+                <h3>Message from the System Admin</h3>
+                
+                <section>
+                    <p><small>{{ message }}</small></p>
+                    <p class="text-left"><small> - Amanda</small></p>
+                </section>
+            </div>
+        </section>
+    {% endif %}
+
+    <div id="contentWrapper">
+        <section id="cycleHeader">
+            <div hidden>
+                <svg width="64" height="64" viewBox="0 0 64 64">
+                    <path id="arrow-left-3" d="M44.797 17.28l0.003 29.44-25.6-14.72z" />
+                </svg>
+                <svg width="64" height="64" viewBox="0 0 64 64">
+                    <path id="arrow-right-3" d="M19.203 17.28l-0.003 29.44 25.6-14.72z" />
+                </svg>
+            </div>
+
+            <div id="cycle">
+                <a id="currentCycle" class="intro-content animated fadeInUp" href="#">
+                    <p id="cycle-count">Current Cycle: 02</p>
+                    
+                    <h1 id="cycle-title">They Think They <strong>Know</strong></h1>
+                    
+                    <p class="cycle-description">A healthy identity does not rest on feelings of superiority... Instead, it is seeing oneself as a part of the whole, not the center, and as unique, but not "special".</p>
+                    
+                    <hr>
+                    
+                    <p class="cycle-description"><strong>Core Topics: </strong> Cultural identity, competency, and the difference in being a "millennial".</p>
+
+                    <nav class="nav-multithumb">
+                        <span class="icon-wrap"><svg class="icon" width="32" height="32" viewBox="0 0 64 64"><use xlink:href="#arrow-right-3"></svg></span>
+                        <div></div>
+                    </nav>
+                </a> 
+            </div>
+        </section>
+        
+        <div id="widgets" class="container-fluid">
+            <div class="col-md-8">
+                <section id="stats">
+                    <div class="container-fluid">
+                        <div class="col-xs-3 stat-card">
+                            <div class="stat-card__value">{{ myArticles }}</div>
+                            <div class="stat-card__label">Articles I've Written</div>
+                        </div>
+
+                        <div class="col-xs-3 stat-card">
+                            <div class="stat-card__value">{{ totalArticles }}</div>
+                            <div class="stat-card__label">Total Articles</div>
+                        </div>
+
+                        <div class="col-xs-3 stat-card">
+                            <div class="stat-card__value">2.6K</div>
+                            <div class="stat-card__label">Empire Visitors</div>
+                        </div>
+
+                        <div class="col-xs-3 stat-card">
+                            <div class="stat-card__value">3.1K</div>
+                            <div class="stat-card__label">Article Shares</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="updates">
+                    <div class="xe-todo-list"> 
+                        <div class="xe-header"> 
+                            <div class="xe-label">
+                                <strong>Updates</strong> 
+                            </div> 
+                        </div> 
+
+                        <div class="xe-body"> 
+                            <ul class="list-unstyled">
+                            {% if name not in ['Amanda', 'shantaviae', 'empressomeko1', 'rona.abara'] %}
+                                <li> <small>You have <a class="text-info" href="{{ url_for('dashboard.myarticles') }}">{{ draftsCount }} drafts </a> currently saved.</small></li>
+                            {% else %}
+                                <li> <small>You have <a class="text-info" href="{{ url_for('dashboard.review') }}">{{ draftsCount }} drafts </a> currently saved.</small></li>
+                                <li> <small>There are <a class="text-info" href="{{ url_for('dashboard.review') }}">{{ reviewCount }} articles </a> that need to be reviewed.</small></li>
+                            {% endif %}
+                            </ul> 
+                        </div>
+                    </div>
+                </section>
+
+                <section id="articles">
+                    <div class="section-title">Articles
+                        <ul>
+                            <li data-position="1" data-toggle="#reviewed" class="active">To Be Reviewed (0)</li>
+                            <li data-position="2" data-toggle="#drafts">Drafts ({{ draftsCount }})</li>
+                            <li data-position="3" data-toggle="#published">Published (10)</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="sectionsWrapper">
+                        <div class="section active" id="reviewed">
+                            {% if published %}
+                                <ul class="list-group alt">
+                                {%- for y in published %}
+                                    <li class="list-group-item">
+                                        <div class="media">
+                                            {% if name in ['Amanda', 'shantaviae', 'empressomeko1', 'rona.abara'] %}
+                                            <div class="pull-right">
+                                                <p class="btn btn-primary" onclick="publish('{{ y['objectId'] }}')" id="list_{{ y['objectId'] }}">Publish Article</p>
+                                                <div class="success_check" hidden><span style="color: #4CDBA5;font-size: 2em;line-height: 1.5;" class="icon icon-check"></span></div>
+                                                <div class="error_cross" hidden><span style="color: #FA626E;font-size: 2em;line-height: 1.5;" class="icon icon-cross"></span></div>
+                                            </div>
+                                            <div class="media-body">
+                                                <div><a href="/dashboard/q/{{ y['objectId'] }}">{{ y['title'] }}</a></div>
+                                                
+                                            {% else %}
+                                                <div>{{ y['title'] }}</div>
+                                            {% endif %}
+                                                <small class="text-muted">{{ y['author'] }}</small>
+                                                <p><small class="text-danger clear text-ellipsis releasedate">{{ y['releaseDate'] }}</small></p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor -%}
+                                </ul>
+                            {% else %}
+                                <div class="text-xs-center wrapper-lg text-muted"><small>No Articles to Review</small></div>
+                            {% endif %}
+                        </div>
+
+                        <div class="section" id="drafts">
+                            <div class="articles b-b-none">
+                                {% if drafts %}
+                                    {%- for z in drafts %}
+                                        <a href="/editor/q/{{ z['objectId'] }}">
+                                            <div class="article">
+                                                <div class="article-title">{{ z['title'] }}</div>
+                                                <div class="article-date small release-date">{{ z['createdAt'] }}</div>
+                                                <div class="small">Continue Draft</div>
+                                            </div>
+                                        </a>
+                                    {% endfor -%}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="section" id="published">
+                            <div class="articles b-b-none">
+                                {% if pub %}
+                                    {%- for a in pub %}
+                                        <a href="/editor/p/{{ a['objectId'] }}">
+                                            <div class="article">
+                                                <div class="article-title">{{ a['title'] }}</div>
+                                                <div class="article-author">by {{ a['author'] }}</div>
+                                                <div class="article-date small release-date">{{ a['updatedAt'] }}</div>
+                                            </div>
+                                        </a>
+                                    {% endfor -%}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div id="reviewComments" class="col-md-4" ng-controller="commentsController">
+                <div class="section-title">Recent Article Comments <span class="count">(16)</span></div>
+                
+                <div id="comments">
+                    <div class="comment" ng-repeat="x in comments">
+                        <div class="comment-avatar">
+                            <img src="/static/images/avatars/{[ x.avatar ]}" width="50" />    
+                        </div>
+
+                        <div class="comment-data">
+                            <div class="container">
+                                <div class="col-xs-7">
+                                    <div class="comment__user">{[ x.user ]}</div>
+                                    <div class="comment__date">{[ x.date ]}</div>
+                                </div>
+
+                                <div class="col-xs-5">
+                                    <div class="comment-btns">
+                                        <div class="option eye">
+                                            <span class="icon icon-eye"></span>
+                                        </div>
+
+                                        <div class="option check">
+                                            <span class="icon icon-circle-check"></span>
+                                        </div>
+
+                                        <div class="option cross">
+                                            <span class="icon icon-circle-cross"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="comment__message">{[ x.comment ]}</div>
+                            <div class="comment__status">{[ x.status ]}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-title">View All Comments</span></div>
+            </div>
+        </div>
+    </div>
+{% endblock addtlContent %}

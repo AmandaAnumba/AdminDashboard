@@ -1,0 +1,94 @@
+/* core styles for admin pages */
+@import 'modules/admin';
+
+
+
+/**
+ *  
+ * Table of Contents
+ * -----------------
+ *
+ * GENERAL PAGE STYLINGS ....... global variables, mixins, etc
+ * PAGE SETUP............... credit app form element and top title bar/legend
+ *
+**/
+
+
+/*------------------------------------*\
+    GENERAL STYLES
+\*------------------------------------*/
+.content-wrapper
+{
+	padding: 30px;
+
+	.container-fluid 
+	{
+		padding: 0;
+	}
+}
+
+#articlesList
+{
+	padding-left:0;
+}
+
+$border: 1px solid darken(whitesmoke, 7%);
+.section-title 
+{
+	border: 1px solid #dcdcdc;
+	background-color: #FBFBFB;
+    color: #4a4a4a;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 12px 20px;
+}
+
+.articles 
+{
+	border: $border;
+	border-top: none;
+    background-color: white;
+
+    &.b-b-none
+    {
+    	border-bottom: none;
+    }
+}
+
+.article
+{
+	padding: 15px;
+	border-bottom: 1px solid darken(whitesmoke, 4.5%);
+
+	&:hover 
+	{
+		background-color: whitesmoke;
+		
+		.comment-btns 
+		{
+			display: block;
+		}
+	}
+
+	.article-title 
+	{
+		font-size: 16px;
+		font-family: $serif;
+		font-weight: bold;
+		color: #527DA2;
+	}
+}
+
+#previewPlaceholder 
+{
+	text-align: center;
+	font-size: 25px;
+	opacity: 0.6;
+	margin-top: 200px;
+
+	.icon 
+	{
+		margin-bottom: 15px;
+		font-size: 57px;
+	}
+}

@@ -1,0 +1,9 @@
+{
+  "name": "EmpireAdmin",
+  "version": "1.0.0",
+  "description": "development environment for main website",
+  "author": "Amanda Anumba",
+  "private": true,
+  "main": "gruntfile.js",
+  "devDependencies": {}
+}

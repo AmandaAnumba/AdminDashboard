@@ -1,0 +1,45 @@
+// mixins
+@mixin body-format {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: $main-font;
+    background: white;
+}
+
+@mixin bkg_image($url, $size) {
+    background-image: url($url);
+    background-position: center;
+    background-repeat: no-repeat;
+    @include background-size($size);
+}
+
+@mixin bkg_img_overlay($img, $color, $color2) {
+    background: linear-gradient($color, $color2), url($img) no-repeat center center fixed;
+    @include background-size(cover);
+}
+
+@mixin clearfix() {
+    &:before,
+    &:after 
+    {
+        content: " ";
+        display: table;
+    }
+    &:after 
+    {
+        clear: both;
+    }
+}
+
+@mixin list-inline() {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+
+    li 
+    {
+        display: inline-block;
+    }
+}

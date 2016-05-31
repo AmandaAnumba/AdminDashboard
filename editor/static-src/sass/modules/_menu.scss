@@ -1,0 +1,95 @@
+/**
+ *  
+ * styles for the left side menu 
+ * (replace by push menu on mobile devices)
+ *
+**/
+$menuWidth: 170px;
+$menuColor: #323436;
+$logoHighlightColor: #9CC7B9;
+$listElHeight: 75px;
+
+#menuWrapper 
+{
+    height: 100%;
+    position: fixed;
+    width: $menuWidth;
+    background: $menuColor;
+    z-index: 50;
+    top: 0;
+    left: 0;
+}
+
+#menu 
+{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    color: #AFB4BA;
+
+    li 
+    {
+        height: $listElHeight;
+        line-height: $listElHeight;
+        border-bottom: 1px solid #2F2F2F;
+        // padding-left: 35px;
+        text-align: center;
+
+        a 
+        {
+            display: block;
+            height: inherit;
+
+            &:hover,
+            &:focus
+            {
+                color: white;
+                outline: none;
+            }
+        }
+
+        &:hover,
+        &.active 
+        {
+            background-color: #1D1F24;
+
+            a
+            {
+                color: white;
+            }
+        }
+
+        &.disabled 
+        {
+            cursor: not-allowed;
+        }
+    }
+
+    li:first-child
+    {
+        height: $headerHeight + 1;
+        line-height: $headerHeight - 2;
+        background: $logoHighlightColor;
+        text-align: center;
+        padding: 0;
+
+        &:hover 
+        {
+            background: $logoHighlightColor;
+        }
+    }
+    
+    .icon 
+    {
+        padding-right: 10px;
+    }
+
+    .menu-item
+    {
+        font-size: 11px;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        font-family: "Open Sans",sans-serif;
+    }
+}

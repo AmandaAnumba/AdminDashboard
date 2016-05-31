@@ -1,0 +1,1 @@
+web: gunicorn AdminDashboard.wsgi --log-file -
