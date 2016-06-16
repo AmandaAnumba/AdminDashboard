@@ -1,0 +1,15 @@
+@mixin black-button () {
+	-webkit-appearance: none;
+	-webkit-font-smoothing: antialiased;
+	color: #FFFFFF;
+	font-size: 10px;
+	text-transform: uppercase;
+	line-height: 15px;
+	letter-spacing: 2.5px;
+	padding: 13px 0px;
+	width: 100%;
+	background: #272727;
+	border: 2px solid #272727;
+	outline: 0;
+	cursor: pointer;
+}

@@ -24,9 +24,10 @@ module.exports = {
     }, 
     fonts: {
         files: [
-            '../dashboard/static-src/sass/third-party/_font-awesome.scss'
+            '../dashboard/static-src/sass/third-party/_font-awesome.scss',
+            '../dashboard/static-src/sass/third-party/_uikit.scss',
         ],
-        tasks: ['string-replace:fonts', 'compass:dashboard', 'clean:fonts', 'copy:fonts']
+        tasks: ['newer:string-replace:fonts', 'compass:dashboard', 'clean:fonts', 'copy:fonts']
     }, 
     icons: {
         files: [

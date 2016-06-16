@@ -1,6 +1,6 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en" data-ng-app="adminApp">
     <head>
         <meta charset="utf-8">  
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,7 +22,7 @@
         <meta name="msapplication-navbutton-color" content="#FFFFFF" />
         <link rel="icon" href="{% static 'images/favicon.png' %}" />
         <link rel="apple-touch-icon" href="{% static 'images/favicon.png' %}" />
-        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Raleway:400,300,200|Lora|Lato|Noto+Serif' rel='stylesheet' type='text/css' />
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Lato|Suranna|Playfair+Display:400,700italic,400italicf' rel='stylesheet' type='text/css' />
         <script src="{% static 'js/modernizr.js' %}"></script>
 
         {% block head %}{% endblock head %}
@@ -30,8 +30,6 @@
         {% if data.hasPageCSS %}
             <link rel="stylesheet" href="/static/css/{{ data.page }}.css?v={{ data.version }}" />
         {% endif %}
-
-        <script>var log = {% if data.debug %}true{% else %}false{% endif %};</script>
     </head>
 
     <body>
@@ -40,6 +38,9 @@
         </main>
 
         <footer>
+            <script>var debug = {% if data.debug %}true{% else %}false{% endif %};</script>
+            <script src="{% static 'js/libs.js' %}?v={{ data.version }}"></script>
+            
             {% block footer %}{% endblock footer %}
 
             {% if data.hasPageJS %}

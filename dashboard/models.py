@@ -28,15 +28,23 @@ class Member(models.Model):
 
 
 
+class Topic(models.Model):
+    name                 = models.CharField(max_length=255, unique=True)
+    is_parent            = models.BooleanField(default=False)
+    subcategory          = models.ManyToManyField("self", blank=True)
+    image                = models.ImageField(upload_to='images/', blank=True)
+    description          = SizedTextField(size_class=2, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+
 class Article(models.Model):
     article_style        = EnumField(choices=['informational', 'opinion'])
     article_type         = EnumField(choices=['feature', 'regular'])
     author               = models.ForeignKey('auth.User')
-    category             = ListCharField(
-                            base_field=models.CharField(max_length=10), 
-                            size=10,
-                            max_length=(10*11)
-                        )
+    category             = models.ManyToManyField(Topic, related_name="topics", related_query_name="category", blank=True)
     co_author            = models.CharField(max_length=64, blank=True)
     content              = models.TextField(blank=True)
     created_at           = models.DateTimeField(default=timezone.now, editable=False)
@@ -47,10 +55,20 @@ class Article(models.Model):
     header_image         = models.ImageField(blank=True)
     photo_credit         = models.CharField(max_length=255, blank=True)
     published_date       = models.DateTimeField(blank=True)
-    search_terms         = SizedTextField(size_class=2, blank=True)
+    search_terms         = ListCharField(
+                            base_field=models.CharField(max_length=36, blank=True), 
+                            size=20,
+                            max_length=(20*37),
+                            blank=True
+                         )
     slug                 = models.CharField(max_length=255, blank=True, editable=False)
     status               = EnumField(choices=['published', 'queued', 'ready', 'draft'])
-    tags                 = SizedTextField(size_class=2, blank=True)
+    tags                 = ListCharField(
+                            base_field=models.CharField(max_length=36, blank=True), 
+                            size=20,
+                            max_length=(20*37),
+                            blank=True
+                         )
     title                = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
@@ -80,7 +98,3 @@ class Cycle(models.Model):
 
     def __str__(self):
         return self.title
-
-    def getCurrentCycle(self):
-        return self.is_current == True
-

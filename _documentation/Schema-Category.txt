@@ -1,0 +1,38 @@
+List of Site Topics
+-------------------
+Schema:
+- title
+- subcategory
+- image
+- description
+
+
+
+Beauty
+    fashion
+    hair
+    body
+
+Career
+    
+Entertainment
+    tv
+    music
+    film
+    theater
+
+Lifestyle
+    mind
+    body
+    spirit
+    food/drink
+    travel
+
+Money
+    saving
+    spending
+    investing
+
+Wildcard
+    giggles
+    opinions

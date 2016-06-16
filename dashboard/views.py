@@ -1,28 +1,41 @@
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import views, authenticate, login, logout
+from django.contrib.auth.views import password_reset
 from django.views.decorators.csrf import csrf_protect
-# from .models import *
+from django.views.decorators.http import require_http_methods
+from django.http import JsonResponse, HttpResponse
+from django.conf import settings
+from django.db.models import Q
+
+import json, time
+
+from slugify import slugify
+
+from .models import *
+from .forms import *
 
 
 # Global Variables
 # ------------------
-CURRCYCLE = 2
-DEBUG = True
-VERSION = 'tYc60aWFYF'
-V = '2016-04-23-1350'
+CYCLE = Cycle.objects.get(is_current=True)
+DEBUG = settings.DEBUG
+V = '2016-06-04-1350'
 DATA = {
     'page': '',
     'version': V,
     'hasPageJS': True,
     'hasPageCSS': True,
     'debug': DEBUG,
-    'cycle': CURRCYCLE,
-    'cycleTitle': 'They Think They Know'
+    'cycle': CYCLE,
+    'loggedIn': False
 }
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
-
+ARTICLES = {
+    'drafts':'',
+    'all':'',
+    'ready':''
+}
 
 
 def index(request):
@@ -32,115 +45,182 @@ def index(request):
         PAGEDATA = {}
         PAGEDATA.update(DATA)
         PAGEDATA['page'] = 'login'
-        return render(request, 'dash/login.html', {'data': PAGEDATA})
+        return render(request, 'pages/login.html', {'data': PAGEDATA})
 
 
 @csrf_protect
-def userlogin(request):
+@require_http_methods(["POST"])
+def login_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        body = json.loads(request.body.decode('utf-8'))
+        username = body['username']
+        password = body['password']
 
-        # username = "Amanda"
-        # password = "sweetcandy"
-        
         user = authenticate(username=username, password=password)
+        u = User.objects.get(username=username)
 
         if user is not None:
             if user.is_active:
                 login(request, user)
                 request.session['username'] = username
-                # return jsonify({ 'success': "success" })
-                return redirect(dashboard)
+                return JsonResponse({ 'success': ""})
             else:
-                return jsonify({ 'error': "<strong>Error:</strong> Account disabled."})
+                return JsonResponse({ 'error': 'Your account has been disabled. Please contact <email> for assistance.'})
         else:
-            return jsonify({ 'error': "<strong>Error:</strong> Your login information was incorrect. Please try again."})
+            return JsonResponse({ 'error': "The username and/or password were incorrect."})
     else:
         return redirect(index)
 
 
-# def register(request):
-#     if request.method == 'POST':
-#         username = request.form.get('username', None)
-#         email = request.form.get('email', None).lower()
-#         password = request.form.get('password', None)
-#         confirm = request.form.get('confirm', None)
+@csrf_protect
+@require_http_methods(["POST"])
+def register(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        email = request.POST['email'].lower()
+        password = request.POST['password']
         
-#         connection.connect()
-#         connection.request('POST', '/1/users', json.dumps({
-#             "username": username,
-#             "password": password,
-#             "email": email
-#         }), {
-#             "X-Parse-Application-Id": PARSEappID,
-#             "X-Parse-REST-API-Key": RESTapiKEY,
-#             "Content-Type": "application/json"
-#         })
-        
-#         result = json.loads(connection.getresponse().read().decode('utf-8'))
+        u = User.objects.create_user(username, email, password)
 
-#         if 'error' in result.keys():
-#             print("error while registering")
-#             print(result)
-#             return jsonify({'error': result })
-
-#         else:
-#             session['username'] = username
-        
-#             # stay logged in longer
-#             session.permanent = True
-
-#             return jsonify({ 'success': "Registration successful. You are now logged in." })
-
-#     elif request.method == 'GET':
-#         return redirect(url_for('index'))
+        if u is not None:
+            request.session['username'] = username
+            return JsonResponse({ 'success': "Registration successful. You are now logged in." })
+        else:
+            print("error while registering")
+            return JsonResponse({'error': result })
+    else:
+        return redirect(index)
 
 
-# def forgot(request):
-#     if request.method == 'POST':
-#         email = request.form.get('email', None).lower()
+@csrf_protect
+@require_http_methods(["POST"])
+def reset(request):
+    if request.method == 'POST':
+        body = json.loads(request.body.decode('utf-8'))
+        email = body['email']
 
-#         connection.connect()
-#         connection.request('POST', '/1/requestPasswordReset', json.dumps({
-#             "email": email
-#         }), {
-#             "X-Parse-Application-Id": PARSEappID,
-#             "X-Parse-REST-API-Key": RESTapiKEY,
-#             "Content-Type": "application/json"
-#         })
+        u = User.objects.get(email=email)
 
-#         result = json.loads(connection.getresponse().read().decode('utf-8'))
-
-#         if 'error' in result.keys():
-#             print ("error")
-#             return jsonify({ 'error': "We cannot find the account associated with this email address. Please enter the email address used to register your account." })
-
-#         else:
-#             print ('success')
-#             return jsonify({ 'success': "An email has been sent to you. Please follow the link to reset your password." })
-
-#     elif request.method == 'GET':
-#         return redirect(url_for('index'))
+        if u is not None:
+            if user.is_active:
+                try:
+                    password_reset(request, 
+                                html_email_template_name="emails/password_reset.html", 
+                                subject_template_name="emails/password_reset-subject.txt",
+                                post_reset_redirect = "/")
+                    return JsonResponse({ 'success': "If we have the provided email address on file, an email will be sent containing instruction to help you with your account." })
+                except:
+                    return JsonResponse({ 'error': "An error occured while processing your request. Please refresh the page to try again." })
+        else:
+            return JsonResponse({ 'error': "An error occured while processing your request. Please refresh the page to try again." })
+    else:
+        return redirect(index)
 
 
-# def logout(request):
-#     # remove the username from the session if it's there
-#     try:
-#       del request.session['username']
-#       del request.session['uID']
-#       del request.session['sessionToken']
-#     except KeyError:
-#       pass
-#     return redirect(url_for('index'))
+def logout_view(request):
+    logout(request)
+    return redirect(index)
 
 
 def dashboard(request):
     PAGEDATA = {}
     PAGEDATA.update(DATA)
     PAGEDATA['page'] = 'dashboard'
-    return render(request, 'dash/dashboard.html', {'data': PAGEDATA})
+
+    a = Article.objects.all()
+    u = User.objects.get(username=request.session['username'])
+
+    drafts = a.filter(status='draft', author=u)
+    print(drafts)
+
+    return render(request, 'pages/dashboard.html', 
+        {
+            'data': PAGEDATA,
+            'drafts': drafts,
+            'user': u
+        })
+
+
+def profile(request):
+    username = request.session['username']
+    print(username)
     
+    if request.user.is_authenticated():
+        if request.method == 'GET':
+            PAGEDATA = {}
+            PAGEDATA.update(DATA)
+            PAGEDATA['page'] = 'profile'
+            
+            # get the form
+            form = MemberForm()
+
+            # get the current user
+            u = User.objects.get(username=username)
+
+            if u is not None:
+                return render(request, "pages/profile.html", {'name':username, 'form':form, 'user':u, 'data':PAGEDATA})
+
+    # elif request.method == 'POST':
+    #     updates = {}
+        
+    #     data = json.loads(request.data.decode('utf-8'))
+
+    #     print (data)
+
+    #     updates.update(data)
+
+    #     print (updates)
+
+    #     connection.connect()
+    #     connection.request('PUT', '/1/users/'+updates['objectId'], json.dumps(updates),
+    #     {
+    #         "X-Parse-Application-Id": PARSEappID,
+    #         "X-Parse-REST-API-Key": RESTapiKEY,
+    #         "X-Parse-Session-Token": sessionToken,
+    #         "Content-Type": "application/json"
+    #     })
+
+    #     response = json.loads(connection.getresponse().read().decode('utf-8'))
+
+    #     if 'error' in response.keys():
+    #         print ('error updating the user profile')
+    #         return jsonify({ 'error': "Your profile information could not be saved. Please refresh the page and try again." })
+
+    #     else:
+    #         return jsonify({ 'success': "Your profile has been saved. You will now be redirected to the dashboard." })
+
+
+def review(request):
+    PAGEDATA = {}
+    PAGEDATA.update(DATA)
+    PAGEDATA['page'] = 'review'
+
+    return render(request, 'pages/dashboard.html', 
+        {
+            'data': PAGEDATA,
+        })
+
+
+def articles(request):
+    PAGEDATA = {}
+    PAGEDATA.update(DATA)
+    PAGEDATA['page'] = 'articles'
+
+    return render(request, 'pages/dashboard.html', 
+        {
+            'data': PAGEDATA,
+        })
+
+
+def myarticles(request):
+    PAGEDATA = {}
+    PAGEDATA.update(DATA)
+    PAGEDATA['page'] = 'dashboard'
+
+    return render(request, 'pages/dashboard.html', 
+        {
+            'data': PAGEDATA,
+        })
 
 
 # --------------------------------------------------------------------

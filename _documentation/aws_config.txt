@@ -1,0 +1,24 @@
+S3 Setup
+========
+CORS Configuration
+        
+<?xml version="1.0" encoding="UTF-8"?>
+<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+    <CORSRule>
+        <AllowedOrigin>*</AllowedOrigin>
+        <AllowedMethod>PUT</AllowedMethod>
+        <AllowedMethod>POST</AllowedMethod>
+        <AllowedMethod>DELETE</AllowedMethod>
+        <AllowedHeader>*</AllowedHeader>
+    </CORSRule>
+    <CORSRule>
+        <AllowedOrigin>*</AllowedOrigin>
+        <AllowedMethod>GET</AllowedMethod>
+    </CORSRule>
+</CORSConfiguration>
+
+
+To use CNAME alias, make sure bucket name is the same as the alias name you're creating. EX:
+
+    To access images at media.amandanumba.com/[file name], the bucket name must be media.amandanumba.com.
+

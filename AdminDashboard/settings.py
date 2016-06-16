@@ -20,10 +20,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '+0!7psl)kmah)0tm3)51+oktdx(7)yo3xkwfl@i!rp19!wy(29'
+SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+x = os.environ['DEBUG']
+if x == 'True':
+    DEBUG = True
+else:
+    DEBUG = False
+
 
 ALLOWED_HOSTS = []
 
@@ -36,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'dashboard',
     'editor',
@@ -44,6 +50,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -80,19 +87,15 @@ WSGI_APPLICATION = 'AdminDashboard.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'blogDev',
-        'USER': 'root',
-        'PASSWORD': 'sweetcandy',
+        'NAME': os.environ.get('DB_DEV_NAME', ''),
+        'USER': os.environ.get('DB_DEV_USER', ''),
+        'PASSWORD': os.environ.get('DB_DEV_PASSWORD', ''),
         'HOST': '',
         'PORT': '',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
             'charset': 'utf8mb4'
         },
-        'TEST': {
-            'CHARSET': 'utf8mb4',
-            'COLLATION': 'utf8mb4_unicode_ci',
-        }
     }
 }
 
@@ -116,23 +119,36 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LOGIN_URL = "/"
+LOGIN_REDIRECT_URL = "/dashboard/"
+
+
+
+# Sending emails
+DEFAULT_FROM_EMAIL = os.environ.get('SEND_EMAILS_AS', '')
+SERVER_EMAIL = os.environ.get('SEND_EMAILS_AS', '')
+EMAIL_HOST = os.environ.get('GMAIL_EMAIL_HOST', '')
+EMAIL_PORT = os.environ.get('GMAIL_EMAIL_PORT', '')
+EMAIL_HOST_USER = os.environ.get('GMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('GMAIL_HOST_PASSWORD', '')
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'America/New_York'
-
 USE_I18N = True
-
 USE_L10N = True
-
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'dashboard/static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

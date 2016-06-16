@@ -1,3 +1,13 @@
+/**
+ *  
+ * Table of Contents
+ * -----------------
+ *
+ * GENERAL PAGE STYLES ......... global variables, mixins, etc
+ * PAGE SETUP................... credit app form element and top title bar/legend
+ *
+**/
+
 /* partials + variables */
 @import 'partials/colors',
         'partials/mixins',
@@ -8,122 +18,86 @@
 @import 'modules/base';
 
 /* modules */
-@import 'modules/inputs',
-        'modules/buttons',
-        'modules/loader',
-        'modules/tooltips';
+@import 'modules/loader',
+        'modules/button',
+        'modules/input';
+
+/* vendors */
+@import 'third-party/uikit',
+        'third-party/animate',
+        'third-party/angular-toastr';
 
 /* responsiveness   */
 @import 'partials/responsive';
 
 
-@font-face {
-    font-family: Xtreem;
-    src: url("/static/fonts/Xtreem.ttf");
-}
-
-
-/**
- *  
- * Table of Contents
- * -----------------
- *
- * GENERAL PAGE STYLINGS ....... global variables, mixins, etc
- * PAGE SETUP............... credit app form element and top title bar/legend
- *
-**/
 
 
 /*------------------------------------*\
     GENERAL STYLES
 \*------------------------------------*/
-body 
-{
-    position: relative;
-}
-
 .bg-img 
 {
-    @include bkg_img_overlay("/static/images/14.jpg", rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5));
+    @include bkg_img_overlay("/static/images/landing.jpg", rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5));
     height: 100vh;
 }
 
 .tooltip,
-.alert,
-.page-loader 
+.uk-alert 
 {
     display: none;
 }
 
-.page-loader 
+#logo 
 {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background: #fefefe;
-    z-index: 100000;
+    margin: 20px 0 30px;
+    text-align: center;
 }
 
-#logo
-{
-    font-family: Xtreem;
-    font-size: 80pt;
-}
-
-.alert#loginInfo 
+#loginInfo 
 {
     display: block !important;
     margin-bottom: 15px !important;
+    text-align: center;
 }
+
+
+
 
 
 /*------------------------------------*\
     FORMS
 \*------------------------------------*/
+.uk-width-1-3
+{
+    padding: 3.5em;
+}
+
 #formsWrapper 
 {
-    height: 485px;
-    margin: auto;
-    text-align: center;
-    @include stretch;
-
-    .form 
-    {
-        position: relative;
-        width: em(layout, 320px, $target);
-        padding: 2%;
-        margin: 0 auto;
-    }
-
-    #register 
-    {
-        padding-top: 0 !important;
-    }
-
-    .alert
-    {
-        width: 85%;
-        margin: 0 auto;
-        padding: 10px;
-        font-size: 14px;
-    }
+    position: relative;
 }
- 
-.form-input 
+
+.form 
 {
-    margin: 9px 0 9px 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
 }
 
-.additional-info, 
 .description  
 {
-    color: rgba(255,255,255,.6);
     font-weight: 300;
     font-size: 0.8em;
     letter-spacing: 0.3px;
     margin-top: 14px;
+    text-align: center;
+}
+
+.form-switcher
+{
+    text-align: right;
 }
 
 .btn-toggle 
@@ -166,21 +140,51 @@ body
 
 
 /*------------------------------------*\
+    FORM STYLING
+\*------------------------------------*/
+.form-input 
+{
+    @include input(100%, black, 0 11px, 14px);
+    margin: 7px 0;
+    border-bottom: 1px solid rgb(231, 231, 231);
+
+    &:focus 
+    {
+        @include no-focus();
+        border-color: black;
+    }
+
+    &.ng-invalid.ng-dirty 
+    {
+        border-color: indianred;
+    }
+}
+
+textarea.form-input 
+{
+    resize: vertical;
+    height: auto;
+    border: 1px solid rgb(231, 231, 231);
+}
+
+.btn-black 
+{
+    margin: 15px 0;
+    @include black-button();
+}
+
+
+
+
+
+/*------------------------------------*\
     RESPONSIVENESS
 \*------------------------------------*/
 /* iPads (portrait and landscape) ----------- */
 @media only screen
 and (min-width : 769px)
 and (max-width : 1024px) {
-    #formsWrapper .form 
-    {
-        width: 60%;
-    }
-
-    .form-input 
-    {
-        height: 50px;
-    }
+    
 }
 
 @media only screen
@@ -191,42 +195,9 @@ and (max-width : 768px) {
         @include background-size(cover);
     }
 
-    #formsWrapper .form 
-    {   
-        width: 90%;
-        margin: 0 auto;
-    }
-
-    .alert 
-    {
-        width: 90%;
-    }
-
-    #logo 
-    {
-        color: #9E8991;
-        font-size: 73pt;
-    }
-
-    .form-input 
-    {
-        height: 45px;
-        background: white;
-        margin: 2px 0 2px 0;
-        color: black;
-    }
-
-    .additional-info, 
-    .description
-    {
-        text-align: center;
-    }
 }
 
 @media only screen
 and (min-width : 1300px) {
-    #formsWrapper 
-    {
-        height: 550px;
-    }
+    
 }

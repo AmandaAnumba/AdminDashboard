@@ -1,0 +1,23 @@
+@mixin input($width, $text-color, $padding, $font-size: $base-font-size, $height: 40px) {
+	@include box-sizing(border-box);
+	position: relative;
+	padding: $padding;
+	line-height: 22px;
+	height: $height;
+	width: $width;
+	color: $text-color;
+	border: none;
+	font-size: $font-size;
+	background-color: transparent;
+	font-family: "Open Sans", Arial, sans-serif;
+	font-weight: 300;
+	letter-spacing: 0.5px;
+	@include transition-property(all);
+	@include transition-duration(.4s);
+	@include transition-timing-function(ease-in-out);
+}
+
+@mixin no-focus() {
+	outline: none !important;
+	box-shadow: none !important;
+}
