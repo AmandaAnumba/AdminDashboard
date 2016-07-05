@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django_mysql.models import ListCharField, SizedTextField, EnumField
 from django.utils import timezone
+from random import randint
 
 
 class Member(models.Model):
@@ -11,9 +12,18 @@ class Member(models.Model):
         ('C', 'Contributor'),
         ('W', 'Staff Writer')
     )
+    AVATARS = {
+        '1':'/static/images/avatars/ade.jpg',
+        '2':'/static/images/avatars/chris.jpg',
+        '3':'/static/images/avatars/jenny.jpg',
+        '4':'/static/images/avatars/justen.jpg',
+        '5':'/static/images/avatars/nan.jpg',
+        '6':'/static/images/avatars/stevie.jpg',
+        '7':'/static/images/avatars/veronika.jpg'
+    }
     user                 = models.OneToOneField(User, on_delete=models.CASCADE)
-    avatar               = models.ImageField(blank=True)
-    role                 = models.CharField(max_length=1, choices=USER_ROLES, default="M", editable=False)
+    avatar               = models.CharField(max_length=64, blank=True, default=AVATARS[str(randint(1,7))])
+    role                 = models.CharField(max_length=1, choices=USER_ROLES, default="M")
     bio                  = SizedTextField(size_class=2, blank=True)
     linkedin             = models.CharField(max_length=128, blank=True)
     pinterest            = models.CharField(max_length=128, blank=True)

@@ -1,30 +1,27 @@
+/* vendor styles */
+@import '../third-party/pushmenu';
+@import '../third-party/angular-toastr';
+@import '../third-party/uikit';
+@import '../third-party/mmenu.scss';
+@import '../third-party/animate';
+
 /* partials + variables + responsiveness */
-@import '../partials/colors',
-		'../partials/mixins',
-		'../partials/icons',
-		'../partials/helpers',
-		'../partials/responsive';
+@import '../partials/colors';
+@import '../partials/fonts';
+@import '../partials/mixins';
+@import '../partials/helpers';
+@import '../partials/responsive';
+@import '../partials/icons';
 
 /* page components */
-@import 'base',
-		'header',
-		'loader',
-		'menu';
-
-/* vendor styles */
-@import '../third-party/pushmenu',
-		'../third-party/animate';
+@import 'base';
+@import 'header';
+@import 'loader';
+@import 'menu';
 
 /* general page styles */
 body { background: whitesmoke; }
-#content { margin-left: $menuWidth; }
 
-.flip 
-{
-    -moz-transform: scaleX(-1);
-    -webkit-transform: scaleX(-1);
-    -o-transform: scaleX(-1);
-    transform: scaleX(-1);
-    -ms-filter: fliph; /*IE*/
-    filter: fliph; /*IE*/
+#contentWrapper {
+	padding: 0 30px 30px;
 }

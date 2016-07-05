@@ -13,11 +13,12 @@ angular
 			progressBar: true,
 			timeOut: 7000,
 		});
-	});
+	})
+	.factory('dataService', require('./data.service'));
 
 
 configure.$inject = ['$httpProvider'];
-function configure ($httpProvider) {
+function configure($httpProvider) {
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
 	$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 }

@@ -5,6 +5,7 @@ var authService = function($http, logger, loader, $window, $cookies) {
 		getAuthenticatedAccount: getAuthenticatedAccount,
 		isAuthenticated: isAuthenticated,
 		login: login,
+		reset: reset,
 		register: register,
 		unauthenticate: unauthenticate
 	};
@@ -66,16 +67,26 @@ var authService = function($http, logger, loader, $window, $cookies) {
 	 * @returns {Promise}
 	 */
 	function reset(email) {
+		loader.show();
+		
 		return $http.post('/reset/', {
 				email: email
-			}).then(registerSuccessFn, registerErrorFn);
+			}).then(resetSuccessFn, resetErrorFn);
 
 		/**
 		* @name resetSuccessFn
 		* @desc Log the new user in
 		*/
 		function resetSuccessFn(data, status, headers, config) {
-			logger.log('reset success');
+			loader.hide();
+
+			var response = data.data;
+
+			if (response.error) {
+				logger.error(response.error, 'Error');
+            } else {
+				logger.success(response.success);
+            }
 		}
 
 		/**
@@ -83,6 +94,8 @@ var authService = function($http, logger, loader, $window, $cookies) {
 		* @desc Log "Epic failure!" to the console
 		*/
 		function resetErrorFn(data, status, headers, config) {
+			loader.hide();
+			
 			logger.error('reset failure!');
 		}
 	}

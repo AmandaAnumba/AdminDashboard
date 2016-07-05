@@ -1,0 +1,13 @@
+@import 'froala/froala-content';
+@import 'froala/froala-editor';
+@import 'froala/froala-style';
+
+
+/*------------------------------------*\
+    Overrides/Cusomizations
+\*------------------------------------*/
+.froala-element 
+{
+	height: inherit !important;
+	background: white;
+}

@@ -1,0 +1,311 @@
+{% extends "_BaseEditorTemplate.html" %}
+
+
+{% block title %}Edit Draft{% endblock title %}
+
+
+{% block header %}
+    <a href="{{ url_for('dashboard.review') }}">
+		<li><span class="icon-reply"></span></li>
+    </a>
+    <li onclick="$('#deleteModal').modal('show')" data-toggle="tooltip" data-placement="left" title="delete this draft"><span class="icon icon-trach-can2"></span></li>
+    <li onclick="save('draft', 'InProgress');" data-toggle="tooltip" data-placement="left" title="only save the changes you've made to this draft">Save</li>
+    <li onclick="save('ready', 'InProgress');" data-toggle="tooltip" data-placement="left" title="submit this article to be reviewed/proofread">Submit</li>
+{% endblock header %}
+
+
+{% block addtlContent %}
+	<div class="article">
+		<form>
+			<input type="hidden" name="headerIMGurl" ng-model="article.headerIMG" value="{{ article.headerIMG }}" />
+			<input type="hidden" name="featureIMGurl" ng-model="article.featureIMG" value="{{ article.featureIMG }}" />
+			<input type="hidden" name="author" ng-model="article.author" ng-value="{{ username }}" value="{{ username }}" />
+			<input type="hidden" name="coAuthor" ng-model="article.coAuthor" />
+			<input type="hidden" name="id" id="id" ng-model="article.id" value="{{ article['objectId'] }}" />
+			<div id="text" hidden>{{ article.content }}</div>
+			<div id="article_tags" hidden>{{ ','.join(article.tags) }}</div>
+			<div id="article_type" hidden>{{ article.doctype }}</div>
+			<div id="article_style" hidden>{{ article.docstyle }}</div>
+			<div id="releaseDate" hidden>{{ article.releaseDate }}</div>
+			<div id="coAuthorslist" hidden>{{ article.coAuthor }}</div>
+			<div id="categorylist" hidden>{{ ','.join(article.category) }}</div>
+			<div id="inCycle" hidden>{{ article.cycleArticle }}</div>
+
+			<section id="popouts_wrapper">
+				
+				<!-- uploaded media -->
+				<div id="pop_uploads" class="popout-left" hidden>
+					<header>Uploaded Media</header>
+
+					<div class="popout_content">
+						<p class="description" style="color:white;font-size: 0.8em;margin:0;">Copy the code and paste it into the document in the HTML view ( click <code><i class="fa fa-code"></i></code> in the text editor toolbar )</p>
+					</div>
+
+					<div id="uploads_toggle" class="slide_toggle-left" data-toggle="tooltip" data-placement="right" title="Uploaded Media"></div>
+				</div>
+
+				<!-- article settings -->
+				<div id="pop_settings" class="popout">
+					<header>Article Settings</header>
+
+					<div class="popout_content">
+						<p class="label">Article Description</p>
+						
+						<textarea class="clear-input-small2" name="description" placeholder="This will be displayed on the empire home page. Be brief." style="height:90px;">{{ article['description']}}</textarea>
+
+						<p class="label">Change Category</p>
+						<!-- <p class="sub-label">the main category this article falls under. Hold <code>Cmd</code> or <code>Ctrl</code> to select all major categories that apply. </p> -->
+
+						{% if article.category %}
+						<p class="sub-label">Current: <span id="current_cat">{{ ','.join(article.category) }}</span></p>
+
+						<p class="btn btn-primary" id="catChange" onclick="catChange();">Change Categories</p>
+
+						<div id="categoriesWrapper" hidden>
+							<ul class="clear-input-small2" id="category" name="category" style="list-style-type:none;height:140px;overflow-y:scroll;">
+								<li><label><input type="checkbox" value="Art">Art</label></li>
+								<li><label><input type="checkbox" value="Beauty">Beauty</label></li>
+								<li><label><input type="checkbox" value="Body">Body</label></li>
+								<li><label><input type="checkbox" value="Career">Career</label></li>
+								<!-- <li><label><input type="checkbox" value="Cycle">Cycle</label></li> -->
+								<li><label><input type="checkbox" value="Entertainment">Entertainment</label></li>
+								<li><label><input type="checkbox" value="Fashion">Fashion</label></li>
+								<li><label><input type="checkbox" value="Food + Drink">Food + Drink</label></li>
+								<li><label><input type="checkbox" value="Hair">Hair</label></li>
+								<li><label><input type="checkbox" value="Inspire">Inspire</label></li>
+								<li><label><input type="checkbox" value="Lifestyle">Lifestyle</label></li>
+								<li><label><input type="checkbox" value="Mind">Mind</label></li>
+								<li><label><input type="checkbox" value="Money">Money</label></li>
+								<li><label><input type="checkbox" value="Reign">Reign</label></li>
+								<li><label><input type="checkbox" value="Rise">Rise</label></li>
+								<li><label><input type="checkbox" value="Spirit">Spirit</label></li>
+								<li><label><input type="checkbox" value="Travel">Travel</label></li>
+								<li><label><input type="checkbox" value="Wildcard">Wildcard</label></li>
+							</ul>
+						</div>
+						
+						{% else %}
+						<div id="categoriesWrapper">
+							<ul class="clear-input-small2" id="category" name="category" style="list-style-type:none;height:140px;overflow-y:scroll;">
+								<li><label><input type="checkbox" value="Art">Art</label></li>
+								<li><label><input type="checkbox" value="Beauty">Beauty</label></li>
+								<li><label><input type="checkbox" value="Body">Body</label></li>
+								<li><label><input type="checkbox" value="Career">Career</label></li>
+								<!-- <li><label><input type="checkbox" value="Cycle">Cycle</label></li> -->
+								<li><label><input type="checkbox" value="Entertainment">Entertainment</label></li>
+								<li><label><input type="checkbox" value="Fashion">Fashion</label></li>
+								<li><label><input type="checkbox" value="Food + Drink">Food + Drink</label></li>
+								<li><label><input type="checkbox" value="Hair">Hair</label></li>
+								<li><label><input type="checkbox" value="Inspire">Inspire</label></li>
+								<li><label><input type="checkbox" value="Lifestyle">Lifestyle</label></li>
+								<li><label><input type="checkbox" value="Mind">Mind</label></li>
+								<li><label><input type="checkbox" value="Money">Money</label></li>
+								<li><label><input type="checkbox" value="Reign">Reign</label></li>
+								<li><label><input type="checkbox" value="Rise">Rise</label></li>
+								<li><label><input type="checkbox" value="Spirit">Spirit</label></li>
+								<li><label><input type="checkbox" value="Travel">Travel</label></li>
+								<li><label><input type="checkbox" value="Wildcard">Wildcard</label></li>
+							</ul>
+						</div>
+						{% endif %}
+
+						<p class="label">Add/Change Tags</p>
+						
+						<input class="clear-input-small2" id="taginput" name="taginput" placeholder="separate, tags, with, commas" style="width:55%;" type="text" value="">
+
+						<span class="doc-icon icon-circle-plus" id="add2list"></span>
+						
+						<div id="tags_list"></div>
+					</div>
+
+					<div id="settings_toggle" class="slide_toggle" data-toggle="tooltip" data-placement="left" title="click to edit article's description and tags"></div>
+				</div>
+
+				<!-- article media -->
+				<div id="pop_media" class="popout">
+					<header>Media Uploads</header>
+					
+					<div class="popout_content">
+						<p class="description" style="color:white;font-size: 0.8em;margin:0;"><span class="padder icon icon-warning"></span> <span class="label">Note: </span> All media used in your article needs to be uploaded to the web server. When your media has been successfully uploaded, you will be provided with the HTML code to paste into your article.</p>
+
+						<!--<p class="label">Media types for an article</p>
+						<ol style="font-weight: 300;font-size: 0.8em;letter-spacing: 0.3px;color:white;">
+							<li>Required: article header image</li>
+							<li>Required: image/gif for home page display
+								<ul>
+									<li>featured article- at least 600px wide</li>
+									<li>regular article- no larger than 350px wide</li>
+									<li>sponsored article- at least 400px wide</li>
+									 <li>** please fit the size restrictions or else the image will be distorted and pixelated if it's too small or take a long time to load if it's too large**</li> 
+								</ul>
+							</li>
+							<li>Optional: Images throughout the article, not including external media</li>
+						</ol>-->
+
+						{% if article.featureIMG %}
+							
+							{% if article.featureIMG == 'same' %}
+							<div class="checkbox clear-input-small3">
+								<label>
+									<input type="checkbox" value="headerSame" id="headerSame" checked>
+									Use same image from header
+								</label>
+							</div>
+
+							{% elif article.featureIMG != 'same' and article.featureIMG != '' %}
+							<p class="description" id="fIMG-des">You have already uploaded a dashboard image</p>
+							
+							<img src={{ article.featureIMG }} alt="Article Feature" id="fIMG" width="200" />
+							{% endif %}
+
+							<p class="btn btn-primary" id="changeIMG" onclick="changeIMG();">Change Image</p>
+
+							<div id="change_image" hidden>
+								<input class="clear-input-small2" id="featureIMG" name="featureIMG" type="file" accept="image/png,image/jpg,image/jpeg,image/gif">
+								<p id="upload_btn2" class="btn btn-primary" hidden>Upload</p>
+								<div id="progress2" hidden></div>
+						        
+						        <div class="response" id="success_upload2" style="text-align:center;" hidden><span style="color: #4CDBA5;" class="icon icon-check"></span></div>
+						        
+						        <div class="response" id="error_upload2" style="text-align:center;" hidden><span style="color: #FA626E;" class="icon icon-cross"></span></div>
+							</div>
+							
+						{% else %}
+						<p class="label">Upload Dashboard Image</p>
+						
+						<p class="description" style="color:white;font-size: 0.75em;margin:0;">(the image for the article that will be displayed on the front page)</p>
+						
+						<!-- <ul class="radio_btn clear-input-small3" id="media" placeholder="None" style="line-height: 0px !important;">
+							<li>
+								<input id="media-0" name="feature-media" type="radio" value="image" checked> 
+								<label for="media-0">image/picture/gif</label>
+							</li>
+							<li class="video" data-toggle="tooltip" data-placement="top" title="video support coming soon!">
+								<input id="media-2" name="feature-media" type="radio" value="video" disabled> 
+								<label for="media-2">video</label>
+							</li>
+						</ul> -->
+
+						<div class="checkbox clear-input-small3">
+							<label>
+								<input type="checkbox" value="headerSame" id="headerSame">
+								Use same image from header
+							</label>
+						</div>
+
+						<input class="clear-input-small2" id="featureIMG" name="featureIMG" type="file" accept="image/png,image/jpg,image/jpeg,image/gif">
+						
+						<p id="upload_btn2" class="btn btn-primary" hidden>Upload</p>
+						
+						<div id="progress2" hidden></div>
+				        
+				        <div class="response" id="success_upload2" style="text-align:center;" hidden><span style="color: #4CDBA5;" class="icon icon-check"></span></div>
+				        
+				        <div class="response" id="error_upload2" style="text-align:center;" hidden><span style="color: #FA626E;" class="icon icon-cross"></span></div>
+				        {% endif %}
+
+						<p class="label">Upload all other media</p>
+						
+						<p class="description" style="color:white;font-size: 0.75em;margin:0;">(upload files one at a time)</p>
+						
+						<!-- <ul class="radio_btn clear-input-small3" id="media" placeholder="None" style="line-height: 0px !important;">
+							<li>
+								<input id="media-0" name="media" type="radio" value="image" checked> 
+								<label for="media-0">image/picture/gif</label>
+							</li>
+							<li class="video" data-toggle="tooltip" data-placement="top" title="video support coming soon!">
+								<input id="media-2" name="media" type="radio" value="video" disabled> 
+								<label for="media-2">video</label>
+							</li>
+						</ul> -->
+
+						<input class="clear-input-small2" id="allmedia" name="allmedia" type="file" accept="image/png,image/jpg,image/jpeg,image/gif">
+						
+						<p id="upload_btn3" class="btn btn-primary" hidden >Upload</p>
+						
+						<div id="progress3" hidden></div>
+				        
+				        <div class="response" id="success_upload3" style="text-align:center;" hidden><span style="color: #4CDBA5;" class="icon icon-check"></span></div>
+				        
+				        <div class="response" id="error_upload3" style="text-align:center;" hidden><span style="color: #FA626E;" class="icon icon-cross"></span></div>
+					</div>
+					
+					<div id="media_toggle" class="slide_toggle" data-toggle="tooltip" data-placement="left" title="click to upload article images"></div>
+				</div>
+
+				<!-- article release -->
+				<div id="pop_review" class="popout">
+					<header>Publishing</header>
+
+					<div class="popout_content">
+						<p class="label" for="doc-type">Article Type</p>
+
+						{% if article.doctype %}
+						<p class="sub-label">Current: {{ article.doctype }}</p>
+						{% endif %}
+						<ul class="radio_btn clear-input-small3" id="doctype" placeholder="None" style="line-height: 0px !important;">
+							<li>
+								<input id="doctype-0" name="doctype" type="radio" value="feature"> 
+								<label for="doctype-0">feature</label>
+							</li>
+							<li>
+								<input id="doctype-1" name="doctype" type="radio" value="regular" checked> 
+								<label for="doctype-1">regular</label>
+							</li>
+							<!-- <li>
+								<input id="doctype-2" name="doctype" type="radio" value="sponsored"> 
+								<label for="doctype-2">sponsored</label>
+							</li> -->
+						</ul>
+
+						<p class="label">Article Style</p>
+						{% if article.docstyle %}
+						<p class="sub-label">Current: {{ article.docstyle }}</p>
+						{% endif %}
+						<ul class="radio_btn clear-input-small3" id="docstyle" placeholder="None" style="line-height: 0px !important;">
+							<li>
+								<input id="docstyle-0" name="docstyle" type="radio" value="informational" checked> 
+								<label for="docstyle-0">informational</label>
+							</li>
+							<li>
+								<input id="docstyle-1" name="docstyle" type="radio" value="opinion"> 
+								<label for="docstyle-1">opinion</label>
+							</li>
+						</ul>
+
+						<p class="label">Will this article be featured in the current cycle?</p>
+						<ul class="radio_btn clear-input-small3" id="cycle" style="line-height: 0px !important;">
+							<li>
+								<input name="feature-cycle" type="radio" value="True"> 
+								<label>yes</label>
+							</li>
+							<li>
+								<input name="feature-cycle" type="radio" value="False" checked> 
+								<label>no</label>
+							</li>
+						</ul>
+
+						<p class="label" for="doc-release">Release Date</p>
+						
+						<p id="date" class="sub-label">Current: <span id="rDate"></span></p>
+						
+						<p class="btn btn-primary" id="changeDate" onclick="changeDate();">Change Release Date</p>
+						<input class="clear-input-small2" id="release" name="release" type="date" hidden>
+					</div>
+					
+					<div id="review_toggle" class="slide_toggle" data-toggle="tooltip" data-placement="left" title="click to edit article type and publication date"></div>
+				</div>
+			</section>
+
+			<section class="article__header-image{% if article.headerIMG %} hover{% endif %}">
+				{{ editor.header(image=article.headerIMG, photoCred=article.photoCred) }}
+			</section>
+
+			<section id="article-data">
+				{{ editor.title(author=article.author, coAuthors=article.coAuthor, title=article.title) }}
+			</section>
+
+			<div id="editor"></div>
+		</form>
+	</div>
+{% endblock addtlContent %}

@@ -1,32 +1,41 @@
 from django.shortcuts import render
-from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.http import require_http_methods
+from django.http import JsonResponse, HttpResponse
+from django.conf import settings
 
+import json, time
+
+from slugify import slugify
+
+from dashboard.models import *
 
 
 # Global Variables
 # ------------------
-CURRCYCLE = 2
-DEBUG = True
-VERSION = 'tYc60aWFYF'
-V = '2016-04-23-1350'
+CYCLE = Cycle.objects.get(is_current=True)
+DEBUG = settings.DEBUG
+V = '2016-06-04-1350'
 DATA = {
     'page': '',
     'version': V,
-    'hasPageJS': True,
+    'hasPageJS': False,
     'hasPageCSS': True,
     'debug': DEBUG,
-    'cycle': CURRCYCLE,
-    'cycleTitle': 'They Think They Kn2ow'
+    'cycle': CYCLE,
+    'loggedIn': False
 }
 
 
+@csrf_protect
 def write(request):
     if 'username' in request.session:
         PAGEDATA = {}
         PAGEDATA.update(DATA)
         PAGEDATA['page'] = 'write'
         PAGEDATA['hasPageCSS'] = False
-        return render(request, 'write.html', {
+        
+        return render(request, 'pages/write.html', {
             'username': request.session['username'], 
             'data': PAGEDATA
         })
@@ -34,13 +43,13 @@ def write(request):
         return redirect('dashboard.views.index')
 
 
-def read(id):
-    # reading drafts
+# def read(id):
+#     # reading drafts
     
-    PAGEDATA = {}
-    PAGEDATA.update(DATA)
-    PAGEDATA['page'] = 'read'
-    PAGEDATA['hasPageCSS'] = False
+#     PAGEDATA = {}
+#     PAGEDATA.update(DATA)
+#     PAGEDATA['page'] = 'read'
+#     PAGEDATA['hasPageCSS'] = False
 
     #if 'status' in result:
     #    if result['status'] == 'ready':

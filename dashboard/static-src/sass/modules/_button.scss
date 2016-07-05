@@ -13,3 +13,9 @@
 	outline: 0;
 	cursor: pointer;
 }
+
+.btn-black 
+{
+    margin: 15px 0;
+    @include black-button();
+}

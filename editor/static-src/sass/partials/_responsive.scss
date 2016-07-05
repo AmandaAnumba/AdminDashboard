@@ -1,39 +1,25 @@
-/* Screens ----------- */
 @media only screen
 and (max-width : 480px) {
-	#menuWrapper
+	.article__header-img,
+	.article__data,
 	{
-		display: none;
-	}
-	
-	#headerWrapper
-	{
-		height: 70px !important;
-
-		.header-title 
-		{
-			line-height: 70px !important;
-		}
-
-		.mini-nav
-		{
-		    display: none;
-		}
-	}
-	
-	#contentWrapper
-	{
-    	padding: 0 0 30px !important;
+		display:none;
 	}
 
-	#sideMenu,
-	#sideMenuToggle 
+	#editor, 
 	{
-		display: block !important;
+		margin: 0 10px;
 	}
 
-	#content 
+	.article__info
 	{
-		margin-left: 0 !important;
+		margin: 20px 10px 0 10px;
+	}
+
+	.sticky {
+		width: auto;
+		left: 0;
+		top: 7%;
+		margin: 0 6%;
 	}
 }

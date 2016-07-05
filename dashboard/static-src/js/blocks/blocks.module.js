@@ -2,10 +2,12 @@
 
 var angular = require('angular'),
 	logger = require('./logger'),
-	loader = require('./loader');
+	loader = require('./loader'),
+	mmenu = require('./mmenu');
 
 angular
 	.module('adminApp')
 	.factory('logger', logger)
 	.factory('loader', loader)
-	.directive('adminSlideEffect', require('./slide-effect.directive'));
+	.factory('mmenu', mmenu)
+	.directive('slideEffect', require('./slide-effect.directive'));

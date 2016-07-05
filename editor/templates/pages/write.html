@@ -1,0 +1,189 @@
+{% extends "_BaseEditorTemplate.html" %}
+
+
+{% block title %}Editor{% endblock title %}
+
+
+{% block header %}
+	
+{% endblock header %}
+
+
+{% block addtlContent %}
+	<form method="post" name="article" id="article" role="form" novalidate>
+		{% csrf_token %}
+
+		<input type="hidden" name="header_image" data-ng-model="vm.header_image" />
+		<input type="hidden" name="feature_image" data-ng-model="vm.feature_image" />
+		<input type="hidden" name="author" data-ng-model="vm.author" value="{{ user.user.username }}" />
+		<input type="hidden" name="co_author" data-ng-model="vm.co_author" />
+		
+		<section class="sidebar">
+			<div class="ui horizontal list actions">
+				<div class="item">
+					<span class="icon icon-trash-can"></span>
+				</div>
+
+				<div class="item">
+					<button class="ui grey basic tiny button" data-ng-click="vm.postArticle('draft');">Save Draft</button>
+				</div>
+
+				<div class="item">
+					<button class="ui primary tiny button" data-ng-click="vm.postArticle('ready');">Publish</button>
+				</div>
+			</div>
+
+			<div class="title">Article Type</div>
+			<div class="inline field">
+				<div class="ui slider checkbox">
+					<input type="checkbox" tabindex="0" class="hidden">
+					<label>Feature</label>
+				</div>
+				<label></label>
+			</div>
+		</section>
+
+
+
+		<section class="article__data display-none">
+			<!-- uploaded media -->
+			<div id="pop_uploads" class="popout-left" hidden>
+				<header>Uploaded Media</header>
+
+				<div class="popout_content">
+					<p class="description" style="color:white;font-size: 0.8em;margin:0;">Copy the code and paste it into the document in the HTML view ( click <code><i class="fa fa-code"></i></code> in the text editor toolbar )</p>
+				</div>
+
+				<div id="uploads_toggle" class="slide_toggle-left" data-toggle="tooltip" data-placement="right" title="Uploaded Media"></div>
+			</div>
+
+			<!-- article settings -->
+			<!-- change the popouts to be navbar dropdowns with different sections and widths/grid styling for responsiveness -->
+			<div id="pop_settings" class="popout">
+				<header>Article Settings</header>
+
+				<div class="popout_content">
+					<p class="label">Article Description</p>
+					
+					<textarea class="clear-input-small2" name="description" placeholder="This will be displayed on the empire home page. Be brief." style="height:90px;"></textarea>
+
+					<p class="label">Article Category</p>
+					
+					<p class="sub-label">the main category or categories this article falls under.</p>
+					<!-- <p class="sub-label">the main category this article falls under. Hold <code>Cmd</code> or <code>Ctrl</code> to select and highlight all major categories that apply. </p> -->
+					
+					<div id="categoriesWrapper">
+						<ul class="clear-input-small2" id="category" name="category" style="list-style-type:none;height:140px;overflow-y:scroll;">
+							<li><label><input type="checkbox" value="Art">Art</label></li>
+							<li><label><input type="checkbox" value="Beauty">Beauty</label></li>
+							<li><label><input type="checkbox" value="Body">Body</label></li>
+							<li><label><input type="checkbox" value="Career">Career</label></li>
+							<!-- <li><label><input type="checkbox" value="Cycle">Cycle</label></li> -->
+							<li><label><input type="checkbox" value="Entertainment">Entertainment</label></li>
+							<li><label><input type="checkbox" value="Fashion">Fashion</label></li>
+							<li><label><input type="checkbox" value="Food + Drink">Food + Drink</label></li>
+							<li><label><input type="checkbox" value="Hair">Hair</label></li>
+							<li><label><input type="checkbox" value="Inspire">Inspire</label></li>
+							<li><label><input type="checkbox" value="Lifestyle">Lifestyle</label></li>
+							<li><label><input type="checkbox" value="Mind">Mind</label></li>
+							<li><label><input type="checkbox" value="Money">Money</label></li>
+							<li><label><input type="checkbox" value="Reign">Reign</label></li>
+							<li><label><input type="checkbox" value="Rise">Rise</label></li>
+							<li><label><input type="checkbox" value="Spirit">Spirit</label></li>
+							<li><label><input type="checkbox" value="Travel">Travel</label></li>
+							<li><label><input type="checkbox" value="Wildcard">Wildcard</label></li>
+						</ul>
+					</div>
+
+					<p class="label">Article Tags</p>
+					
+					<p class="sub-label">tags help users search for your article. Tage are different from categories because they can be more specific to the article. Create your own tags to apply to the article, and each tag should be separated by a comma.</p>
+					
+					<input class="clear-input-small2" id="taginput" name="taginput" placeholder="separate, tags, with, commas" style="width:55%;" type="text" value="">
+
+					<span class="doc-icon icon-circle-plus" id="add2list"></span>
+					
+					<div id="tags_list"></div>
+				</div>
+
+				<div id="settings_toggle" class="slide_toggle" data-toggle="tooltip" data-placement="left" title="click to edit article's description and tags"></div>
+			</div>
+
+			<!-- article media -->
+			<div id="pop_media" class="popout">
+				<header></header>
+				
+				<div class="popout_content">
+					
+				
+				<div id="media_toggle" class="slide_toggle" data-toggle="tooltip" data-placement="left" title="click to upload article images"></div>
+			</div>
+
+			<!-- article release -->
+			<div id="pop_review" class="popout">
+				<header>Publishing</header>
+
+				<div class="popout_content">
+					<p class="label" for="doc-type">Article Type</p>
+					<ul class="list-unstyled clear-input-small3" id="doctype" placeholder="None" style="line-height: 0px !important;">
+						<li>
+							<input id="doctype-0" name="doctype" type="radio" value="feature"> 
+							<label for="doctype-0">feature</label>
+						</li>
+						<li>
+							<input id="doctype-1" name="doctype" type="radio" value="regular" checked> 
+							<label for="doctype-1">regular</label>
+						</li>
+						<!-- <li>
+							<input id="doctype-2" name="doctype" type="radio" value="sponsored"> 
+							<label for="doctype-2">sponsored</label>
+						</li> -->
+					</ul>
+
+					<p class="label">Article Style</p>
+					<ul class="list-unstyled clear-input-small3" id="docstyle" placeholder="None" style="line-height: 0px !important;">
+						<li>
+							<input id="docstyle-0" name="docstyle" type="radio" value="informational" checked> 
+							<label for="docstyle-0">informational</label>
+						</li>
+						<li>
+							<input id="docstyle-1" name="docstyle" type="radio" value="opinion"> 
+							<label for="docstyle-1">opinion</label>
+						</li>
+					</ul>
+
+					<p class="label">Will this article be featured in the current cycle?</p>
+					<ul class="list-unstyled clear-input-small3" id="cycle" style="line-height: 0px !important;">
+						<li>
+							<input name="feature-cycle" type="radio" value="True"> 
+							<label>yes</label>
+						</li>
+						<li>
+							<input name="feature-cycle" type="radio" value="False" checked> 
+							<label>no</label>
+						</li>
+					</ul>
+
+					<p class="label" for="doc-release">Release Date</p>
+					
+					<p id="date" class="sub-label" hidden>Current: <span id="rDate" value=""></span></p>
+					
+					<input class="clear-input-small2" id="release" name="release" type="date" value="">
+				</div>
+
+				<div id="review_toggle" class="slide_toggle" data-toggle="tooltip" data-placement="left" title="click to edit article type and publication date"></div>
+			</div>
+		</section>
+
+		<section class="article__header-image display-none">
+			<!-- changes based on article_type; feature is full width; regular is a side image-->
+			{% include "partials/header_image.html" with image="" photoCred="" %}
+		</section>
+
+		<section class="article__info display-none">
+			{% include "partials/title.html" with author=username coAuthors="" title="" %}
+		</section>
+
+		<div id="editor display-none"></div>
+	</form>
+{% endblock addtlContent %}

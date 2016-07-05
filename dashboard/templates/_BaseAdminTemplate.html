@@ -2,91 +2,22 @@
 
 
 {% block head %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+	{% block addtlStyles %}{% endblock addtlStyles %}
 {% endblock head %}
 
 
 {% block content %}
-    <nav id="menuWrapper">
-        <ul id="menu">
-            <li>
-                <a href="{% url 'dashboard' %}">
-                    <img src="/static/images/e-logo.png" alt="Empire" width="50">
-                </a>
-            </li>
-
-            <li id="write">
-                <a href="">
-                    <div class="menu-item">
-                        <span>Write</span>
-                    </div>
-                </a>
-            </li>
-            
-            {% if user.role = 'F' %}
-                <li id="review">
-                    <a href="">
-                        <div class="menu-item">
-                            <span>Review</span>
-                        </div>
-                    </a>
-                </li>
-
-                <li id="all">
-                    <a href="">
-                        <div class="menu-item">
-                            <span>All Articles</span>
-                        </div>
-                    </a>
-                </li>
-            {% endif %}
-            
-            <li>
-                <a href="javascript:void(0)">
-                    <div class="menu-item">
-                        <span>Comments</span>
-                    </div>
-                </a>
-            </li>
-
-            <li id="tools">
-                <a href="">
-                    <div class="menu-item">
-                        <span class="icon icon-tools-2"></span>
-                        <span>Tools</span>
-                    </div>
-                </a>
-            </li>
-        </ul>
-    </nav>
-
-    <main id="content" ng-app="adminApp">
-        <header id="headerWrapper">
-            <div class="header-title">Admin Dashboard</div>
-            <ul class="mini-nav">
-                <li class="dropdown">
-                    <div class="dropdown-toggle" dropdown-toggle="#profileDropdown">{{ user.username }}</div>
-                    <ul class="dropdown-menu animated fadeInRight w" id="profileDropdown">
-                        <li><a href="{% url 'profile' %}">My Profile</a></li>
-                        <li class="divider"></li>
-                        <li><a href="{% url 'logout' %}">Logout</a></li>
-                    </ul>
-                </li>
-            </ul>
-
-            <div id="sideMenuToggle" class="toggle-menu menu-right">
-                <span class="icon-nav icon-menu"></span>
-            </div>
-        </header>
-        
-        {% block addtlContent %}{% endblock addtlContent %}
-    </main>
+	<main>
+		{% include "partials/header.html" %}
+		
+		{% block addtlContent %}{% endblock addtlContent %}
+		
+		{% include "partials/mobile_menu.html" %}
+		{% include "partials/messages_menu.html" %}
+	</main>
 {% endblock content %}
 
 
 {% block footer %}
-    <script src="/static/js/third-party/jPushMenu.js"></script>
-    <script>
-        $('.toggle-menu').jPushMenu();
-    </script>
+	{% block addtlScripts %}{% endblock addtlScripts %}
 {% endblock footer %}

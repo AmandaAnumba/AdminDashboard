@@ -1,7 +1,7 @@
 'use strict';
 require('../third-party/jquery-ui.slide-effect.min.js');
 
-var adminSlideEffect = function($document, logger) {
+var slideEffect = function($document, logger) {
     var directive = {
         restrict: 'EA',
         link: link,
@@ -13,7 +13,7 @@ var adminSlideEffect = function($document, logger) {
         element.bind('$destroy', destroy); 
         
         function slide() {
-            logger.log('adminSlideEffect.slide(  ' + attrs.target + '  )');
+            logger.log('slideEffect.slide(  ' + attrs.target + '  )');
 
             event.stopPropagation();
             event.preventDefault();
@@ -45,10 +45,15 @@ var adminSlideEffect = function($document, logger) {
                     .show("slide", { direction: opposite }, 400 )
                     .addClass('active');
             }
+
+            if (toggleEl === '.section') {
+                $('li[data-toggle-element="' + toggleEl + '"].active').removeClass('active');
+                element.addClass('active');
+            }
         }
 
         function destroy() {
-            logger.log('adminSlideEffect.destroy(  ' + attrs.target + '  )');
+            logger.log('slideEffect.destroy(  ' + attrs.target + '  )');
            
             event.stopPropagation();
             event.preventDefault();
@@ -58,4 +63,4 @@ var adminSlideEffect = function($document, logger) {
     }
 };
 
-module.exports = adminSlideEffect;
+module.exports = slideEffect;

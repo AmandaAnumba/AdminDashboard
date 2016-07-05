@@ -23,7 +23,7 @@
         </section>
     {% endif %}
 
-    <div id="contentWrapper">
+    <div id="contentWrapper" data-ng-controller="DashboardController as dash">
         <section id="cycleHeader">
             <div hidden>
                 <svg width="64" height="64" viewBox="0 0 64 64">
@@ -36,9 +36,9 @@
 
             <div id="cycle">
                 <a id="currentCycle" class="intro-content animated fadeInUp" href="#">
-                    <p id="cycle-count">Current Cycle: 0{{ data.cycle.number }}</p>
+                    <p class="cycle-count">Current Cycle: 0{{ data.cycle.number }}</p>
                     
-                    <h1 id="cycle-title">{{ data.cycle.title }}</h1>
+                    <h1 class="cycle-title">{{ data.cycle.title }}</h1>
                     <p class="cycle-description">{{ data.cycle.description }}</p>
                     
                     <hr>
@@ -53,107 +53,125 @@
             </div>
         </section>
         
-        <div id="widgets" class="container-fluid">
-            <div class="col-md-8">
+        <div id="widgets" class="uk-grid">
+            <div class="uk-width-medium-2-3">
                 <section id="stats">
-                    <div class="container-fluid">
-                        <div class="col-xs-3 stat-card">
-                            <div class="stat-card__value"></div>
+                    <div class="uk-grid uk-grid-collapse">
+                        <div class="uk-width-1-4 stat-card">
+                            <div class="stat-card__value counter" data-counterup-time="1500" data-counterup-delay="30">6</div>
                             <div class="stat-card__label">Articles I've Written</div>
                         </div>
 
-                        <div class="col-xs-3 stat-card">
-                            <div class="stat-card__value">{{ totalArticles }}</div>
+                        <div class="uk-width-1-4 stat-card">
+                            <div class="stat-card__value counter" data-counterup-time="1500" data-counterup-delay="30">33</div>
                             <div class="stat-card__label">Total Articles</div>
                         </div>
 
-                        <div class="col-xs-3 stat-card">
-                            <div class="stat-card__value">2.6K</div>
+                        <div class="uk-width-1-4 stat-card">
+                            <div class="stat-card__value counter" data-counterup-time="1500" data-counterup-delay="30">267</div>
                             <div class="stat-card__label">Empire Visitors</div>
                         </div>
 
-                        <div class="col-xs-3 stat-card">
-                            <div class="stat-card__value">3.1K</div>
+                        <div class="uk-width-1-4 stat-card">
+                            <div class="stat-card__value counter" data-counterup-time="1500" data-counterup-delay="30">304</div>
                             <div class="stat-card__label">Article Shares</div>
                         </div>
                     </div>
                 </section>
 
-                <section id="updates">
-                    <div class="xe-todo-list"> 
-                        <div class="xe-header"> 
-                            <div class="xe-label">
-                                <strong>Updates</strong> 
-                            </div> 
-                        </div> 
-
-                        <div class="xe-body"> 
-                            <ul class="list-unstyled">
-                            {% if user.role != 'Founder' %}
-                                <li> <small>You have <a class="text-info" href="{% url 'myarticles' %}">{{ drafts|length }} drafts </a> currently saved.</small></li>
-                            {% else %}
-                                <li> <small>You have <a class="text-info" href="{% url 'review' %}">{{ draftsCount }} drafts </a> currently saved.</small></li>
-                                <li> <small>There are <a class="text-info" href="{% url 'review' %}">{{ reviewCount }} articles </a> that need to be reviewed.</small></li>
-                            {% endif %}
-                            </ul> 
-                        </div>
+                <section id="updates" class="panel">
+                    <div class="panel-title">Updates</div>
+                    
+                    <div class="panel-body">
+                        <ul>
+                        {% if user.role != 'Founder' %}
+                            <li>
+                                <small>You have <a class="uk-link" href="{% url 'articles' %}">{{ drafts|length }} drafts </a> currently saved.</small>
+                            </li>
+                        {% else %}
+                            <li>
+                                <small>You have <a class="uk-link" href="{% url 'articles' %}">{{ draftsCount }} drafts </a> currently saved.</small>
+                            </li>
+                            <li>
+                                <small>There are <a class="uk-link" href="{% url 'articles' %}">{{ reviewCount }} articles </a> that need to be reviewed.</small>
+                            </li>
+                        {% endif %}
+                        </ul> 
                     </div>
                 </section>
 
-                <section id="articles">
-                    <div class="section-title">Articles
+                <section id="articles" class="panel">
+                    <div class="panel-title">Articles
                         <ul>
-                            <li data-position="1" data-toggle="#reviewed" class="active">To Be Reviewed (0)</li>
-                            <li data-position="2" data-toggle="#drafts">Drafts ({{ drafts|length }})</li>
-                            <li data-position="3" data-toggle="#published">Published (10)</li>
+                            <li data-position="1" data-target="#review" data-toggle-element=".section" class="active" slide-effect>Needs Review ({{ review|length }})</li>
+                            <li data-position="2" data-target="#drafts" data-toggle-element=".section" slide-effect>Drafts ({{ drafts|length }})</li>
+                            <li data-position="3" data-target="#queue" data-toggle-element=".section" slide-effect>Queued ({{ queue|length }})</li>
                         </ul>
                     </div>
-                    
-                    
-                </section>
-            </div>
 
-            <div id="reviewComments" class="col-md-4" ng-controller="commentsController">
-                <div class="section-title">Recent Article Comments <span class="count">(16)</span></div>
-                
-                <div id="comments">
-                    <div class="comment" ng-repeat="x in comments">
-                        <div class="comment-avatar">
-                            <img src="/static/images/avatars/{[ x.avatar ]}" width="50" />    
+                    <div class="panel-body wrapper">
+                        <div data-position="1" class="section active" id="review">
+                            <div class="articles b-b-none">
+                            {% if review %}
+                                {% for x in review %}
+                                    <a href="/editor/q/{{ x.id }}">
+                                        <div class="article">
+                                            <div class="article-title">{{ x.title }}</div>
+                                            <div class="article-date small release-date">{{ x.published_date|date }}</div>
+                                        </div>
+                                    </a>
+                                {% endfor %}
+                            {% else %}
+                                <div class="uk-text-center uk-text-muted"><small>No Articles to Review</small></div>
+                            {% endif %}
+                            </div>
                         </div>
 
-                        <div class="comment-data">
-                            <div class="container">
-                                <div class="col-xs-7">
-                                    <div class="comment__user">{[ x.user ]}</div>
-                                    <div class="comment__date">{[ x.date ]}</div>
-                                </div>
-
-                                <div class="col-xs-5">
-                                    <div class="comment-btns">
-                                        <div class="option eye">
-                                            <span class="icon icon-eye"></span>
+                        <div data-position="2" class="section" id="drafts">
+                            <div class="articles b-b-none">
+                            {% if drafts %}
+                                {% for y in drafts %}
+                                    <a href="/editor/c/{{ y.id }}">
+                                        <div class="article">
+                                            <div class="article-title">{{ y.title }}</div>
+                                            <div class="article-date small release-date">{{ y.published_date|date }}</div>
+                                            <div class="small">Continue Draft</div>
                                         </div>
-
-                                        <div class="option check">
-                                            <span class="icon icon-circle-check"></span>
-                                        </div>
-
-                                        <div class="option cross">
-                                            <span class="icon icon-circle-cross"></span>
-                                        </div>
-                                    </div>
-                                </div>
+                                    </a>
+                                {% endfor %}
+                            {% else %}
+                                <div class="uk-text-center uk-text-muted"><small>You currently have no saved drafts</small></div>
+                            {% endif %}
                             </div>
-                            
-                            <div class="comment__message">{[ x.comment ]}</div>
-                            <div class="comment__status">{[ x.status ]}</div>
+                        </div>
+
+                        <div data-position="3" class="section" id="queue">
+                            <div class="articles b-b-none">
+                            {% if queue %}
+                                {% for z in queue %}
+                                    <a href="/editor/p/{{ z.id }}">
+                                        <div class="article">
+                                            <div class="article-title">{{ z.title }}</div>
+                                            <div class="article-author">by {{ z.author.first_name }} {{ z.author.last_name }}</div>
+                                            <div class="article-date small release-date">{{ z.published_date|date }}</div>
+                                        </div>
+                                    </a>
+                                {% endfor %}
+                            {% endif %}
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="section-title">View All Comments</span></div>
+                </section>
             </div>
+            
+            <div id="reviewComments" class="uk-width-medium-1-3 m-t-md panel" ng-controller="CommentsController as comments"></div>
         </div>
     </div>
 {% endblock addtlContent %}
+
+
+{% block addtlScripts %}
+    <script type="text/ng-template" id="comments.html">
+        {% include "partials/comments.html" %}
+    </script>
+{% endblock addtlScripts %}

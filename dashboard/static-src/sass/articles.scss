@@ -1,6 +1,5 @@
-/* core styles for admin pages */
 @import 'modules/admin';
-@import 'modules/panels';
+@import 'modules/panel';
 
 
 
@@ -9,7 +8,7 @@
  * Table of Contents
  * -----------------
  *
- * GENERAL PAGE STYLINGS ....... global variables, mixins, etc
+ * GENERAL STYLES .......... global variables, mixins, etc
  * PAGE SETUP............... credit app form element and top title bar/legend
  *
 **/
@@ -20,16 +19,14 @@
 \*------------------------------------*/
 .releasedate { visibility: hidden; }
 
-#reviewWrapper { position: relative; }
+#contentWrapper { padding-top: 70px; }
 
-#articles 
-{
+.panel-body {
 	height: 100vh;
 	overflow-y: scroll;
 }
 
-#previewPlaceholder 
-{
+#previewPlaceholder {
 	text-align: center;
 	font-size: 25px;
 	opacity: 0.6;
@@ -38,29 +35,8 @@
 	flex-direction: column;
 	justify-content: center;
 
-	.icon 
-	{
+	.icon {
 		margin-bottom: 15px;
 		font-size: 57px;
 	}
 }
-
-
-
-/*------------------------------------*\
-    RESPONSIVENESS
-\*------------------------------------*/
-@media only screen
-and (max-width : 480px) {
-	#reviewWrapper 
-	{
-		padding-left: 0;
-
-		.title 
-		{
-			padding: 0;
-			text-align: center;
-		}
-	}
-}
-

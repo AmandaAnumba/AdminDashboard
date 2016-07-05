@@ -1,0 +1,43 @@
+<nav id="menuWrapper">
+	<ul id="menu">
+		<li>
+			<a href="{% url 'dashboard' %}">
+				<img src="" alt="Empire" width="50">
+			</a>
+		</li>
+
+		<li id="write">
+			<a href="">
+				<div class="menu-item">
+					<span>Write</span>
+				</div>
+			</a>
+		</li>
+		
+		{% if user.role == 'F' %}
+			<li id="review">
+				<a href="">
+					<div class="menu-item">
+						<span>Review</span>
+					</div>
+				</a>
+			</li>
+
+			<li id="all">
+				<a href="">
+					<div class="menu-item">
+						<span>All Articles</span>
+					</div>
+				</a>
+			</li>
+		{% endif %}
+		
+		<li>
+			<a href="javascript:void(0)">
+				<div class="menu-item">
+					<span>Comments</span>
+				</div>
+			</a>
+		</li>
+	</ul>
+</nav>

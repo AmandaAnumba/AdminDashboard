@@ -1,8 +1,8 @@
 'use strict';
 
 var ResetController = function(logger, $location, Authentication) {
-    var reset = this;
-    reset.send = send;
+    var vmreset = this;
+    vmreset.send = send;
 
     activate();
 
@@ -20,7 +20,7 @@ var ResetController = function(logger, $location, Authentication) {
     * @desc Send the request to reset user's password
     */
     function send() {
-        Authentication.reset(reset.email);
+        Authentication.reset(vmreset.email);
     }
 };
 

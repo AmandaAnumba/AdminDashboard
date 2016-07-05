@@ -16,7 +16,7 @@ module.exports = {
             cwd: '../dashboard/static-src/sass/',
             src: [
                 '*.scss',
-                '!third-party/*.scss'
+                '!third-party/*/*.scss'
             ], 
             dest: '../dashboard/static/css/',
             ext: '.css',

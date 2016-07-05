@@ -1,0 +1,20 @@
+<nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right display-none" id="sideMenu">
+	<h3><span class="icon-cross" id="close-btn"></span></h3>
+	
+	<a href="{% url 'dashboard' %}">Home</a>
+	<a href="">Write</a>
+	
+	{% if user.role == 'F' %}
+		<a href="{% url 'dashboard' %}">Review</a>
+		<a href="{% url 'dashboard' %}">All Articles</a>
+	{% else %}
+		<a href="{% url 'dashboard' %}">My Articles</a>
+	{% endif %}
+
+	<a href="">Image Gallery</a>
+
+	<ul>
+		<li><a href="{% url 'profile' %}">Profile</a></li>
+		<li><a href="{% url 'logout' %}">Logout</a></li>
+	</ul>
+</nav>

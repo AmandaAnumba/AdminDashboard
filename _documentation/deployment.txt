@@ -1,12 +1,3 @@
-# Heroku Django Starter Template
-
-An utterly fantastic project starter template for Django 1.9.
-
-## Features
-
-- Production-ready configuration for Static Files, Database Settings, Gunicorn, etc.
-- Enhancements to Django's static file serving functionality via WhiteNoise
-
 ## How to Use
 
 To use this project, follow these steps:
@@ -23,21 +14,15 @@ Using this template to create a new Django app is easy::
 
 You can replace ``helloworld`` with your desired project name.
 
-## Deployment to Heroku
+## Deployment to GitHub (automatically to Heroku)
 
-    $ git init
-    $ git add -A
-    $ git commit -m "Initial commit"
+    $ git init (if not already initialized)
+    $ git add --all
+    $ git commit -am "commit message"
+    $ git push origin master
 
+# for heroku
     $ heroku create
     $ git push heroku master
-
     $ heroku run python manage.py migrate
 
-See also, a [ready-made application](https://github.com/heroku/python-getting-started), ready to deploy.
-
-## Further Reading
-
-- [Gunicorn](https://warehouse.python.org/project/gunicorn/)
-- [WhiteNoise](https://warehouse.python.org/project/whitenoise/)
-- [dj-database-url](https://warehouse.python.org/project/dj-database-url/)

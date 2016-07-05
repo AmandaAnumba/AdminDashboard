@@ -1,0 +1,34 @@
+<div class="form-group">
+	<input class="form-control" id="title" name="title" placeholder="Enter Title Here" type="text" ng-model="vm.title" value="{{ title|default:'' }}" />
+</div>
+
+<div class="form-group">
+	<p>Written by <strong>{{ author }}<span id="authors">{{ coAuthors|default:"" }}</span></strong></p>
+
+	<div class="custom-dropdown">
+		<div class="custom-dropdown-toggle" id="addAuthor">
+			<span class="icon icon-circle-plus"></span>
+			{% if coAuthors != '' %}
+				Add/Change Co-Authors
+			{% else %}
+				add another author
+			{% endif %}
+		</div>
+
+		<div class="custom-dropdown-menu" id="authorSelect">
+			<ul>
+				<li><label><input type="checkbox" value="Amanda" />Amanda</label></li>
+				<li><label><input type="checkbox" value="ceymasterflex" />ceymasterflex</label></li>
+				<li><label><input type="checkbox" value="empressomeko1" />empressomeko1</label></li>
+				<li><label><input type="checkbox" value="jazzj409" />jazzj409</label></li>
+				<li><label><input type="checkbox" value="LaFemmeCompatissante" />LaFemmeCompatissante</label></li>
+				<li><label><input type="checkbox" value="mariagaddis" />mariagaddis</label></li>
+				<li><label><input type="checkbox" value="naakienartey" />naakienartey</label></li>
+				<li><label><input type="checkbox" value="rona.abara" />rona.abara</label></li>
+				<li><label><input type="checkbox" value="shantaviae" />shantaviae</label></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<!-- <div class="help-block text-muted"><small>Note: When this article is published, usernames will be replaced with the user's full name.</small></div> -->

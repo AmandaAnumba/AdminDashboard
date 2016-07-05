@@ -1,0 +1,127 @@
+/**
+ *  
+ * styles for the article header image
+ * article types: feature and regular
+ * 		+ feature - long top image
+ * 		+ regular - small side image
+ *
+**/
+.article__header-image
+{
+	position: relative;
+	height: 250px;
+	background-color: white;
+	border: 1px solid darken(whitesmoke, 10%);
+	text-align: center;
+	margin-top: 25px;
+	overflow: hidden;
+
+	&.hover .image-overlay
+	{
+		background: none;
+		color: white;
+
+		.icon-camera,
+		.overlay-text,
+		.custom-file-upload
+		{
+			display: none;
+		}
+
+		&:hover 
+		{
+			background-color: rgba(0, 0, 0, 0.4);
+
+			.overlay-buttons,
+			.icon-camera 
+			{
+				display: block;
+			}
+		}
+	}
+}
+
+.image-overlay
+{
+    @include bkg_img_overlay("/static/images/12.jpg", rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    cursor: pointer;
+    padding-top: 50px;
+    @include transition-property(all);
+	@include transition-duration(.2s);
+	@include transition-timing-function(ease-in-out);
+
+    .icon-camera
+    {
+    	font-size: 40px;
+    }
+
+	.overlay-text 
+	{
+		font-size: 20px;
+	}
+
+    .custom-file-upload
+	{
+		display: none;
+		position: relative;
+
+		&.filled .file-custom:after
+		{
+			content: "";
+		}
+
+		.file-custom, 
+		.file-custom:before 
+		{
+			height: 1.95rem;
+	    	line-height: 1;
+	    	text-align: left;
+		}
+
+		.cancel-upload
+		{
+			position: absolute;
+		    font-size: 20px;
+		    color: #6F6F6F;
+		    left: 45%;
+		    top: 0;
+		    cursor: pointer;
+
+		    &:hover 
+		    {
+		    	color: indianred;
+		    }
+		}
+	}
+
+	.overlay-buttons
+	{
+		display: none;
+
+		ul 
+		{
+			@include list-inline();
+		}
+
+		li 
+		{
+			padding: 3px 15px;
+		}
+	}
+}
+
+.image-details,
+.image
+{
+	display: none;
+}
+
+.image img 
+{
+	width: 100%;
+}

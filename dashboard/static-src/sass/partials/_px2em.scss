@@ -1,0 +1,7 @@
+@function em($type, $px, $base: $base-font-size) {
+    @if $type == font {
+        @return ($px / $base) * 1em;
+    } @else {
+        @return (($px / $base) * 1%)*100;
+    }
+}

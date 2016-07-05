@@ -1,87 +1,218 @@
 {% extends "_BlankPageTemplate.html" %}
 
-
-{% import "partials/_EditorPartials.html" as editor %}
+{% load staticfiles %}
 
 
 {% block head %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous" />
-    <link href="/static/css/editor.css" rel="stylesheet" />
+    <link href="{% static 'css/editor.css' %}" rel="stylesheet" />
+
+    {% block addtlHeader %}{% endblock addtlHeader %}
 {% endblock head %}
 
 
 {% block content %}
-    <header id="header">
-        <ul>
-            {% block header %}{% endblock header %}
-        </ul>
-    </header>
+    <main data-ng-controller="EditorController as vm">
+        <header id="header">
+            <a href="/" id="back">
+                <div>
+                    <span class="icon icon-reply"></span>
+                    <span>Back</span>
+                </div>
+            </a>
+            
+            <div id="docLinks">
+                <ul>
+                    <li>
+                        <div class="ui text menu">
+                            <a class="browse item">
+                                Settings
+                                <i class="dropdown icon"></i>
+                            </a>
+                        </div>
+                        <div class="ui flowing basic admission popup">
+                            <div class="ui three column relaxed divided grid">
+                            <div class="column">
+                              <h4 class="ui header">Business</h4>
+                              <div class="ui link list">
+                                <a class="item">Design &amp; Urban Ecologies</a>
+                                <a class="item">Fashion Design</a>
+                                <a class="item">Fine Art</a>
+                                <a class="item">Strategic Design</a>
+                              </div>
+                            </div>
+                            <div class="column">
+                              <h4 class="ui header">Liberal Arts</h4>
+                              <div class="ui link list">
+                                <a class="item">Anthropology</a>
+                                <a class="item">Economics</a>
+                                <a class="item">Media Studies</a>
+                                <a class="item">Philosophy</a>
+                              </div>
+                            </div>
+                            <div class="column">
+                              <h4 class="ui header">Social Sciences</h4>
+                              <div class="ui link list">
+                                <a class="item">Food Studies</a>
+                                <a class="item">Journalism</a>
+                                <a class="item">Non Profit Management</a>
+                              </div>
+                            </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
 
-    <main>
-        <div id="errorAlert" class="alert alert-danger sticky animated fadeInDown" hidden>
-            <button type="button" class="close" data-dismiss="alert">
-                <span aria-hidden="true">&times;</span>
-                <span class="sr-only">Close</span>
-            </button>
-            <p class="message"></p>
-        </div>
-
-        <div id="success_msg" class="alert alert-success sticky" hidden>
-            <button type="button" class="close" data-dismiss="alert">
-                <span aria-hidden="true">&times;</span>
-                <span class="sr-only">Close</span>
-            </button>
-            <p class="message"></p>
-        </div>
-
+            <ul id="extraLinks">
+                {% block header %}{% endblock header %}
+            </ul>
+        </header>
+        
         {% block addtlContent %}{% endblock addtlContent %}
-    </main>
+        
+        <div id="modals" data-ng-controller="ModalsController as ctrl">
+            {% verbatim %}
+            <div id="autosaveModal" class="ui modal">
+                <a class="ui modal-close uk-close"></a>
 
-    <div class="modal fade" id="autosaveDrafts">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body text-xs-center">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-
+                <div class="content uk-text-center">
                     <h3>Here are the autosaved versions of your article. Click one to continue with it or to delete it.</h3>
                     
-                    <ul class="list-unstyled padder-lg padder-v" id="drafts_list" style="text-align:left;"></ul>
+                    <ul id="draftsList"></ul>
+                </div>
 
-                    <div class='text-xs-center'>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
-                        <button type="button" class="btn btn-danger" id="clearStorage">Delete These</button>
-                    </div>
+                <div class="ui modal-footer">
+                    <button type="button" class="uk-button ui modal-close">Close</button> 
+                    <button type="button" class="uk-button uk-button-danger" data-ng-click="ctrl.clearStorage()">Delete These</button>
                 </div>
             </div>
-        </div>
-    </div>
+            {% endverbatim %}
 
-    {% if data.page != 'write' %}
-        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body" style="text-align:center;">
+
+            <div class="ui modal">
+                <div class="header">Media Uploads</div>
+
+                <div class="content">
+                    <p class="description" style="color:white;font-size: 0.8em;margin:0;"><span class="padder icon icon-warning"></span> <span class="label">Note: </span> All media used in your article needs to be uploaded to the web server. When your media has been successfully uploaded, you will be provided with the HTML code to paste into your article.</p>
+
+                    <!-- <p class="label">Media types for an article</p>
+                    <ol style="font-weight: 300;font-size: 0.8em;letter-spacing: 0.3px;color:white;">
+                        <li>Required: article header image</li>
+                        <li>Required: image/gif for home page display
+                            <ul>
+                                <li>featured article- at least 600px wide</li>
+                                <li>regular article- no larger than 350px wide</li>
+                                <li>sponsored article- at least 400px wide</li>
+                            </ul>
+                        </li>
+                        <li>Optional: Images throughout the article, not including external media</li>
+                    </ol> -->
+
+                    <p class="label">Upload Dashboard Image</p>
+                    <p class="description" style="color:white;font-size: 0.75em;margin:0;">(the image for the article that will be displayed on Empire's front page)</p>
+                    <!-- <ul class="list-unstyled clear-input-small3" id="media" placeholder="None" style="line-height: 0px !important;">
+                        <li>
+                            <input id="media-0" name="feature-media" type="radio" value="image" checked> 
+                            <label for="media-0">image/picture/gif</label>
+                        </li>
+                        <li class="video" data-toggle="tooltip" data-placement="top" title="video support coming soon!">
+                            <input id="media-2" name="feature-media" type="radio" value="video" disabled> 
+                            <label for="media-2">video</label>
+                        </li>
+                    </ul> -->
+
+                    <div class="checkbox clear-input-small3">
+                        <label>
+                            <input type="checkbox" value="headerSame" id="headerSame">
+                            Use same image from header
+                        </label>
+                    </div>
+
+                    <input class="clear-input-small2" id="featureIMG" name="featureIMG" type="file" accept="image/png,image/jpg,image/jpeg,image/gif">
+                    
+                    <p id="upload_btn2" class="btn btn-primary" hidden>Upload</p>
+                    
+                    <div id="progress2" hidden></div>
+                    
+                    <div class="response" id="success_upload2" style="text-align:center;" hidden><span style="color: #4CDBA5;" class="icon icon-check"></span></div>
+                    
+                    <div class="response" id="error_upload2" style="text-align:center;" hidden><span style="color: #FA626E;" class="icon icon-cross"></span></div>
+
+                    <p class="label">Upload all other media</p>
+                    <p class="description" style="color:white;font-size: 0.75em;margin:0;">(upload files one at a time)</p>
+                    
+                    <!-- <ul class="list-unstyled clear-input-small3" id="media" placeholder="None" style="line-height: 0px !important;">
+                        <li>
+                            <input id="media-0" name="media" type="radio" value="image" checked> 
+                            <label for="media-0">image/picture/gif</label>
+                        </li>
+                        <li class="video" data-toggle="tooltip" data-placement="top" title="video support coming soon!">
+                            <input id="media-2" name="media" type="radio" value="video" disabled> 
+                            <label for="media-2">video</label>
+                        </li>
+                    </ul> -->
+
+                    <input class="clear-input-small2" id="allmedia" name="allmedia" type="file" accept="image/png,image/jpg,image/jpeg,image/gif">
+
+                    <p id="upload_btn3" class="btn btn-primary" hidden>Upload</p>
+
+                    <div id="progress3" hidden></div>
+                    
+                    <div class="response" id="success_upload3" style="text-align:center;" hidden><span style="color: #4CDBA5;" class="icon icon-check"></span></div>
+                    
+                    <div class="response" id="error_upload3" style="text-align:center;" hidden><span style="color: #FA626E;" class="icon icon-cross"></span></div>
+                </div>
+            </div>
+
+
+            {% if data.page != 'write' %}
+            <div id="deleteModal" class="ui modal">
+                <div class="ui modal-dialog">
+                    <a class="ui modal-close uk-close"></a>
+                    
+                    <div class="modal-content uk-text-center">
                         <h4>Are you sure you want to delete this article?</h4>
-                        <div>
-                            {% if article.status == 'ready' %}  
-                            <button type="button" class="btn btn-primary" id="yes" onclick="deletedraft('InProgress');">Yeah, do it</button>
-                            {% elif article.status == 'proofed' %}
-                            <button type="button" class="btn btn-primary" id="yes" onclick="deletedraft('Queue');">Yeah, do it</button>
-                            {% elif article.status == 'published' %}
-                            <button type="button" class="btn btn-primary" id="yes" onclick="deletedraft('Articles');">Yeah, do it</button>
-                            {% endif %}
-                            <button type="button" class="btn btn-default" style="background-color: #F2F2F2;" id="no" data-dismiss="modal">No, I changed my mind</button>   
-                        </div>
+                    </div>
+
+                    <div class="ui modal-footer">
+                        <button type="button" class="uk-button uk-button-primary" data-ng-click="ctrl.deleteArticle('{{ article.id }}')">Yeah, do it</button>
+                        <button type="button" class="uk-button ui modal-close">No, don't delete it</button> 
                     </div>
                 </div>
             </div>
-        </div>
-    {% endif %}
+            {% endif %}
 
-    {% block modals %}{% endblock modals %}
+
+            {% block modals %}{% endblock modals %}
+        </div>
+    </main>
 {% endblock content %}
 
 
 {% block footer %}
-    <script src="/static/js/third-party/froala-editor.js"></script>
+    <script src="{% static 'js/third-party/froala-editor.js' %}"></script>
+    <script src="{% static 'js/third-party/semantic.js' %}"></script>
+    <script src="{% static 'js/editor.js' %}"></script>
+    
+    <script>
+        $('.ui.dropdown').dropdown();
+        $('.ui.modal').modal();
+        $('.browse.item').popup({
+            popup     : '.admission.popup',
+            exclusive   : true,
+            on      : 'click',
+            hoverable : false,
+            position  : 'bottom left',
+        });
+        /* init froala editor */
+        $('#editor').editable({
+            inlineMode: false, 
+            minHeight: 400,
+            maxHeight: 500,
+            placeholder: 'Start typing here...',
+            spellcheck: true,
+            toolbarButtons: ["bold", "italic", "underline", "strikeThrough", "fontSize","fontFamily", "color","sep","subscript", "superscript", "formatBlock", "blockStyle", "align", "insertOrderedList", "insertUnorderedList", "outdent", "indent", "sep", "selectAll", "createLink", "undo", "removeFormat", "redo", "html", "insertHorizontalRule", "table"]
+        });
+    </script>
+    {% block addtlFooter %}{% endblock addtlFooter %}
 {% endblock footer %}

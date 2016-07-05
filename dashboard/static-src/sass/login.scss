@@ -3,29 +3,30 @@
  * Table of Contents
  * -----------------
  *
- * GENERAL PAGE STYLES ......... global variables, mixins, etc
+ * GENERAL STYLES .............. global variables, mixins, etc
  * PAGE SETUP................... credit app form element and top title bar/legend
  *
 **/
 
 /* partials + variables */
-@import 'partials/colors',
-        'partials/mixins',
-        'partials/icons',
-        'partials/helpers';
+@import 'partials/colors';
+@import 'partials/fonts';
+@import 'partials/mixins';
+@import 'partials/icons';
+@import 'partials/helpers';
 
 /* base */
 @import 'modules/base';
 
 /* modules */
-@import 'modules/loader',
-        'modules/button',
-        'modules/input';
+@import 'modules/loader';
+@import 'modules/button';
+@import 'modules/input';
 
 /* vendors */
-@import 'third-party/uikit',
-        'third-party/animate',
-        'third-party/angular-toastr';
+@import 'third-party/uikit';
+@import 'third-party/animate';
+@import 'third-party/angular-toastr';
 
 /* responsiveness   */
 @import 'partials/responsive';
@@ -36,30 +37,30 @@
 /*------------------------------------*\
     GENERAL STYLES
 \*------------------------------------*/
-.bg-img 
-{
-    @include bkg_img_overlay("/static/images/landing.jpg", rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5));
-    height: 100vh;
-}
+    .bg-img 
+    {
+        @include bkg_img_overlay("/static/images/landing.jpg", rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5));
+        height: 100vh;
+    }
 
-.tooltip,
-.uk-alert 
-{
-    display: none;
-}
+    .tooltip,
+    .uk-alert 
+    {
+        display: none;
+    }
 
-#logo 
-{
-    margin: 20px 0 30px;
-    text-align: center;
-}
+    #logo 
+    {
+        margin: 20px 0 30px;
+        text-align: center;
+    }
 
-#loginInfo 
-{
-    display: block !important;
-    margin-bottom: 15px !important;
-    text-align: center;
-}
+    #loginInfo 
+    {
+        display: block !important;
+        margin-bottom: 15px !important;
+        text-align: center;
+    }
 
 
 
@@ -68,73 +69,74 @@
 /*------------------------------------*\
     FORMS
 \*------------------------------------*/
-.uk-width-1-3
-{
-    padding: 3.5em;
-}
-
-#formsWrapper 
-{
-    position: relative;
-}
-
-.form 
-{
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-}
-
-.description  
-{
-    font-weight: 300;
-    font-size: 0.8em;
-    letter-spacing: 0.3px;
-    margin-top: 14px;
-    text-align: center;
-}
-
-.form-switcher
-{
-    text-align: right;
-}
-
-.btn-toggle 
-{
-    cursor: pointer;
-    font-size: 12px;
-}
-
-.divider 
-{
-	padding: 0 7px;
-}
-
-.alert-icon 
-{
-    margin-right: 10px;
-}
-
-.icon-arrow-left 
-{
-    font-size: 2.2em;
-    vertical-align: middle;
-}
-
-.help-block 
-{
-    text-align: left;
-    display: none;
-    font-size: 0.45em;
-    color: white;
-    font-weight: 300;
-
-    &.filled 
+    .uk-width-1-3
     {
-    	display: block;
+        padding: 3.5em;
     }
-}
+
+    #formsWrapper 
+    {
+        position: relative;
+    }
+
+    .form 
+    {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+    }
+
+    .description  
+    {
+        font-weight: 300;
+        font-size: 0.8em;
+        letter-spacing: 0.3px;
+        margin-top: 14px;
+        text-align: center;
+    }
+
+    .form-switcher
+    {
+        text-align: right;
+    }
+
+    .btn-toggle 
+    {
+        cursor: pointer;
+        font-size: 12px;
+    }
+
+    .divider 
+    {
+    	padding: 0 7px;
+    }
+
+    .alert-icon 
+    {
+        margin-right: 10px;
+    }
+
+    .icon-arrow-left 
+    {
+        font-size: 2.2em;
+        vertical-align: middle;
+    }
+
+    .help-block 
+    {
+        text-align: left;
+        display: none;
+        font-size: 0.45em;
+        color: white;
+        font-weight: 300;
+
+        &.filled 
+        {
+        	display: block;
+        }
+    }
+
 
 
 
@@ -142,37 +144,30 @@
 /*------------------------------------*\
     FORM STYLING
 \*------------------------------------*/
-.form-input 
-{
-    @include input(100%, black, 0 11px, 14px);
-    margin: 7px 0;
-    border-bottom: 1px solid rgb(231, 231, 231);
-
-    &:focus 
+    .form-input 
     {
-        @include no-focus();
-        border-color: black;
+        @include input(100%, black, 0 11px, 14px);
+        margin: 7px 0;
+        border-bottom: 1px solid rgb(231, 231, 231);
+
+        &:focus 
+        {
+            @include no-focus();
+            border-color: black;
+        }
+
+        &.ng-invalid.ng-dirty 
+        {
+            border-color: indianred;
+        }
     }
 
-    &.ng-invalid.ng-dirty 
+    textarea.form-input 
     {
-        border-color: indianred;
+        resize: vertical;
+        height: auto;
+        border: 1px solid rgb(231, 231, 231);
     }
-}
-
-textarea.form-input 
-{
-    resize: vertical;
-    height: auto;
-    border: 1px solid rgb(231, 231, 231);
-}
-
-.btn-black 
-{
-    margin: 15px 0;
-    @include black-button();
-}
-
 
 
 

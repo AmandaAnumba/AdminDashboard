@@ -1,7 +1,7 @@
 /* core styles for admin pages */
 @import 'modules/admin';
-@import 'modules/buttons';
-
+@import 'modules/button';
+// import uikit
 
 /**
  *  
@@ -18,37 +18,20 @@ $border: 1px solid darken(whitesmoke, 10%);
 /*------------------------------------*\
     GENERAL STYLES
 \*------------------------------------*/
-.alert 
-{ 
-	display: none;
-	width: 50%;
-	margin: 0 auto;
-	font-size: 14px;
+#profileWrapper 
+{
+	padding-top: $headerHeight + 15px;
+	padding-bottom: 30px;
 }
 
 #profile 
 {
 	position: relative;
-	margin: 3% 5.5%; 
+	margin: 0 5.5%; 
 	border: $border;
 	background-color: white;
 	font-size: 13px;
-	
-	.container-fluid
-	{
-		padding: 0;
-	}
-
-	.btn 
-	{
-		font-size: 12px;
-    	padding: 0.35rem 1rem;
-	}
-
-	.btn + .btn 
-	{
-		margin-left: 6px;
-	}
+	padding-bottom: 20px;
 }
 
 .section-header 
@@ -74,28 +57,14 @@ $border: 1px solid darken(whitesmoke, 10%);
 {
 	line-height: 28px;
 	height: 28px;
-
 }
 
-.form-group
+.uk-form-row label 
 {
-	label 
-	{
-		font-weight: bold;
-		text-align: right;
-		margin: 0;
-		line-height: 28px;
-	}
-	
-	input.form-control
-	{
-		height: 28px;
-	}
-
-	.form-control
-	{
-		font-size: 13px;
-	}
+	font-weight: bold;
+	text-align: right;
+	margin: 0;
+	line-height: 28px;
 }
 
 #preview,
@@ -104,7 +73,10 @@ $border: 1px solid darken(whitesmoke, 10%);
 	padding: 0 25px;
 }
 
-
+.btn-black
+{
+	width: 400px;
+}
 
 /*------------------------------------*\
 	#PREVIEW
@@ -122,6 +94,12 @@ $border: 1px solid darken(whitesmoke, 10%);
 .preview-details__name 
 {
 	font-size: 17px;
+	visibility: hidden;
+
+	&.ng-binding
+	{
+		visibility: visible;
+	}
 }
 
 .preview-details__title
@@ -188,6 +166,12 @@ $border: 1px solid darken(whitesmoke, 10%);
 .preview-bio 
 {
 	margin: 20px 0;
+	visibility: hidden;
+
+	&.ng-binding
+	{
+		visibility: visible;
+	}
 }
 
 .stats-name

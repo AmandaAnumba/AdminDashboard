@@ -32,8 +32,6 @@
  *		affixOffset: 0					// default is 0; if user is logged in, the offset becomes the height of  
  *									 	// the #fixedBar div; otherwise, it's 0
  *
- *	Author:   Amanda Anumba
- * 	  Date:   3/24/2016
  */
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
@@ -41,12 +39,12 @@
     } else if (typeof exports === 'object') {
         module.exports = factory(require('jquery'));
     } else {
-        root.dhNavBar = factory(root.$);
+        root.wysiwyg = factory(root.$);
     }
 }(this, function ($) {
     
-    function dhNavBar( element, settings ) {
-        log && log.trace('dhNavBar.init()');
+    function wysiwyg( element, settings ) {
+        log && log.trace('wysiwyg.init()');
 
         /* set global variables */
         this.$nav = $( element );
@@ -81,8 +79,8 @@
     /**
      *  scroll page to top when button is clicked
      */
-    dhNavBar.prototype.initAffix = function( event ) {
-        log && log.trace('dhNavBar.prototype.initAffix()');
+    wysiwyg.prototype.initAffix = function( event ) {
+        log && log.trace('wysiwyg.prototype.initAffix()');
         
         var that = this;
 
@@ -112,8 +110,8 @@
     /**
      *  scroll page to top when button is clicked
      */
-    dhNavBar.prototype.initScrollSpy = function( event ) {
-        log && log.trace('dhNavBar.prototype.initScrollSpy()');
+    wysiwyg.prototype.initScrollSpy = function( event ) {
+        log && log.trace('wysiwyg.prototype.initScrollSpy()');
 
         var id = '#' + this.$nav.attr('id'),
             that = this;
@@ -128,8 +126,8 @@
     /**
      *  scroll page to top when button is clicked
      */
-    dhNavBar.prototype.handleScrollToTop = function( event ) {
-        log && log.trace('dhNavBar.prototype.handleScrollToTop()');
+    wysiwyg.prototype.handleScrollToTop = function( event ) {
+        log && log.trace('wysiwyg.prototype.handleScrollToTop()');
         
         event.preventDefault();
         event.stopPropagation();
@@ -140,8 +138,8 @@
     /**
      *  scroll page to top when button is clicked
      */
-    dhNavBar.prototype.handleMenuLinkClick = function( event ) {
-        log && log.trace('dhNavBar.prototype.handleMenuLinkClick()');
+    wysiwyg.prototype.handleMenuLinkClick = function( event ) {
+        log && log.trace('wysiwyg.prototype.handleMenuLinkClick()');
         
         event.preventDefault();
         event.stopPropagation();
@@ -155,9 +153,9 @@
     };
 
 
-    $.fn.dhNavBar = function( options ) {
+    $.fn.wysiwyg = function( options ) {
         this.each(function() {
-            new dhNavBar(this, options);
+            new wysiwyg(this, options);
         });
 
         return this;

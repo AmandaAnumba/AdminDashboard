@@ -1,0 +1,52 @@
+Editor
+======
+
+As a user, I am able to write, edit, preview, submit, and delete an article I wrote.
+
+- Write -
+    As a user, I'm starting with a fresh document
+        + I can save the article to continue with later
+        + I can submit the article for review
+        + I can delete what I'm currently working on to start anew
+        + I can exit the screen and my article will automatically be saved to my local storage
+
+- Continue -
+    As a user, I'm continuing with a draft I officially saved
+        + I can save the article to continue with later
+        + I can submit the article for review
+        + I can delete what I'm currently working on to start anew
+        + I can exit the screen and any changes I made to the article will automatically be saved to local storage
+
+- Proof - 
+    As an admin, I can review an article before adding it to the queue to be displayed on the website. 
+
+
+
+Dashboard
+=========
+
+As a user, 
++ I am able to view the current status of the Empire Website
+    * I can view how many articles I've written
+    * I can view how many articles have been published on the site
+    * I can view how many views the site has 
+    * I can view how many people have interacted with the site
++ I can send and receive messages to other admins
++ I can view a gallery of images that have been uploaded to the site (article images only)
+    * I can remove images from the gallery that aren't in use
+    * I can upload images to the gallery for use
++ I can edit my profile that shows up on the main Empire site
++ I can write articles
++ I can view how many saved drafts I have
+    * I can click to continue with a draft
+
+As an admin,
++ I can view how many articles need to be proofed
+    * I can click to view the article
+    * I can proof the article
+    * I can add comments to the article
+    * I can request another admin to take another look at the article
++ I can view how many articles have been proofed and are in the queue
+    * I can click to view an article that has been proofed and ready to go
+    * I can no longer edit the article, but can change the release date
+    * If i need to edit the article, I have to remove it from the queue

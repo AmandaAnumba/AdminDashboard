@@ -11,18 +11,18 @@
             <title>{% block title %}{% endblock title %}  |  Empire Dashboard</title>
         {% endif %}
 
-        <meta name="author" content="ThreePillarMedia, LLC" />
+        <meta name="author" content="Amanda Anumba" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
         <meta name="HandheldFriendly" content="true">
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="Amanda Anumba" />
+        <meta name="apple-mobile-web-app-title" content="Empire Dashboard" />
         <meta name="theme-color" content="#FFFFFF" />
         <meta name="msapplication-navbutton-color" content="#FFFFFF" />
-        <link rel="icon" href="{% static 'images/favicon.png' %}" />
-        <link rel="apple-touch-icon" href="{% static 'images/favicon.png' %}" />
-        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Lato|Suranna|Playfair+Display:400,700italic,400italicf' rel='stylesheet' type='text/css' />
+        <link rel="icon" href="{% static 'images/favicon.ico' %}" />
+        <link rel="apple-touch-icon" href="{% static 'images/favicon.ico' %}" />
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Lato:400,300,700|Suranna|Playfair+Display:400,700italic,400italicf' rel='stylesheet' type='text/css' />
         <script src="{% static 'js/modernizr.js' %}"></script>
 
         {% block head %}{% endblock head %}
@@ -33,19 +33,19 @@
     </head>
 
     <body>
-        <main>
+        <div id="content">
             {% block content %}{% endblock content %}
-        </main>
 
-        <footer>
-            <script>var debug = {% if data.debug %}true{% else %}false{% endif %};</script>
-            <script src="{% static 'js/libs.js' %}?v={{ data.version }}"></script>
-            
-            {% block footer %}{% endblock footer %}
+            <footer>
+                <script>var debug = {% if data.debug %}true{% else %}false{% endif %};</script>
+                <script src="{% static 'js/libs.js' %}?v={{ data.version }}"></script>
+                
+                {% block footer %}{% endblock footer %}
 
-            {% if data.hasPageJS %}
-                <script src="/static/js/{{ data.page }}.js?v={{ data.version }}"></script>
-            {% endif %}
-        </footer>
+                {% if data.hasPageJS %}
+                    <script src="/static/js/{{ data.page }}.js?v={{ data.version }}"></script>
+                {% endif %}
+            </footer>
+        </div>
     </body>
 </html>

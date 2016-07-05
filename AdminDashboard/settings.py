@@ -87,11 +87,11 @@ WSGI_APPLICATION = 'AdminDashboard.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DB_DEV_NAME', ''),
-        'USER': os.environ.get('DB_DEV_USER', ''),
-        'PASSWORD': os.environ.get('DB_DEV_PASSWORD', ''),
-        'HOST': '',
-        'PORT': '',
+        'NAME': os.environ.get('DB_NAME', ''),
+        'USER': os.environ.get('DB_USER', ''),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+        'HOST': os.environ.get('DB_HOST', ''),
+        'PORT': os.environ.get('DB_PORT', ''),
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
             'charset': 'utf8mb4'
@@ -124,6 +124,7 @@ LOGIN_REDIRECT_URL = "/dashboard/"
 
 
 # Sending emails
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 DEFAULT_FROM_EMAIL = os.environ.get('SEND_EMAILS_AS', '')
 SERVER_EMAIL = os.environ.get('SEND_EMAILS_AS', '')
 EMAIL_HOST = os.environ.get('GMAIL_EMAIL_HOST', '')

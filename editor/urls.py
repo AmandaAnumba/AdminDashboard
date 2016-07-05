@@ -3,7 +3,7 @@ from . import views
 
 
 urlpatterns = [
-    url(r'^editor/write/$', views.write, name='write'),
+    url(r'^$', views.write, name='write'),
     # url(r'^editor/r/(?P<id>)/$', views.read),
     # url(r'^editor/q/(?P<id>)/$', views.reread),
     # url(r'^editor/p/(?P<id>)/$', views.proof),

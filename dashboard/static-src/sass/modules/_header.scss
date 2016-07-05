@@ -5,112 +5,122 @@
  *
 **/
 
-$headerHeight: 75px;
-#headerWrapper 
-{
-	background: white;
-	width: 100%;
-	height: $headerHeight;
-	border-bottom: 1px solid #ededed;
-	box-shadow: 0 0px 6px rgba(0, 0, 0, 0.15);
 
-	.header-title 
-	{
-		float: left;
-		margin-left: 30px;
-		line-height: $headerHeight;
-		color: #333;
-	    font-size: 21px;
-		font-weight: bold;
-	}
-}
+/*------------------------------------*\
+    HEADER
+\*------------------------------------*/
+    $headerHeight: 60px;
+    #headerWrapper {
+        background: rgba(255, 255, 255, 0.53);
+        height: 60px;
+        border-bottom: 1px solid #d2d1d1;
+        box-shadow: 0 0px 6px rgba(0,0,0,0.15);
+        color: #7b7b7b;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 999;
+    }
 
+    #logo {
+        height: $headerHeight;
+        line-height: $headerHeight;
+        margin-left: 45px;
+        float: left;
+        
+        a { display: block; }
 
+        span {
+            margin-left: 6px;
+            text-transform: uppercase;
+            font-family: $sans-serif;
+            font-size: 12px;
+            letter-spacing: 1.6px;
+        }
+    }
 
 
 /*------------------------------------*\
     MINI NAVBAR
 \*------------------------------------*/
-.mini-nav 
-{
-	list-style: none;
-	float: right;
-    margin: 0;
-	
-	.dropdown-toggle
-	{
-		line-height: $headerHeight;
-	}
-}
+    .mini-nav {
+    	list-style: none;
+    	float: right;
+        margin: 0;
+        height: $headerHeight;
+        padding-right: 30px;
+        
+        .icon { font-size: 15px; }
 
-.dropdown 
-{
-	padding: 0 14px;
-	display: inline-block;
-}
+        .icon-cog {
+            font-size: 17px;
+            vertical-align: -2px;
+        }
+    
+        .hidden-menu { display: none; }
 
-.dropdown-menu 
-{
-    top: 60px;
-    left: -20px;
-    font-size: 14px;
-}
+        .nav-item:not(.display-none) {
+            display: inline-block;
+            position: relative;
+            padding: 0 15px;
+            line-height: $headerHeight;
+        }
+        
+        $avatarSize: 35px;
+        .avatar {
+            height: $avatarSize;
+            width: $avatarSize;
+            overflow: hidden;
+            @include border-radius(50%);
+            position: absolute;
+            vertical-align: middle;
+            top: ($headerHeight - $avatarSize) / 2;
 
-.dropdown-menu .divider 
-{
-    height: 1px;
-    margin: 9px 0;
-    overflow: hidden;
-    background-color: #e5e5e5
-}
+            img { vertical-align: top; }
+        }
 
-.dropdown-menu>li>a 
-{
-    display: block;
-    padding: 3px 20px;
-    clear: both;
-    font-weight: normal;
-    line-height: 1.42857143;
-    color: #333;
-    white-space: nowrap;
-}
+        .username {
+            letter-spacing: 0.4px;
+            font-size: 13px;
+            margin-left: $avatarSize + 10px;
+        }
 
-.dropdown-menu>li>a:hover,
-.dropdown-menu>li>a:focus 
-{
-    color: #262626;
-    text-decoration: none;
-    background-color: #f5f5f5
-}
+        .nav-item:nth-child(5) .username { cursor: pointer; }
+    }
 
-.dropdown-menu>.active>a,
-.dropdown-menu>.active>a:hover,
-.dropdown-menu>.active>a:focus 
-{
-    color: #fff;
-    text-decoration: none;
-    background-color: #428bca;
-    outline: 0
-}
+    .uk-dropdown { line-height: 1.4; }
 
-.dropdown-menu>.disabled>a,
-.dropdown-menu>.disabled>a:hover,
-.dropdown-menu>.disabled>a:focus 
-{
-    color: #777
-}
 
-.dropdown-menu>.disabled>a:hover,
-.dropdown-menu>.disabled>a:focus 
-{
-    text-decoration: none;
-    cursor: not-allowed;
-    background-color: transparent;
-    background-image: none;
-    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false)
-}
+/*------------------------------------*\
+    RESPONSIVENESS
+\*------------------------------------*/
+    @media only screen
+    and (max-width : 768px) {
+        .nav-item:nth-child(2),
+        .nav-item:nth-child(4)
+        {
+            display: none;
+        }
 
-.dropdown-toggle
-{
-	cursor: pointer;
-}
+        .nav-item:nth-child(3) .hidden-menu {
+            display: block;
+        }
+    }
+
+    @media only screen
+    and (max-width : 480px) {
+        .mini-nav { padding-right: 10px; }
+        
+        .nav-item:nth-child(1),
+        .nav-item:nth-child(2),
+        .nav-item:nth-child(3),
+        .nav-item:nth-child(4)
+        {
+            display: none;
+        }
+
+        .nav-item:nth-child(5) { display: block; }
+
+        #logo { margin-left: 25px; }
+    }

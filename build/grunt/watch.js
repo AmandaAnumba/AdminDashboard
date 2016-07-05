@@ -11,7 +11,7 @@ module.exports = {
 
     /* dashboard */
     dashboard_styles: {
-        files: ['../dashboard/static-src/sass/*.scss'],
+        files: ['../dashboard/static-src/sass/*.scss', '!../dashboard/static-src/sass/third-party/uikit/*'],
         tasks: ['newer:compass:dashboard']
     }, 
     dashboard_style_imports: {
@@ -25,7 +25,7 @@ module.exports = {
     fonts: {
         files: [
             '../dashboard/static-src/sass/third-party/_font-awesome.scss',
-            '../dashboard/static-src/sass/third-party/_uikit.scss',
+            // '../dashboard/static-src/sass/third-party/_uikit.scss',
         ],
         tasks: ['newer:string-replace:fonts', 'compass:dashboard', 'clean:fonts', 'copy:fonts']
     }, 
