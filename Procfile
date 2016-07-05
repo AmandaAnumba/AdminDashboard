@@ -1,1 +1,1 @@
-web: gunicorn AdminDashboard.wsgi --log-file -
+web: gunicorn AdminDashboard.wsgi -w 3 --log-level info --log-file -
