@@ -28,10 +28,16 @@ if x == 'True':
     DEBUG = True
 else:
     DEBUG = False
-
-
-ALLOWED_HOSTS = []
-
+    CSRF_COOKIE_SECURE = True
+    CSRF_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SECURE = True
+    ALLOWED_HOSTS = ['admin-blog.herokuapp.com']
+    X_FRAME_OPTIONS = 'DENY'
+    # SECURE_SSL_REDIRECT = True
+    # SECURE_BROWSER_XSS_FILTER = True
+    # SECURE_CONTENT_TYPE_NOSNIFF = True
+    # SECURE_HSTS_SECONDS = 3600
+    # SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 # Application definition
 

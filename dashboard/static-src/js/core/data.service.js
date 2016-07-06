@@ -28,10 +28,10 @@ var dataService = function(logger) {
 
     function loadComments() {
         var comments = [
-	        {id: "1", user: "Rayna Kelly", article: "You Are Enough", comment: "Bacon ipsum dolor amet alcatra beef ribs tenderloin, pork short ribs eiusmod et capicola shankle swine pancetta pastrami. ", date:"28 May, 2015", status: "Pending", avatar: "/static/images/avatars/ade.jpg"},
-	        {id: "2", user: "Alanna Davidson", article: "Credit Cards for Beginners", comment: "Ullamco in turkey leberkas id tempor swine in. Andouille pig kielbasa proident leberkas, turducken ", date:"16 June, 2015", status: "Pending", avatar: "/static/images/avatars/jenny.jpg"},
-	        {id: "3", user: "Michael Greene", article: "You Are Enough", comment: "Excepteur laboris t-bone reprehenderit cow commodo venison drumstick short loin shankle.", date:"17 June, 2015", status: "Pending", avatar: "/static/images/avatars/chris.jpg"},
-	        {id: "4", user: "Alanna Davidson", article: "Paying Homage: Shonda Rhimes", comment: "Ipsum cow esse pig anim doner ham hock minim jowl. Swine ut pork turkey aliqua ham hock.", date:"25 June, 2015", status: "Pending", avatar: "/static/images/avatars/jenny.jpg"},
+	        {id: "1", user: "Rayna Kelly", article: "You Are Enough", comment: "Bacon ipsum dolor amet alcatra beef ribs tenderloin, pork short ribs eiusmod et capicola shankle swine pancetta pastrami. ", date:"28 May, 2015", status: "Pending", avatar: "http://media.amandanumba.com/avatars/ade.jpg"},
+	        {id: "2", user: "Alanna Davidson", article: "Credit Cards for Beginners", comment: "Ullamco in turkey leberkas id tempor swine in. Andouille pig kielbasa proident leberkas, turducken ", date:"16 June, 2015", status: "Pending", avatar: "http://media.amandanumba.com/avatars/jenny.jpg"},
+	        {id: "3", user: "Michael Greene", article: "You Are Enough", comment: "Excepteur laboris t-bone reprehenderit cow commodo venison drumstick short loin shankle.", date:"17 June, 2015", status: "Pending", avatar: "http://media.amandanumba.com/avatars/chris.jpg"},
+	        {id: "4", user: "Alanna Davidson", article: "Paying Homage: Shonda Rhimes", comment: "Ipsum cow esse pig anim doner ham hock minim jowl. Swine ut pork turkey aliqua ham hock.", date:"25 June, 2015", status: "Pending", avatar: "http://media.amandanumba.com/avatars/jenny.jpg"},
 	    ];
 
 	    return comments;
@@ -45,7 +45,7 @@ var dataService = function(logger) {
             comment: "In et incididunt, t-bone aute mollit beef eiusmod sint sunt. Lorem reprehenderit est ut bresaola, proident consequat cupidatat", 
             date: "2 July, 2015", 
             status: "Pending", 
-            avatar: "/static/images/avatars/justen.jpg"
+            avatar: "http://media.amandanumba.com/avatars/justen.jpg"
         };
 
         return comment;

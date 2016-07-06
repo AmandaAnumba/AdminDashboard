@@ -1,12 +1,10 @@
-{% load staticfiles %}
-
 <header id="headerWrapper" data-ng-controller="HeaderController as header">
 	<div id="logo">
 		<a href="{% url 'dashboard' %}">
 			{% if data.page == 'dashboard' %}
-			<img src="{% static 'images/logo-white.png' %}" width="40px" />
+			<img src="http://media.amandanumba.com/logo-white.png" width="40px" />
 			{% else %}
-			<img src="{% static 'images/logo.png' %}" width="40px" />
+			<img src="http://media.amandanumba.com/logo.png" width="40px" />
 			{% endif %}
 			<span>Dashboard</span>
 		</a>
