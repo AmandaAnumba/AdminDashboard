@@ -9,9 +9,11 @@ module.exports = function(grunt) {
     
     /* register grunt tasks */
     grunt.registerTask('build', [
-        'compass:dev',
         'string-replace:fonts',
+        'string-replace:icons',
+        'compass:all',
         'jshint:all',
         'browserify:all',
+        'imagemin:all'
     ]);
 };

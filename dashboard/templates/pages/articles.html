@@ -5,77 +5,88 @@
 
 
 {% block addtlContent %}
-	<div id="contentWrapper" class="uk-grid">
+	<div id="contentWrapper" class="uk-grid" data-ng-controller="ArticleViewController as vm">
+        {% csrf_token %}
+		
 		<div class="uk-width-medium-1-3">
 			<section id="articles" class="panel">
-	            <div class="panel-title">Articles
-	                <ul>
-	                    <li data-position="1" data-target="#review" data-toggle-element=".section" class="active" slide-effect>Needs Review ({{ review|length }})</li>
-	                    <li data-position="2" data-target="#drafts" data-toggle-element=".section" slide-effect>Drafts ({{ drafts|length }})</li>
-	                    <li data-position="3" data-target="#queue" data-toggle-element=".section" slide-effect>Queued ({{ queue|length }})</li>
-	                </ul>
-	            </div>
+				<div class="panel-title">
+					<div>Articles</div>
+					<ul class="no-padding">
+						<li data-position="1" data-target="#review" data-toggle-element=".section" class="active" slide-effect>Needs Review ({{ review|length }})</li>
+						<li data-position="2" data-target="#drafts" data-toggle-element=".section" slide-effect>Drafts ({{ drafts|length }})</li>
+						<li data-position="3" data-target="#queue" data-toggle-element=".section" slide-effect>Queued ({{ queue|length }})</li>
+					</ul>
+				</div>
 
-	            <div class="panel-body wrapper">
-	                <div data-position="1" class="section active" id="review">
-	                    <div class="articles b-b-none">
-	                    {% if review %}
-	                        {% for x in review %}
-	                            <a href="/editor/q/{{ x.id }}">
-	                                <div class="article">
-	                                    <div class="article-title">{{ x.title }}</div>
-	                                    <div class="article-date small release-date">{{ x.published_date|date }}</div>
-	                                </div>
-	                            </a>
-	                        {% endfor %}
-	                    {% else %}
-	                        <div class="uk-text-center uk-text-muted"><small>No Articles to Review</small></div>
-	                    {% endif %}
-	                    </div>
-	                </div>
+				<div class="panel-body wrapper">
+					<div data-position="1" class="section active" id="review">
+						<div class="articles b-b-none">
+						{% if review %}
+							{% for x in review %}
+								<div class="article" data-ng-click="vm.loadPreview({{ x.id }})">
+									<div class="article-title">{{ x.title }}</div>
+									<div class="article-date small release-date">{{ x.published_date|date }}</div>
+								</div>
+							{% endfor %}
+						{% else %}
+							<div class="uk-text-center uk-text-muted"><small>No Articles to Review</small></div>
+						{% endif %}
+						</div>
+					</div>
 
-	                <div data-position="2" class="section" id="drafts">
-	                    <div class="articles b-b-none">
-	                    {% if drafts %}
-	                        {% for y in drafts %}
-	                            <a href="/editor/c/{{ y.id }}">
-	                                <div class="article">
-	                                    <div class="article-title">{{ y.title }}</div>
-	                                    <div class="article-date small release-date">{{ y.published_date|date }}</div>
-	                                    <div class="small">Continue Draft</div>
-	                                </div>
-	                            </a>
-	                        {% endfor %}
-	                    {% else %}
-	                        <div class="uk-text-center uk-text-muted"><small>You currently have no saved drafts</small></div>
-	                    {% endif %}
-	                    </div>
-	                </div>
+					<div data-position="2" class="section" id="drafts">
+						<div class="articles b-b-none">
+						{% if drafts %}
+							{% for y in drafts %}
+								<div class="article" data-ng-click="vm.loadPreview({{ y.id }})">
+									<div class="article-title">{{ y.title }}</div>
+									<div class="article-date small release-date">{{ y.published_date|date }}</div>
+									<div class="small">Continue Draft</div>
+								</div>
+							{% endfor %}
+						{% else %}
+							<div class="uk-text-center uk-text-muted"><small>You currently have no saved drafts</small></div>
+						{% endif %}
+						</div>
+					</div>
 
-	                <div data-position="3" class="section" id="queue">
-	                    <div class="articles b-b-none">
-	                    {% if queue %}
-	                        {% for z in queue %}
-	                            <a href="/editor/p/{{ z.id }}">
-	                                <div class="article">
-	                                    <div class="article-title">{{ z.title }}</div>
-	                                    <div class="article-author">by {{ z.author.first_name }} {{ z.author.last_name }}</div>
-	                                    <div class="article-date small release-date">{{ z.published_date|date }}</div>
-	                                </div>
-	                            </a>
-	                        {% endfor %}
-	                    {% endif %}
-	                    </div>
-	                </div>
-	            </div>
-	        </section>
-	    </div>
+					<div data-position="3" class="section" id="queue">
+						<div class="articles b-b-none">
+						{% if queue %}
+							{% for z in queue %}
+								<div class="article" data-ng-click="vm.loadPreview({{ z.id }})">
+									<div class="article-title">{{ z.title }}</div>
+									<div class="article-author">by {{ z.author.first_name }} {{ z.author.last_name }}</div>
+									<div class="article-date small release-date">{{ z.published_date|date }}</div>
+								</div>
+							{% endfor %}
+						{% endif %}
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
 
 		<div class="uk-width-medium-2-3">
 			<div id="previewPlaceholder">
-				<span class="icon icon-focus"></span>
-				<p>Article Preview</p>
+				<div class="page-loader">
+					<div class="circle-loader">Loading...</div>
+				</div>
+				
+				<div class="placeholder">
+					<span class="icon icon-focus"></span>
+					<p>Article Preview</p>
+				</div>
+				
+				{% verbatim %}
+				<div class="article-preview">
+					<div class="preview-actions"></div>
+					<div class="preview-title">{{ vm.article.title }}</div>
+					<div class="preview-content" ng-bind-html="vm.article.content"></div>
+				</div>
+				{% endverbatim %}
 			</div>
-	    </div>
+		</div>
 	</div>
 {% endblock addtlContent %}

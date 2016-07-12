@@ -1,10 +1,10 @@
 module.exports = {
-    dashboard: {
-        files: [{
-            expand: true,
-            cwd: '../dashboard/static-src/images/',
-            src: ['**/*.{png,jpg,gif}'],
-            dest: '../dashboard/static/images/',
-        }]
-    },
+	all: {
+		files: [{
+			expand: true,
+			cwd: '../static-src/images/',
+			src: ['**/*.{png,jpg,gif}'],
+			dest: '../static/images/',
+		}]
+	},
 };

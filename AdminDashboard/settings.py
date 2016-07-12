@@ -23,21 +23,19 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-x = os.environ['DEBUG']
-if x == 'True':
-    DEBUG = True
-else:
-    DEBUG = False
-    CSRF_COOKIE_SECURE = True
-    CSRF_COOKIE_HTTPONLY = True
-    SESSION_COOKIE_SECURE = True
-    ALLOWED_HOSTS = ['admin-blog.herokuapp.com']
-    X_FRAME_OPTIONS = 'DENY'
-    # SECURE_SSL_REDIRECT = True
-    # SECURE_BROWSER_XSS_FILTER = True
-    # SECURE_CONTENT_TYPE_NOSNIFF = True
-    # SECURE_HSTS_SECONDS = 3600
-    # SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+DEBUG = os.environ.get('DEBUG', False)
+CSRF_COOKIE_HTTPONLY = True
+ALLOWED_HOSTS = ['*']
+X_FRAME_OPTIONS = 'DENY'
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
+# SECURE_SSL_REDIRECT = True
+# SECURE_HSTS_SECONDS = 3600
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
 
 # Application definition
 
@@ -87,6 +85,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'AdminDashboard.wsgi.application'
 
 
+
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
@@ -104,6 +103,7 @@ DATABASES = {
         },
     }
 }
+
 
 
 # Password validation
@@ -152,10 +152,17 @@ USE_L10N = True
 USE_TZ = False
 
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
-
-STATIC_URL = '/static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'dashboard/static')
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (
+   os.path.join(BASE_DIR, "static"),
+)
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+

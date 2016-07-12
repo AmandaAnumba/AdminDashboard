@@ -1,0 +1,35 @@
+@media only screen
+and (max-width : 480px) {
+	#menuWrapper {
+		display: none;
+	}
+
+	#sideMenu,
+	#sideMenuToggle 
+	{
+		display: block !important;
+	}
+
+	.article__header-img,
+	.article__data,
+	{
+		display:none;
+	}
+
+	#editor, 
+	{
+		margin: 0 10px;
+	}
+
+	.article__info
+	{
+		margin: 20px 10px 0 10px;
+	}
+
+	.sticky {
+		width: auto;
+		left: 0;
+		top: 7%;
+		margin: 0 6%;
+	}
+}

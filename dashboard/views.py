@@ -1,14 +1,15 @@
-from django.shortcuts import render, redirect
-from django.core.mail import send_mail
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.contrib.auth import views, authenticate, login, logout
 from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.models import User
 from django.contrib.auth.views import password_reset
+from django.core import serializers
+from django.core.mail import send_mail
+from django.db.models import Q
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.http import require_http_methods
-from django.http import JsonResponse
-from django.conf import settings
-from django.db.models import Q
 
 import json, time
 
@@ -191,6 +192,8 @@ def profile(request):
         return redirect(index)
 
 
+@csrf_protect
+@require_http_methods(["GET", "POST"])
 def articles(request):
     PAGEDATA = {}
     PAGEDATA.update(DATA)
@@ -201,21 +204,29 @@ def articles(request):
         user = User.objects.get(username=request.session['username'])
         u = Member.objects.get(user=user)
 
-        drafts = a.filter(status='draft', author=user)
-        review = a.filter(status='ready')
-        queue = a.filter(status='queued')
+        if request.method == 'GET':
+            drafts = a.filter(status='draft', author=user)
+            review = a.filter(status='ready')
+            queue = a.filter(status='queued')
 
-        return render(request, 'pages/articles.html', 
-            {
-                'data': PAGEDATA,
-                'drafts': drafts,
-                'review': review,
-                'queue': queue,
-                'user': u
-            })
+            return render(request, 'pages/articles.html', 
+                {
+                    'data': PAGEDATA,
+                    'drafts': drafts,
+                    'review': review,
+                    'queue': queue,
+                    'user': u
+                })
+        elif request.method == 'POST':
+            body = json.loads(request.body.decode('utf-8'))
+            articleId = body['id']
+
+            selected = a.filter(id=articleId)
+            obj = serializers.serialize('json', selected)
+            
+            return JsonResponse({ 'article': obj })
     else:
         return redirect(index)
-
 
 
 
