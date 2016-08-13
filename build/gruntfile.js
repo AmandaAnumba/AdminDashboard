@@ -10,7 +10,6 @@ module.exports = function(grunt) {
     /* register grunt tasks */
     grunt.registerTask('build', [
         'string-replace:fonts',
-        'string-replace:icons',
         'compass:all',
         'jshint:all',
         'browserify:all',

@@ -1,3 +1,6 @@
+@import "../mixins/clearfix";
+@import "../mixins/list-inline";
+
 /**
  *  
  * styles for the top header navbar
@@ -7,90 +10,53 @@
 $height: 50px;
 $padding: $height / 2;
 
-#header
-{
+#header {
 	height: $height;
 	background-color: white;
 	color: #4a4a4a;
 	font-size: 13px;
 	border-bottom: 1px solid darken(whitesmoke, 7%);
+	padding: 0 $padding;
 	
-	#back 
-	{
-		padding-left: $padding;
-		line-height: $height;
-		float: left;
-	}
-	
-	#docLinks 
-	{
-		position: absolute;
-		left: 75px;
-		right: 0;
-		width: 50%;
-
-		.ui.menu 
-		{
-			margin: 0;
-		}
-
-		ul 
-		{
-			padding: 0;
-			margin: 0 auto;
-			width: auto;
-			list-style-type: none;
-			text-align: center;
-			text-transform: uppercase;
-			font-weight: bold;
-			line-height: $height;
-		}
-	}
-
-	#extraLinks 
-	{
-		padding-right: $padding;
-		float: right;
-	}
-
-	> ul 
-	{
-		padding: 0;
-		margin: 0 auto;
-		width: auto;
-		list-style-type: none;
-		text-align: center;
-		text-transform: uppercase;
-		letter-spacing: 0.7px;
-		font-weight: bold;
-		line-height: $height;
-	}
-
-	ul > li 
-	{
-		display: inline-block;
-		padding: 0 11px;
-		cursor: pointer;
-
-		&:hover,
-		&:focus
-		{
-			color: #014c8c;
-		}
-
-		&:last-child
-		{
-			padding-right: 0;
-		}
-	}
-
-	.icon
-	{
+	.icon {
 		font-size: 17px;
 
-		&.icon-trash-can2
-		{
+		&.icon-trash-can2 {
 			font-size: 21px;
 		}
 	}
+}
+
+#back {
+	line-height: $height;
+	float: left;
+	display: block;
+}
+
+#docLinks {
+	position: absolute;
+	left: 75px;
+	right: 0;
+	width: 50%;
+
+	.ui.menu {
+		margin: 0;
+	}
+
+	ul {
+		@include list-inline();
+		width: auto;
+		font-weight: bold;
+		height: $height;
+		line-height: $height;
+		float: left;
+	}
+}
+
+#extraLinks {
+	@include list-inline();
+	padding-right: $padding;
+	float: right;
+	height: $height;
+	line-height: $height;
 }

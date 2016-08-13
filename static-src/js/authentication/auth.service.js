@@ -108,7 +108,6 @@ var authService = function(dataService, $http, logger, loader, $window) {
 		* @desc Log the new user in
 		*/
 		function registerSuccessFn(data, status, headers, config) {
-			Authentication.login(email, password);
 		}
 
 		/**
@@ -116,7 +115,6 @@ var authService = function(dataService, $http, logger, loader, $window) {
 		* @desc Log "Epic failure!" to the console
 		*/
 		function registerErrorFn(data, status, headers, config) {
-			console.error('Epic failure!');
 		}
 	}
 };

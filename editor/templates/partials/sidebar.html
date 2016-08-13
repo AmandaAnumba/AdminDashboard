@@ -1,0 +1,71 @@
+<section class="sidebar">
+	<div class="ui form sidebar__block">
+		<div class="sidebar__title">Article Type</div>
+		<div class="inline fields">
+			<div class="field">
+				<div class="ui radio checkbox">
+					<input type="radio" name="article_type" checked="true" tabindex="0" class="hidden">
+					<label>Regular</label>
+				</div>
+			</div>
+			<div class="field">
+				<div class="ui radio checkbox">
+					<input type="radio" name="article_type" tabindex="0" class="hidden">
+					<label>Feature</label>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="ui form sidebar__block">
+		<div class="sidebar__title">Cycle Article?</div>
+		<div class="inline field">
+			<div class="ui slider checkbox">
+				<input type="checkbox" tabindex="0" class="hidden">
+				<label>Yes</label>
+			</div>
+			<label></label>
+		</div>
+	</div>
+
+	<div class="ui form sidebar__block">
+		<div class="sidebar__title">Release Date</div>
+		<input type="text" name="release_date" data-uk-datepicker="{format:'MM/DD/YYYY'}">
+	</div>
+	
+	<div class="sidebar__block">
+		<div class="sidebar__title">Media Upload</div>
+		<div id="upload-drop" class="uk-placeholder">
+			<a class="uk-form-file">
+				Drop file(s) here to upload<input id="upload-select" type="file">
+			</a>
+		</div>
+
+		<div id="progressbar" class="uk-progress display-none">
+			<div class="uk-progress-bar" style="width: 5%;"></div>
+		</div>
+	</div>
+
+	<div class="sidebar__block box">
+		<div class="sidebar__title box__title">
+			<div class="active">Categories</div>
+			<div>Tags</div>
+		</div>
+		<div class="box__content ui form">
+			<div data-toggle="categories">
+				{% for cat in categories %}
+					<div class="inline field">
+						<div class="ui checkbox">
+							<input type="checkbox" tabindex="0" class="hidden" value="{{ cat.name }}">
+							<label>{{ cat.name }}</label>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+
+			<div data-toggle="tags">
+
+			</div>
+		</div>
+	</div>
+</section>

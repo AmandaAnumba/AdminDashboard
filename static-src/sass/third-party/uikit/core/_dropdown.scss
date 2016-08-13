@@ -34,12 +34,12 @@
 // Variables
 // ========================================================================
 
-$dropdown-z-index:                               970 !default;
+$dropdown-z-index:                               1020 !default;
 $dropdown-width:                                 200px !default;
 $dropdown-margin-top:                            5px !default;
 $dropdown-padding:                               15px !default;
-$dropdown-background:                            #f5f5f5 !default;
-$dropdown-color:                                 #444 !default;
+$dropdown-background:                            #fff !default;
+$dropdown-color:                                 #666 !default;
 $dropdown-font-size:                             1rem !default;
 $dropdown-animation:                             uk-fade !default;
 
@@ -49,8 +49,8 @@ $dropdown-divider-border:                        #ddd !default;
 $dropdown-small-padding:                         5px !default;
 
 $dropdown-navbar-margin:                         0 !default;
-$dropdown-navbar-background:                     #f5f5f5 !default;
-$dropdown-navbar-color:                          #444 !default;
+$dropdown-navbar-background:                     #fff !default;
+$dropdown-navbar-color:                          #666 !default;
 $dropdown-navbar-animation:                      uk-slide-top-fixed !default;
 
 $dropdown-scrollable-height:                     200px !default;
@@ -92,7 +92,7 @@ $dropdown-scrollable-height:                     200px !default;
     /* 1 */
     font-size: $dropdown-font-size;
     vertical-align: top;
-    @include hook-dropdown();
+    @include hook-dropdown-docs();
 }
 
 /*

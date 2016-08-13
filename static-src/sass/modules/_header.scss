@@ -23,7 +23,8 @@
         z-index: 999;
     }
 
-    #logo {
+    #logo,
+    #editor {
         height: $headerHeight;
         line-height: $headerHeight;
         margin-left: 45px;
@@ -84,9 +85,16 @@
             letter-spacing: 0.4px;
             font-size: 13px;
             margin-left: $avatarSize + 10px;
+            cursor: pointer;
         }
 
-        .nav-item:nth-child(5) .username { cursor: pointer; }
+        .nav-item:nth-child(5) {
+            position: relative;
+            padding: 0 15px;
+            line-height: $headerHeight;
+            
+            .username { cursor: pointer; }
+        }
     }
 
     .uk-dropdown { line-height: 1.4; }
@@ -117,7 +125,7 @@
         .nav-item:nth-child(3),
         .nav-item:nth-child(4)
         {
-            display: none;
+            display: none !important;
         }
 
         .nav-item:nth-child(5) { display: block; }

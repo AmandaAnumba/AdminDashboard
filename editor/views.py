@@ -25,6 +25,8 @@ DATA = {
     'cycle': CYCLE,
     'loggedIn': False
 }
+CATEGORIES = Topic.objects.all()
+
 
 
 @csrf_protect
@@ -37,7 +39,8 @@ def write(request):
         
         return render(request, 'pages/write.html', {
             'username': request.session['username'], 
-            'data': PAGEDATA
+            'data': PAGEDATA,
+            'categories': CATEGORIES
         })
     else:
         return redirect('dashboard.views.index')

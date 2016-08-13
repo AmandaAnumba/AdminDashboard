@@ -23,19 +23,6 @@ module.exports = {
 		],
 		tasks: ['compass:all']
 	}, 
-	fonts: {
-		files: [
-			'../static-src/sass/third-party/_font-awesome.scss',
-			// '../static-src/sass/third-party/_uikit.scss',
-		],
-		tasks: ['newer:string-replace:fonts', 'compass:all']
-	}, 
-	icons: {
-		files: [
-			'../static-src/sass/partials/_icons.scss'
-		],
-		tasks: ['string-replace:icons', 'compass:all']
-	}, 
 	scripts: {
 		files: [
 			'../static-src/js/**/*.js', 

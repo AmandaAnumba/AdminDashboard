@@ -1,11 +1,11 @@
-<div class="form-group">
-	<input class="form-control" id="title" name="title" placeholder="Enter Title Here" type="text" ng-model="vm.title" value="{{ title|default:'' }}" />
+<div id="title" class="ui massive input">
+	<input name="title" class="" placeholder="Title" type="text" ng-model="vm.title" value="{{ title|default:'' }}" />
 </div>
 
 <div class="form-group">
 	<p>Written by <strong>{{ author }}<span id="authors">{{ coAuthors|default:"" }}</span></strong></p>
 
-	<div class="custom-dropdown">
+	<div class="custom-dropdown" dropdown>
 		<div class="custom-dropdown-toggle" id="addAuthor">
 			<span class="icon icon-circle-plus"></span>
 			{% if coAuthors != '' %}

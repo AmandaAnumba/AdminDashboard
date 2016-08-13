@@ -109,7 +109,6 @@ var authService = function(dataService, $http, logger, loader, $window) {
 		* @desc Log the new user in
 		*/
 		function registerSuccessFn(data, status, headers, config) {
-			Authentication.login(email, password);
 		}
 
 		/**
@@ -117,7 +116,6 @@ var authService = function(dataService, $http, logger, loader, $window) {
 		* @desc Log "Epic failure!" to the console
 		*/
 		function registerErrorFn(data, status, headers, config) {
-			console.error('Epic failure!');
 		}
 	}
 };
@@ -439,31 +437,31 @@ var dataService = function($http, logger, loader) {
 
 module.exports = dataService;
 },{}],11:[function(require,module,exports){
-'use strict';
+(function(angular) {
+	'use strict';
 
-var angular = require('angular');
-
-angular
-	.module('adminApp')
-	.config(configure)
-	.run(function($http) {
-		$http.defaults.headers.common['X-CSRFToken'] = $('input[name=csrfmiddlewaretoken]').val();
-	})
-	.config(function(toastrConfig) {
-		angular.extend(toastrConfig, {
-			progressBar: true,
-			timeOut: 7000,
-		});
-	})
-	.factory('dataService', require('./data.service'));
+	angular
+		.module('adminApp')
+		.config(configure)
+		.run(function($http) {
+			$http.defaults.headers.common['X-CSRFToken'] = $('input[name=csrfmiddlewaretoken]').val();
+		})
+		.config(function(toastrConfig) {
+			angular.extend(toastrConfig, {
+				progressBar: true,
+				timeOut: 7000,
+			});
+		})
+		.factory('dataService', require('./data.service'));
 
 
-configure.$inject = ['$httpProvider'];
-function configure($httpProvider) {
-	$httpProvider.defaults.xsrfCookieName = 'csrftoken';
-	$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
-}
-},{"./data.service":10,"angular":19}],12:[function(require,module,exports){
+	configure.$inject = ['$httpProvider'];
+	function configure($httpProvider) {
+		$httpProvider.defaults.xsrfCookieName = 'csrftoken';
+		$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+	}
+}(window.angular));
+},{"./data.service":10}],12:[function(require,module,exports){
 'use strict';
 
 var angular = require('angular');

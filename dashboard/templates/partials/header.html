@@ -4,18 +4,32 @@
 			{% if data.page == 'dashboard' %}
 			<img src="http://media.amandanumba.com/logo-white.png" width="40px" />
 			{% else %}
-			<img src="http://media.amandanumba.com/logo.jpg" width="40px" />
+			<img src="/static/images/empire-logo.png" width="40px" />
+
+			{# <img src="http://media.amandanumba.com/logo.jpg" width="40px" /> #}
 			{% endif %}
 			<span>Dashboard</span>
 		</a>
 	</div>
 
+	<div id="editor">
+		<a href="{% url 'write' %}">Editor</a>
+	</div>
+
 	<ul class="mini-nav">
-		<li class="nav-item">
+		<li class="uk-parent nav-item" data-uk-dropdown="{mode:'click',pos:'bottom-center'}" aria-haspopup="true" aria-expanded="false">
 			<div class="avatar">
 				<img src="{{ user.avatar }}" alt="avatar" />
 			</div>
-			<div class="username">{{ user.user.username }}</div>
+			<div class="username">{{ user.user.username }} <i class="uk-icon-caret-down"></i></div>
+			
+			<div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom">
+				<div class="dropdown-content">
+					<ul class="uk-nav uk-nav-navbar">
+						<li><a href="{% url 'profile' %}">Edit Profile</a></li>
+					</ul>
+				</div>
+			</div>
 		</li>
 		
 		{% verbatim %}
@@ -40,7 +54,8 @@
 			</div>
 		</li>
 		{% endverbatim %}
-
+		
+		{% comment %}
 		<li class="uk-parent nav-item" data-uk-dropdown="{mode:'click',pos:'bottom-center'}" aria-haspopup="true" aria-expanded="false">
 			<a href="javascript:void(0);"><span class="icon icon-cog"></span></a>
 
@@ -56,6 +71,7 @@
 				</ul>
 			</div>
 		</li>
+		{% endcomment %}
 
 		<li class="nav-item">
 			<a href="{% url 'logout' %}">

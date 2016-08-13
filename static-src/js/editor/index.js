@@ -1,11 +1,12 @@
 'use strict';
 
-var angular = require('angular');
-
 angular
 	.module('adminApp')
-	.factory('dataService', require('../core/data.service'))
+	.factory('logger', require('../blocks/logger'))
+	.factory('loader', require('../blocks/loader'))
 	.factory('articleService', require('./article.factory'))
 	.factory('autosaveService', require('./autosave.factory'))
+	.directive('wysiwyg', require('./wysiwyg.directive'))
+	.directive('dropdown', require('./dropdown.directive'))
 	.controller('ModalsController', require('./modals.controller'))
 	.controller('EditorController', require('./editor.controller'));

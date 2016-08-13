@@ -48,7 +48,7 @@ var ModalsController = function(logger, dataService, articleService, autosaveSer
         articleService.delete(id);
     }
 
-    function markProofed() {
+    function markProofed( id ) {
         articleService.markProofed(id);
     }
 };

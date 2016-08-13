@@ -15,12 +15,12 @@
         <header id="header">
             <a href="/" id="back">
                 <div>
-                    <span class="icon icon-reply"></span>
-                    <span>Back</span>
+                    <!-- <span class="icon icon-reply"></span> -->
+                    <span>Back to Dashboard</span>
                 </div>
             </a>
             
-            <div id="docLinks">
+            <div id="docLinks" class="display-none">
                 <ul>
                     <li>
                         <div class="ui text menu">
@@ -69,7 +69,7 @@
         </header>
         
         {% block addtlContent %}{% endblock addtlContent %}
-        
+
         <div id="modals" data-ng-controller="ModalsController as ctrl">
             {% verbatim %}
             <div id="autosaveModal" class="ui modal">
@@ -87,7 +87,7 @@
                 </div>
             </div>
             {% endverbatim %}
-
+            
 
             <div class="ui modal">
                 <div class="header">Media Uploads</div>
@@ -181,8 +181,7 @@
                 </div>
             </div>
             {% endif %}
-
-
+            
             {% block modals %}{% endblock modals %}
         </div>
     </main>
@@ -192,27 +191,20 @@
 {% block footer %}
     <script src="{% static 'js/third-party/froala-editor.js' %}"></script>
     <script src="{% static 'js/third-party/semantic.js' %}"></script>
-    <script src="{% static 'js/editor.js' %}"></script>
+    <script src="{% static 'js/editor.js' %}?v={{ data.version }}"></script>
     
     <script>
-        $('.ui.dropdown').dropdown();
-        $('.ui.modal').modal();
-        $('.browse.item').popup({
-            popup     : '.admission.popup',
-            exclusive   : true,
-            on      : 'click',
-            hoverable : false,
-            position  : 'bottom left',
-        });
-        /* init froala editor */
-        $('#editor').editable({
-            inlineMode: false, 
-            minHeight: 400,
-            maxHeight: 500,
-            placeholder: 'Start typing here...',
-            spellcheck: true,
-            toolbarButtons: ["bold", "italic", "underline", "strikeThrough", "fontSize","fontFamily", "color","sep","subscript", "superscript", "formatBlock", "blockStyle", "align", "insertOrderedList", "insertUnorderedList", "outdent", "indent", "sep", "selectAll", "createLink", "undo", "removeFormat", "redo", "html", "insertHorizontalRule", "table"]
-        });
+        // $('.ui.modal').modal();
+
+
+        // $('.ui.dropdown').dropdown();
+        // $('.browse.item').popup({
+        //     popup     : '.admission.popup',
+        //     exclusive   : true,
+        //     on      : 'click',
+        //     hoverable : false,
+        //     position  : 'bottom left',
+        // });
     </script>
     {% block addtlFooter %}{% endblock addtlFooter %}
 {% endblock footer %}

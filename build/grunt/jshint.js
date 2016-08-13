@@ -7,12 +7,23 @@ module.exports = {
 		browserify: true,
 		reporter : require('jshint-stylish'),
 		"-W030": true,
+		globals: {
+			'$': true,
+			'console': false,
+			'angular': true,
+			'moment': true,
+			'debug': true,
+		}
 	}, 
 	all: {
 		files: [{
 			expand: true,
 			cwd: '../static-src/js/',
-			src: ['*.js'], 
+			src: [
+				'**/*.js', 
+				'!third-party/**/*.js',
+				'!imports/**/*.js'
+			], 
 		}], 
 	}
 }

@@ -1,9 +1,34 @@
 @mixin hook-datepicker-nav(){}
 @mixin hook-datepicker-nav-item(){}
-@mixin hook-datepicker-table-item(){}
-@mixin hook-datepicker-table-item-hover(){}
-@mixin hook-datepicker-table-item-onclick(){}
-@mixin hook-datepicker-table-item-active(){}
+
+@mixin hook-datepicker-table-item(){
+	border: 1px solid transparent;
+    border-radius: 4px;
+    background-origin: border-box;
+}
+
+@mixin hook-datepicker-table-item-hover(){
+	border-color: rgba(0,0,0,.2);
+    border-bottom-color: rgba(0,0,0,.3);
+    text-shadow: 0 1px 0 #fff;
+}
+
+@mixin hook-datepicker-table-item-onclick(){
+	border-color: rgba(0,0,0,.2);
+    border-top-color: rgba(0,0,0,.3);
+    background-image: none;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,.1);
+}
+
+@mixin hook-datepicker-table-item-active(){
+	border: 1px solid rgba(0,0,0,.2);
+    border-bottom-color: rgba(0,0,0,.4);
+    background-origin: border-box;
+    background-image: -webkit-linear-gradient(top,#00b4f5,#008dc5);
+    background-image: linear-gradient(to bottom,#00b4f5,#008dc5);
+    text-shadow: 0 -1px 0 rgba(0,0,0,.2);
+}
+
 @mixin hook-datepicker-misc(){}
 @mixin hook-nav-autocomplete(){}
 @mixin hook-nav-autocomplete-active(){}
@@ -198,6 +223,11 @@
 @mixin hook-comment-misc(){}
 @mixin hook-description-list-misc(){}
 
+@mixin hook-dropdown-docs(){
+	border: 1px solid #d3d3d3;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,.1);
+}
 @mixin hook-dropdown(){
 	width: 270px;
 	font-family: 'Open Sans', sans-serif;

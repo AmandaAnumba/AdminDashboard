@@ -54,65 +54,65 @@ var autosaveService = function($interval, localStorageService) {
     }
 
     function load(key) {
-        var retrieved = localStorage.getItem(title),
+        var retrieved = localStorage.getItem(key),
             x = JSON.parse(retrieved);
 
-        $('#post input[name=title]').val(x['title']);
-        $('#post input[name=author]').val(x['author']);
-        $('#post textarea[name=description]').val(x['description']);
-        $('#editor').editable("setHTML", x['content'], true);
-        $('#post input[name=headerIMGurl]').val(x['headerIMG']);
-        $('#post input[name=photo_cred]').val(x['photoCred']);
+        $('#post input[name=title]').val(x.title);
+        $('#post input[name=author]').val(x.author);
+        $('#post textarea[name=description]').val(x.description);
+        $('#editor').editable("setHTML", x.content, true);
+        $('#post input[name=headerIMGurl]').val(x.headerIMG);
+        $('#post input[name=photo_cred]').val(x.photoCred);
 
-        if (x['doctype']) {
-            $("input[name=doctype][value=" + x['doctype'] + "]").prop('checked', true);
+        if (x.doctype) {
+            $("input[name=doctype][value=" + x.doctype + "]").prop('checked', true);
         }
 
-        if (x['docstyle']) {
-            $("input[name=docstyle][value=" + x['docstyle'] + "]").prop('checked', true);
+        if (x.docstyle) {
+            $("input[name=docstyle][value=" + x.docstyle + "]").prop('checked', true);
         }
 
-        if ((x['releaseDate'] === 'None') || (x['releaseDate'] === null) || (x['releaseDate'] === "")) {
+        if ((x.releaseDate === 'None') || (x.releaseDate === null) || (x.releaseDate === "")) {
             $('#rDate').empty().append('No date selected');
             $('#date').show();
         }
 
-        if ((x['releaseDate'] !== 'None') && (x['releaseDate'] !== null) && (x['releaseDate'] !== "")) {
-            var y = x['releaseDate'].split(','),
+        if ((x.releaseDate !== 'None') && (x.releaseDate !== null) && (x.releaseDate !== "")) {
+            var y = x.releaseDate.split(','),
                 date = moment(y).format("dddd, MMMM Do YYYY");
-            $('#rDate').empty().append(date).val(x['releaseDate']);
+            $('#rDate').empty().append(date).val(x.releaseDate);
             $('#date').show();
         }
 
-        if (x['featureIMG'] === 'same') {
+        if (x.featureIMG === 'same') {
             $('#headerSame').prop("checked", true);
         }
 
-        var tags = x['tags'].split(','),
-            coAuth = x['coAuthor'].split(','),
-            cat = x['category'].split(',');
+        var tags = x.tags.split(','),
+            coAuth = x.coAuthor.split(','),
+            cat = x.category.split(',');
 
-        if ((tags.length > 0) && (tags[0] != "")) {
+        if ((tags.length > 0) && (tags[0] !== "")) {
             for (var i=0; i < tags.length; i++) {
-                if (tags[i] != "") {
+                if (tags[i] !== "") {
                     $('#tags_list').append('<p><span class="icon-circle-cross remove_tag" onclick="$(this).parent().hide();"></span>'+tags[i].trim()+'</p>');
                 }
             }
             $('#tags_list').show();
         }
 
-        if ((coAuth.length > 0) && (coAuth[0] != "")) {
+        if ((coAuth.length > 0) && (coAuth[0] !== "")) {
             for (var j=0; j < coAuth.length; j++) {
-                if ((coAuth[j] != "") && (coAuth[j] != 'None')) {
+                if ((coAuth[j] !== "") && (coAuth[j] !== 'None')) {
                     $('#more-authors input:checkbox[value="' + coAuth[j] + '"]').prop('checked', true);
                 }
             }
             $('#more-authors').show();
         }
 
-        if ((cat.length > 0) && (cat[0] != "")) {
+        if ((cat.length > 0) && (cat[0] !== "")) {
             for (var k=0; k < cat.length; k++) {
-                if ((cat[k] != "") && (cat[k] != 'None')) {
+                if ((cat[k] !== "") && (cat[k] !== 'None')) {
                     $('#category input:checkbox[value="' + cat[k] + '"]').prop('checked', true);
                 }
             }
@@ -121,7 +121,7 @@ var autosaveService = function($interval, localStorageService) {
         $('#autosaveDrafts').modal('hide');
 
         // autosave every 1.5 mins
-        window.setInterval(autosave,60000);
+        // window.setInterval(autosave,60000);
     }
 
     function save() {
@@ -150,16 +150,16 @@ var autosaveService = function($interval, localStorageService) {
         });
         var category = options.join(", ");
 
-        if (title == "") {
+        if (title === "") {
             var date = moment().format("MM/D/YYYY");
             title = "Article "+ date;
         }
 
-        if (releaseDate == "") {
+        if (releaseDate === "") {
             release = null;
         }
 
-        if (releaseDate != "") {
+        if (releaseDate !== "") {
             release = moment(releaseDate).toArray().toString();
         }
 

@@ -4,6 +4,7 @@
 @import '../third-party/uikit';
 @import '../third-party/mmenu.scss';
 @import '../third-party/animate';
+@import '../third-party/icomoon/style';
 
 /* partials + variables + responsiveness */
 @import '../partials/colors';
@@ -11,7 +12,6 @@
 @import '../partials/mixins';
 @import '../partials/helpers';
 @import '../partials/responsive';
-@import '../partials/icons';
 
 /* page components */
 @import 'base';

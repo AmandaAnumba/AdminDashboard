@@ -319,7 +319,7 @@ var CommentsController = function($scope, dataService, logger, $compile, $templa
     function remove(id) {
         logger.log(id);
         
-        var $comment = $('.comment[data-comment-id="' + id + '"]')
+        var $comment = $('.comment[data-comment-id="' + id + '"]');
         $comment.hide();
         comments.count --;
     }
