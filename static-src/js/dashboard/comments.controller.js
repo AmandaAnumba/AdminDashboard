@@ -9,6 +9,7 @@ var CommentsController = function($scope, dataService, logger, $compile, $templa
 
     activate();
 
+
     /**
     * @name activate
     * @desc Actions to be performed when this controller is instantiated
@@ -41,6 +42,11 @@ var CommentsController = function($scope, dataService, logger, $compile, $templa
         $scope.$broadcast('lazyLoadImages');
     }
 
+
+    /**
+    * @name remove
+    * @desc For demo purposes, hide the comment when one of the action buttons are clicked
+    */
     function remove(id) {
         logger.log(id);
         

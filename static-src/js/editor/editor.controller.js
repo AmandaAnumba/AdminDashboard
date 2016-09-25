@@ -2,7 +2,7 @@
 
 var EditorController = function(logger, $scope, $timeout) {
     var vm = this;
-    // vm.postArticle = postArticle;
+    vm.viewData = viewData;
 
     activate();
 
@@ -12,13 +12,14 @@ var EditorController = function(logger, $scope, $timeout) {
     */
     function activate() {
         logger.log('EditorController activated');
-
-        $timeout(function(){
-            $scope.$broadcast('wysiwygInit');
-        }, 100);
     }
 
 
+
+    function viewData() {
+        logger.log(vm);
+    }
+    
     /**
     * @name postArticle
     * @desc Log the user in

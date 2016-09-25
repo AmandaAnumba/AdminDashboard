@@ -1,0 +1,54 @@
+#messager {
+    background-color: white;
+    
+
+    $padding: 15px;
+    .mm-panels > .mm-panel.mm-hasnavbar {
+        padding-top: $padding * 2 + 20px;
+    }
+    
+    .mm-listview>li:not(.mm-divider):last-child:after {
+        border: none;
+    }
+
+    .mm-navbar {
+        height: $padding * 2 + 20px;
+        
+        .mm-btn {
+            height: $padding * 2 + 20px;
+            width: $padding * 2 + 20px;
+            line-height: $padding * 2 + 15px;
+        }
+        
+        .mm-next {
+            padding-right: 30px;
+
+            &:after {
+                border: none;
+            }
+        }
+
+        .icon {
+            font-size: 25px;
+            color: #717171;
+        }
+
+        .mm-title {
+            color: #333;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            padding: $padding 0;
+            font-weight: bold;
+        }
+    }
+
+    .message {
+        cursor: pointer;
+        @include transition(all 0.4s ease-in-out);
+
+        &:hover {
+            background-color: whitesmoke;
+        }
+    }
+}

@@ -1,104 +1,120 @@
 <header id="headerWrapper" data-ng-controller="HeaderController as header">
-	<div id="logo">
-		<a href="{% url 'dashboard' %}">
-			{% if data.page == 'dashboard' %}
-			<img src="http://media.amandanumba.com/logo-white.png" width="40px" />
-			{% else %}
-			<img src="/static/images/empire-logo.png" width="40px" />
+    <div id="logo">
+        <a href="{% url 'dashboard' %}">
+            {% if data.page == 'dashboard' %}
+            <img src="https://s3.amazonaws.com/chicreptawr/logo-white.png" width="40px" />
+            {% else %}
+            <img src="https://s3.amazonaws.com/chicreptawr/logo.png" width="40px" />
+            {% endif %}
+            <span>Dashboard</span>
+        </a>
+    </div>
 
-			{# <img src="http://media.amandanumba.com/logo.jpg" width="40px" /> #}
-			{% endif %}
-			<span>Dashboard</span>
-		</a>
-	</div>
+    <div id="editor">
+        <a href="{% url 'write' %}">Editor</a>
+    </div>
 
-	<div id="editor">
-		<a href="{% url 'write' %}">Editor</a>
-	</div>
+    <ul class="mini-nav">
+        <li class="uk-parent nav-item" data-uk-dropdown="{mode:'click',pos:'bottom-center'}" aria-haspopup="true" aria-expanded="false">
+            <div class="avatar">
+                <img src="https://s3.amazonaws.com/chicreptawr/avatars/{{ user.avatar }}" alt="avatar" />
+            </div>
+            <div class="username">{{ user.user.username }} <i class="uk-icon-caret-down"></i></div>
+            
+            <div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom">
+                <div class="dropdown-content">
+                    <ul class="uk-nav uk-nav-navbar">
+                        <li><a href="{% url 'profile' %}">Edit Profile</a></li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+        
+        {% verbatim %}
+        <li class="uk-parent nav-item" data-uk-dropdown="{mode:'click',pos:'bottom-center'}" aria-haspopup="true" aria-expanded="false">
+            <a href="javascript:void(0);">
+                <span class="icon icon-mail2"></span>
+                <div class="uk-badge uk-badge-danger uk-badge-notification uk-hidden">{{ header.count }}</div>
+            </a>
 
-	<ul class="mini-nav">
-		<li class="uk-parent nav-item" data-uk-dropdown="{mode:'click',pos:'bottom-center'}" aria-haspopup="true" aria-expanded="false">
-			<div class="avatar">
-				<img src="{{ user.avatar }}" alt="avatar" />
-			</div>
-			<div class="username">{{ user.user.username }} <i class="uk-icon-caret-down"></i></div>
-			
-			<div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom">
-				<div class="dropdown-content">
-					<ul class="uk-nav uk-nav-navbar">
-						<li><a href="{% url 'profile' %}">Edit Profile</a></li>
-					</ul>
-				</div>
-			</div>
-		</li>
-		
-		{% verbatim %}
-		<li class="uk-parent nav-item" data-uk-dropdown="{mode:'click',pos:'bottom-center'}" aria-haspopup="true" aria-expanded="false">
-			<a href="javascript:void(0);">
-				<span class="icon icon-mail2"></span>
-				<div class="uk-badge uk-badge-danger uk-badge-notification uk-hidden">{{ header.count }}</div>
-			</a>
+            <div class="uk-dropdown uk-dropdown-menu uk-dropdown-navbar uk-dropdown-bottom">
+                <div class="dropdown-header">
+                    <ng-pluralize count="header.count"
+                        when="{'0': 'Messages',
+                               '1': '{} New Message',
+                               'other': '{} New Messages'}">
+                    </ng-pluralize>
+                </div>
 
-			<div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom">
-				<div class="dropdown-header">
-					<ng-pluralize count="header.count"
-						when="{'0': '',
-							   '1': '{} New Message',
-							   'other': '{} New Messages'}">
-					</ng-pluralize>
-				</div>
+                <div class="dropdown-content">
+                    <div data-ng-show="header.count = '0'">No recent messages</div>
 
-				<div class="dropdown-content">No recent messages</div>
+                    <div class="message" ng-repeat="x in header.mail">
+                        <div class="message-avatar">
+                            <img src="https://s3.amazonaws.com/chicreptawr/avatars/molly.png" width="40" height="40">
+                        </div>
 
-				<div class="dropdown-footer" data-ng-click="header.openMessenger()">View all Messages</div>
-			</div>
-		</li>
-		{% endverbatim %}
-		
-		{% comment %}
-		<li class="uk-parent nav-item" data-uk-dropdown="{mode:'click',pos:'bottom-center'}" aria-haspopup="true" aria-expanded="false">
-			<a href="javascript:void(0);"><span class="icon icon-cog"></span></a>
+                        <div class="message-data">
+                            <div class="message__info"><strong>{{ x.form }}</strong></div>
+                            <div class="message__message">{{ x.message }} {{ x.article }}</div>
+                            <div class="message__date">{{ x.sent }}</div>
+                        </div>
 
-			<div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom">
-				<ul class="uk-nav uk-nav-navbar">
-					<li><a href="{% url 'profile' %}">Profile</a></li>
-					
-					<div class="hidden-menu">
-						<li><a data-ng-click="header.openMessenger()">View Messages</a></li>
-						<li class="uk-nav-divider"></li>
-						<li><a href="#">Logout</a></li>
-					</div>
-				</ul>
-			</div>
-		</li>
-		{% endcomment %}
+                        <div class="message-actions">
+                            <div>Approve?</div>
+                        </div>
+                    </div>
+                </div>
 
-		<li class="nav-item">
-			<a href="{% url 'logout' %}">
-				<span class="icon icon-power"></span>
-			</a>
-		</li>
+                <div class="dropdown-footer" data-ng-click="header.openMessenger()">View all Messages</div>
+            </div>
+        </li>
+        {% endverbatim %}
+        
+        {% comment %}
+        <li class="uk-parent nav-item" data-uk-dropdown="{mode:'click',pos:'bottom-center'}" aria-haspopup="true" aria-expanded="false">
+            <a href="javascript:void(0);"><span class="icon icon-cog"></span></a>
 
-		<li class="uk-parent nav-item display-none" data-uk-dropdown="{mode:'click',pos:'bottom-center'}" aria-haspopup="true" aria-expanded="false">
-			<div class="avatar">
-				<img src="{{ user.avatar }}" alt="avatar" />
-			</div>
-			<div class="username">{{ user.user.username }} <i class="uk-icon-caret-down"></i></div>
-			
-			<div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom">
-				<div class="dropdown-content">
-					<ul class="uk-nav uk-nav-navbar">
-						<li><a href="{% url 'profile' %}">Profile</a></li>
-						<li><a data-ng-click="header.openMessenger()">View Messages</a></li>
-						<li class="uk-nav-divider"></li>
-						<li><a href="#">Logout</a></li>
-					</ul>
-				</div>
-			</div>
-		</li>
-	</ul>
+            <div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom">
+                <ul class="uk-nav uk-nav-navbar">
+                    <li><a href="{% url 'profile' %}">Profile</a></li>
+                    
+                    <div class="hidden-menu">
+                        <li><a data-ng-click="header.openMessenger()">View Messages</a></li>
+                        <li class="uk-nav-divider"></li>
+                        <li><a href="#">Logout</a></li>
+                    </div>
+                </ul>
+            </div>
+        </li>
+        {% endcomment %}
 
-	<div id="sideMenuToggle" class="toggle-menu menu-right">
-		<span class="icon-nav icon-menu"></span>
-	</div>
+        <li class="nav-item">
+            <a href="{% url 'logout' %}">
+                <span class="icon icon-power"></span>
+            </a>
+        </li>
+
+        <li class="uk-parent nav-item display-none" data-uk-dropdown="{mode:'click',pos:'bottom-center'}" aria-haspopup="true" aria-expanded="false">
+            <div class="avatar">
+                <img src="https://s3.amazonaws.com/chicreptawr/avatars/{{ user.avatar }}" alt="avatar" />
+            </div>
+            <div class="username">{{ user.user.username }} <i class="uk-icon-caret-down"></i></div>
+            
+            <div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom">
+                <div class="dropdown-content">
+                    <ul class="uk-nav uk-nav-navbar">
+                        <li><a href="{% url 'profile' %}">Profile</a></li>
+                        <li><a data-ng-click="header.openMessenger()">View Messages</a></li>
+                        <li class="uk-nav-divider"></li>
+                        <li><a href="#">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <div id="sideMenuToggle" class="toggle-menu menu-right">
+        <span class="icon-nav icon-menu"></span>
+    </div>
 </header>

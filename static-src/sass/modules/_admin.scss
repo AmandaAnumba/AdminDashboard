@@ -2,7 +2,7 @@
 @import '../third-party/pushmenu';
 @import '../third-party/angular-toastr';
 @import '../third-party/uikit';
-@import '../third-party/mmenu.scss';
+@import '../third-party/mmenu';
 @import '../third-party/animate';
 @import '../third-party/icomoon/style';
 
@@ -18,10 +18,9 @@
 @import 'header';
 @import 'loader';
 @import 'menu';
+@import 'messager';
 
 /* general page styles */
 body { background: whitesmoke; }
 
-#contentWrapper {
-	padding: 0 30px 30px;
-}
+#contentWrapper { padding: 0 30px 30px; }

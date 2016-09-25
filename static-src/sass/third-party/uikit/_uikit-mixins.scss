@@ -229,7 +229,7 @@
     box-shadow: 0 2px 5px rgba(0,0,0,.1);
 }
 @mixin hook-dropdown(){
-	width: 270px;
+	width: 225px;
 	font-family: 'Open Sans', sans-serif;
 	padding: 0;
 
@@ -243,15 +243,15 @@
 		position: absolute;
 		pointer-events: none;
 		border-color: rgba(56, 56, 56, 0);
-		border-bottom-color: #383838;
+		border-bottom-color: white;
 		border-width: 15px;
 		margin-left: -15px;
 	}
 
-	.dropdown-header 
-	{
-		background-color: #383838;
-		color: lighten(whitesmoke, 2%);
+	.dropdown-header {
+		background-color: white;
+		color: #383838;
+		// color: lighten(whitesmoke, 2%);
 		text-align: center;
 		padding: 9px 0;
 		font-size: 11px;
@@ -259,8 +259,7 @@
 		font-weight: 300;
 	}
 
-	.dropdown-content 
-	{
+	.dropdown-content {
 		min-height: 150px;
 		color: #383838;
 		padding: 10px;
@@ -268,8 +267,7 @@
 		border: 1px solid darken(whitesmoke, 15%);
 	}
 
-	.dropdown-footer
-	{
+	.dropdown-footer {
 		padding: 6px 0;
 		text-align: center;
 		color: #383838;

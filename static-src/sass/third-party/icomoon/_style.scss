@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: 'icomoon';
-  src:  url('#{$icomoon-font-path}/icomoon.eot?wviqy0');
-  src:  url('#{$icomoon-font-path}/icomoon.eot?wviqy0#iefix') format('embedded-opentype'),
-    url('#{$icomoon-font-path}/icomoon.ttf?wviqy0') format('truetype'),
-    url('#{$icomoon-font-path}/icomoon.woff?wviqy0') format('woff'),
-    url('#{$icomoon-font-path}/icomoon.svg?wviqy0#icomoon') format('svg');
+  src:  url('#{$icomoon-font-path}/icomoon.eot?yonsyn');
+  src:  url('#{$icomoon-font-path}/icomoon.eot?yonsyn#iefix') format('embedded-opentype'),
+    url('#{$icomoon-font-path}/icomoon.ttf?yonsyn') format('truetype'),
+    url('#{$icomoon-font-path}/icomoon.woff?yonsyn') format('woff'),
+    url('#{$icomoon-font-path}/icomoon.svg?yonsyn#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -26,14 +26,184 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-new-message {
+  &:before {
+    content: $icon-new-message;
+  }
+}
+.icon-cog {
+  &:before {
+    content: $icon-cog;
+  }
+}
+.icon-mail {
+  &:before {
+    content: $icon-mail;
+  }
+}
+.icon-quote {
+  &:before {
+    content: $icon-quote;
+  }
+}
+.icon-instagram {
+  &:before {
+    content: $icon-instagram;
+  }
+}
+.icon-linkedin {
+  &:before {
+    content: $icon-linkedin;
+  }
+}
+.icon-pinterest {
+  &:before {
+    content: $icon-pinterest;
+  }
+}
+.icon-tumblr {
+  &:before {
+    content: $icon-tumblr;
+  }
+}
+.icon-twitter {
+  &:before {
+    content: $icon-twitter;
+  }
+}
+.icon-rate_review {
+  &:before {
+    content: $icon-rate_review;
+  }
+}
+.icon-search {
+  &:before {
+    content: $icon-search;
+  }
+}
 .icon-circle-plus {
   &:before {
     content: $icon-circle-plus;
   }
 }
+.icon-circle-minus {
+  &:before {
+    content: $icon-circle-minus;
+  }
+}
+.icon-circle-check {
+  &:before {
+    content: $icon-circle-check;
+  }
+}
 .icon-circle-cross {
   &:before {
     content: $icon-circle-cross;
+  }
+}
+.icon-cloud-upload {
+  &:before {
+    content: $icon-cloud-upload;
+  }
+}
+.icon-cloud-download {
+  &:before {
+    content: $icon-cloud-download;
+  }
+}
+.icon-upload {
+  &:before {
+    content: $icon-upload;
+  }
+}
+.icon-download {
+  &:before {
+    content: $icon-download;
+  }
+}
+.icon-location2 {
+  &:before {
+    content: $icon-location2;
+  }
+}
+.icon-arrow-left {
+  &:before {
+    content: $icon-arrow-left;
+  }
+}
+.icon-arrow-right {
+  &:before {
+    content: $icon-arrow-right;
+  }
+}
+.icon-arrow-up {
+  &:before {
+    content: $icon-arrow-up;
+  }
+}
+.icon-arrow-down {
+  &:before {
+    content: $icon-arrow-down;
+  }
+}
+.icon-expand {
+  &:before {
+    content: $icon-expand;
+  }
+}
+.icon-contract {
+  &:before {
+    content: $icon-contract;
+  }
+}
+.icon-maximize {
+  &:before {
+    content: $icon-maximize;
+  }
+}
+.icon-minimize {
+  &:before {
+    content: $icon-minimize;
+  }
+}
+.icon-plus {
+  &:before {
+    content: $icon-plus;
+  }
+}
+.icon-minus {
+  &:before {
+    content: $icon-minus;
+  }
+}
+.icon-check {
+  &:before {
+    content: $icon-check;
+  }
+}
+.icon-cross {
+  &:before {
+    content: $icon-cross;
+  }
+}
+.icon-inbox {
+  &:before {
+    content: $icon-inbox;
+  }
+}
+.icon-outbox {
+  &:before {
+    content: $icon-outbox;
+  }
+}
+.icon-open {
+  &:before {
+    content: $icon-open;
+  }
+}
+.icon-ellipsis {
+  &:before {
+    content: $icon-ellipsis;
   }
 }
 .icon-mail2 {
@@ -49,11 +219,6 @@
 .icon-paper {
   &:before {
     content: $icon-paper;
-  }
-}
-.icon-reply {
-  &:before {
-    content: $icon-reply;
   }
 }
 .icon-location {
@@ -104,46 +269,6 @@
 .icon-cancel {
   &:before {
     content: $icon-cancel;
-  }
-}
-.icon-cog {
-  &:before {
-    content: $icon-cog;
-  }
-}
-.icon-mail {
-  &:before {
-    content: $icon-mail;
-  }
-}
-.icon-quote {
-  &:before {
-    content: $icon-quote;
-  }
-}
-.icon-instagram {
-  &:before {
-    content: $icon-instagram;
-  }
-}
-.icon-linkedin {
-  &:before {
-    content: $icon-linkedin;
-  }
-}
-.icon-pinterest {
-  &:before {
-    content: $icon-pinterest;
-  }
-}
-.icon-tumblr {
-  &:before {
-    content: $icon-tumblr;
-  }
-}
-.icon-twitter {
-  &:before {
-    content: $icon-twitter;
   }
 }
 

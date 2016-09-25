@@ -18,185 +18,121 @@ $border: 1px solid darken(whitesmoke, 10%);
 /*------------------------------------*\
     GENERAL STYLES
 \*------------------------------------*/
-#profileWrapper 
-{
-	padding-top: $headerHeight + 15px;
-	padding-bottom: 30px;
+#profileWrapper {
+    padding-top: $headerHeight + 15px;
+    padding-bottom: 30px;
 }
 
-#profile 
-{
-	position: relative;
-	margin: 0 5.5%; 
-	border: $border;
-	background-color: white;
-	font-size: 13px;
-	padding-bottom: 20px;
+#profile {
+    position: relative;
+    margin: 0 5.5%; 
+    border: $border;
+    background-color: white;
+    font-size: 13px;
+    padding-bottom: 20px;
 }
 
-.section-header 
-{
-	height: 50px;
-	line-height: 50px;
-	border-bottom: $border;
-	background: white;
-	font-size: 14px;
-	color: #808080;
-	letter-spacing: 0.5px;
-	text-align: center;
-	margin: 0 -25px 20px;
+.section-header {
+    height: 50px;
+    line-height: 50px;
+    border-bottom: $border;
+    background: white;
+    font-size: 14px;
+    color: #808080;
+    letter-spacing: 0.5px;
+    text-align: center;
+    margin: 0 -25px 20px;
 
-	&.border
-	{
-		border-top: $border;
-		margin: 20px -25px;
-	}
+    &.border {
+        border-top: $border;
+        margin: 20px -25px;
+    }
 }
 
-#username 
-{
-	line-height: 28px;
-	height: 28px;
+#username {
+    line-height: 28px;
+    height: 28px;
 }
 
-.uk-form-row label 
-{
-	font-weight: bold;
-	text-align: right;
-	margin: 0;
-	line-height: 28px;
+.uk-form-row label {
+    font-weight: bold;
+    text-align: right;
+    margin: 0;
+    line-height: 28px;
 }
 
 #preview,
-#edit 
-{
-	padding: 0 25px;
+#edit {
+    padding: 0 25px;
 }
 
-.btn-black
-{
-	width: 400px;
+.btn-black { width: 400px; }
+
+.btn-border {
+    border: 1px solid whitesmoke;
+    background: transparent;
+    color: white;
 }
+
+
 
 /*------------------------------------*\
-	#PREVIEW
+    #PREVIEW
 \*------------------------------------*/
-#preview 
-{
-	text-align: center;
-}
+    #preview { text-align: center; }
 
-.preview-details
-{
-	margin: 15px 0;
-}
+    .preview-details { margin: 15px 0; }
 
-.preview-details__name 
-{
-	font-size: 17px;
-	visibility: hidden;
+    .preview-details__name {
+        font-size: 17px;
+        visibility: hidden;
 
-	&.ng-binding
-	{
-		visibility: visible;
-	}
-}
+        &.ng-binding { visibility: visible; }
+    }
 
-.preview-details__title
-{
-	font-size: 13px;
-}
+    .preview-details__title { font-size: 13px; }
 
-.preview-social ul,
-.preview-stats ul
-{
-	list-style-type: none;
-	padding: 0;
-	margin: 0;
+    .preview-social ul,
+    .preview-stats ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
 
-	li 
-	{
-		display: inline-block;
-		padding: 4px 8px;
-	    cursor: pointer;
-	    font-size: 17px;
-	}
-}
+        li {
+            display: inline-block;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 17px;
+        }
+    }
 
-.edit-avatar,
-.custom-file-upload
-{
-	margin-top: 20px;
-}
+    .edit-avatar { margin-top: 20px; }
 
-.custom-file-upload
-{
-	display: none;
-	position: relative;
+    .preview-bio {
+        margin: 20px 0;
+        visibility: hidden;
 
-	&.filled .file-custom:after
-	{
-		content: "";
-	}
+        &.ng-binding { visibility: visible; }
+    }
 
-	.file-custom, 
-	.file-custom:before 
-	{
-		height: 1.95rem;
-    	line-height: 1;
-    	text-align: left;
-	}
+    .stats-name {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-	.cancel-upload
-	{
-		position: absolute;
-	    font-size: 20px;
-	    color: #6F6F6F;
-	    left: 45%;
-	    top: 0;
-	    cursor: pointer;
-
-	    &:hover 
-	    {
-	    	color: indianred;
-	    }
-	}
-}
-
-.preview-bio 
-{
-	margin: 20px 0;
-	visibility: hidden;
-
-	&.ng-binding
-	{
-		visibility: visible;
-	}
-}
-
-.stats-name
-{
-	font-size: 12px;
-	text-transform: uppercase;
-	letter-spacing: 0.5px;
-}
-
-.stats-value 
-{
-	font-size: 27px;
-	font-weight: bold;
-}
+    .stats-value {
+        font-size: 27px;
+        font-weight: bold;
+    }
 
 
 
 
 /*------------------------------------*\
-	#EDIT
+    #EDIT
 \*------------------------------------*/
-#edit 
-{
-	border-left: $border;
-}
+    #edit { border-left: $border; }
 
 
 
@@ -204,12 +140,13 @@ $border: 1px solid darken(whitesmoke, 10%);
 /*------------------------------------*\
     RESPONSIVENESS
 \*------------------------------------*/
-@media only screen
-and (max-width : 480px) {
-	#edit 
-	{
-		margin-top: 20px;
-    	border-top: 1px solid #dcdcdc;
-    	border-left: none;
-	}
-}
+    @media only screen
+    and (max-width : 480px) {
+        #edit {
+            margin-top: 20px;
+            border-top: 1px solid #dcdcdc;
+            border-left: none;
+        }
+    }
+
+

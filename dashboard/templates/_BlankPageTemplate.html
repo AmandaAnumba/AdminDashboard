@@ -20,9 +20,9 @@
         <meta name="apple-mobile-web-app-title" content="Empire Dashboard" />
         <meta name="theme-color" content="#FFFFFF" />
         <meta name="msapplication-navbutton-color" content="#FFFFFF" />
-        <link rel="icon" href="https://s3.amazonaws.com/media.amandanumba.com/favicon.png" />
-        <link rel="apple-touch-icon" href="https://s3.amazonaws.com/media.amandanumba.com/favicon.png" />
-        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Lato:400,300,700|Suranna|Playfair+Display:400,700italic,400italicf' rel='stylesheet' type='text/css' />
+        <link rel="icon" href="https://s3.amazonaws.com/chicreptawr/favicon.png" />
+        <link rel="apple-touch-icon" href="https://s3.amazonaws.com/chicreptawr/favicon.png" />
+        <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Lato:400,300,700|Suranna' />
         <script src="{% static 'js/modernizr.js' %}"></script>
 
         {% block head %}{% endblock head %}
@@ -34,6 +34,10 @@
 
     <body>
         <div id="content">
+            <div class="page-loader">
+                <div class="circle-loader">Loading...</div>
+            </div>
+        
             {% block content %}{% endblock content %}
 
             <footer>

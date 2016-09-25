@@ -1,13 +1,17 @@
-@import 'froala/froala-content';
-@import 'froala/froala-editor';
-@import 'froala/froala-style';
-
-
 /*------------------------------------*\
     Overrides/Cusomizations
 \*------------------------------------*/
-.froala-element 
-{
-	height: inherit !important;
+.froala-element {
 	background: white;
+	border: 1px solid rgba(34,36,38,0.15);
+	padding: 15px;
 }
+
+span.fr-placeholder {
+	padding: 15px !important;
+	font-style: normal;
+}
+
+@import 'froala/froala-content';
+@import 'froala/froala-editor';
+@import 'froala/froala-style';

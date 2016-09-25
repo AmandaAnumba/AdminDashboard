@@ -13,13 +13,13 @@ class Member(models.Model):
         ('W', 'Staff Writer')
     )
     AVATARS = {
-        '1':'/static/images/avatars/ade.jpg',
-        '2':'/static/images/avatars/chris.jpg',
-        '3':'/static/images/avatars/jenny.jpg',
-        '4':'/static/images/avatars/justen.jpg',
-        '5':'/static/images/avatars/nan.jpg',
-        '6':'/static/images/avatars/stevie.jpg',
-        '7':'/static/images/avatars/veronika.jpg'
+        '1':'ade.jpg',
+        '2':'chris.jpg',
+        '3':'jenny.jpg',
+        '4':'justen.jpg',
+        '5':'nan.jpg',
+        '6':'stevie.jpg',
+        '7':'veronika.jpg'
     }
     user                 = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar               = models.CharField(max_length=64, blank=True, default=AVATARS[str(randint(1,7))])
@@ -108,3 +108,15 @@ class Cycle(models.Model):
 
     def __str__(self):
         return self.title
+
+
+
+# class Message(models.Model):
+#     user                 = models.OneToOneField(User, on_delete=models.CASCADE)
+#     message              = models.CharField(max_length=1, choices=USER_ROLES, default="M")
+#     date              = models.CharField(max_length=1, choices=USER_ROLES, default="M")
+#     conversation         = SizedTextField(size_class=2, blank=True)
+
+#     def __str__(self):
+#         return self.user.username
+

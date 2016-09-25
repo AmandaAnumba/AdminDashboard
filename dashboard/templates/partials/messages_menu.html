@@ -1,9 +1,29 @@
 {% verbatim %}
-<nav id="messager">
-	<ul>
-		<li><a href="/">Home</a></li>
-		<li><a href="/about/">About us</a></li>
-		<li><a href="/contact/">Contact</a></li>
-	</ul>
+<nav id="messager" data-ng-controller="MessagesController as messager" lazyload>
+    <div id="mainPanel" class="Panel">
+        <ul></ul>
+        
+        <div class="Hidden">
+            <a class="Next" href="#newConvo"><span class="icon icon-rate_review"></span></a>
+        </div>
+    </div>
+    
+
+    <!-- subpanel -->
+    <div id="newConvo" class="Panel">
+        <p>This is the subpanel.</p>
+
+        <div class="Hidden">
+            <a class="Prev" href="#mainPanel"></a>
+        </div>
+    </div>
+
+    <div id="convo" class="Panel">
+        <p>This is where the conversation will display.</p>
+
+        <div class="Hidden">
+            <a class="Prev" href="#mainPanel"></a>
+        </div>
+    </div>
 </nav>
 {% endverbatim %}

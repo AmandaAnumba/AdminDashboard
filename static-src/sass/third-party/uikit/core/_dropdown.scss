@@ -92,7 +92,14 @@ $dropdown-scrollable-height:                     200px !default;
     /* 1 */
     font-size: $dropdown-font-size;
     vertical-align: top;
-    @include hook-dropdown-docs();
+
+    &:not(.uk-dropdown-menu) {
+        @include hook-dropdown-docs();
+    }
+
+    &.uk-dropdown-menu {
+        @include hook-dropdown();
+    }
 }
 
 /*

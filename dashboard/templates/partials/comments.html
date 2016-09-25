@@ -2,23 +2,23 @@
 <div class="panel-title">Recent Comments (<span class="count">{{ comments.count }}</span>)</div>
 
 <div class="panel-body" lazyload>
-	<div class="comment" ng-repeat="x in comments.list | orderBy : '-id'" data-comment-id="{{ x.id }}">
-		<div class="comment-avatar">
-			<img class="lazy" data-original="{{ x.avatar }}" width="40" height="40">
-		</div>
+    <div class="comment" ng-repeat="x in comments.list | orderBy : '-id'" data-comment-id="{{ x.id }}">
+        <div class="comment-avatar">
+            <img class="lazy" data-original="https://s3.amazonaws.com/chicreptawr/avatars/{{ x.avatar }}" width="40" height="40">
+        </div>
 
-		<div class="comment-data">
-			<div class="comment__info"><strong>{{ x.user }}</strong> commented on {{ x.article }} on {{ x.date }}</div>
-			<div class="comment__message">{{ x.comment }}</div>
-			<div class="comment__status">{{ x.status }}</div>
-		</div>
+        <div class="comment-data">
+            <div class="comment__info"><strong>{{ x.user }}</strong> commented on {{ x.article }} on {{ x.date }}</div>
+            <div class="comment__message">{{ x.comment }}</div>
+            <div class="comment__status">{{ x.status }}</div>
+        </div>
 
-		<div class="comment-actions">
-			<div>Approve?</div>
-			<span data-ng-click="comments.approve(x.id)" class="icon-checkmark"></span>
-			<span data-ng-click="comments.deny(x.id)" class="icon-cancel"></span>
-		</div>
-	</div>
+        <div class="comment-actions">
+            <div>Approve?</div>
+            <span data-ng-click="comments.approve(x.id)" class="icon-checkmark"></span>
+            <span data-ng-click="comments.deny(x.id)" class="icon-cancel"></span>
+        </div>
+    </div>
 </div>
 
 <div class="panel-title">View All Comments</span></div>

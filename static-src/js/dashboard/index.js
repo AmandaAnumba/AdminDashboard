@@ -8,4 +8,5 @@ angular
 	.directive('lazyload', require('./lazyload.directive'))
 	.controller('CommentsController', require('./comments.controller'))
 	.controller('DashboardController', require('./dashboard.controller'))
-	.controller('HeaderController', require('./header.controller'));
+	.controller('HeaderController', require('./header.controller'))
+	.controller('MessagesController', require('./messages.controller'));

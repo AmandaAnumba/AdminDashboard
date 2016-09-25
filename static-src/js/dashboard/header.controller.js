@@ -1,14 +1,12 @@
 'use strict';
 
-var HeaderController = function($timeout, logger, moment, localStorageService, mmenu) {
+var HeaderController = function($timeout, logger, localStorageService, mmenu, dataService) {
     var header = this;
     header.openMessenger = openMessenger;
     header.mail = [];
-    header.count = 0;
+    header.count = 2;
 
     var messageDisplayed = localStorageService.get('messageDisplayed');
-
-    logger.log(messageDisplayed);
 
     activate();
 
@@ -17,9 +15,9 @@ var HeaderController = function($timeout, logger, moment, localStorageService, m
     * @desc Actions to be performed when this controller is instantiated
     */
     function activate() {
+        pollMessages();
+        
         if ( !messageDisplayed ) {
-            pollMessages();
-            
             $timeout(function(){
                 logger.info('You just received a new message.');
                 displayMessage();
@@ -28,33 +26,32 @@ var HeaderController = function($timeout, logger, moment, localStorageService, m
         } else {
             displayMessage();
         }
-
         mmenu.init();
     }
 
     function pollMessages() {
-        getExampleMessage();
+        logger.log('HeaderController.pollMessages()');
+        getMessages();
+        // header.count = header.mail.length;
     }
 
     function displayMessage() {
-        header.count = header.mail.length || 1;
+        logger.log('HeaderController.displayMessage()');
 
         var $badge = $('.mini-nav li:nth-child(2) .uk-badge');
-        if ( $badge.hasClass('uk-hidden') ) {
+        if ( header.count > 0 ) {
+            logger.log('reveal the badge');
+            logger.log(header.count);
             $badge.removeClass('uk-hidden');
         }
     }
 
-    function getExampleMessage() {
-        var msg = {
-            from: 'rebecca',
-            sent: moment().fromNow(),
-            content: "I need helping editing this article...something with the wording in the 2nd paragraph. Help me take a look? I've highlighted the section I need you to look at.",
-            article: "<a href='#'>Through the Wire</a>."
-        };
+    function getMessages() {
+        logger.log('HeaderController.getMessages()');
 
+        var msg = dataService.moreMessages();
         header.mail.push(msg);
-        return header.mail;
+        header.count = header.mail.length;
     }
 
     function openMessenger() {

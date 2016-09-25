@@ -10,6 +10,12 @@ $(function() {
 		"navbar": {
 			"title": "Messages"
 		},
+		"navbars": [
+            {
+               "content": [ "prev", "title", "next" ],
+               "position": "top"
+            }
+        ],
 		"offCanvas": {
 			"pageSelector": "#content",
 			"position": "right",

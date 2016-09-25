@@ -1,0 +1,13 @@
+{% verbatim %}
+<li class="message" ng-repeat="y in messager.list | orderBy : 'id'" data-message-id="{{ y.id }}" data-ng-click="messager.view(y.id)">
+    <div class="message-avatar">
+        <img src="https://s3.amazonaws.com/chicreptawr/avatars/{{ y.avatar }}" width="35" height="35">
+    </div>
+
+    <div class="message-data">
+        <div class="message__user">{{ y.user }}</div>
+        <div class="message__message">{{ y.message }}</div>
+        <div class="message__date">{{ y.date }}</div>
+    </div>
+</li>
+{% endverbatim %}

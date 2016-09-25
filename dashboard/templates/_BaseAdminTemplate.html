@@ -2,22 +2,22 @@
 
 
 {% block head %}
-	{% block addtlStyles %}{% endblock addtlStyles %}
+    {% block addtlStyles %}{% endblock addtlStyles %}
 {% endblock head %}
 
 
 {% block content %}
-	<main>
-		{% include "partials/header.html" %}
-		
-		{% block addtlContent %}{% endblock addtlContent %}
-		
-		{% include "partials/mobile_menu.html" %}
-		{% include "partials/messages_menu.html" %}
-	</main>
+    <main>
+        {% include "partials/header.html" %}
+        
+        {% block addtlContent %}{% endblock addtlContent %}
+        
+        {% include "partials/mobile_menu.html" %}
+        {% include "partials/messages_menu.html" %}
+    </main>
 {% endblock content %}
 
 
 {% block footer %}
-	{% block addtlScripts %}{% endblock addtlScripts %}
+    {% block addtlScripts %}{% endblock addtlScripts %}
 {% endblock footer %}

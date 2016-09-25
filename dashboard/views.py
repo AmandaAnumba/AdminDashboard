@@ -66,7 +66,7 @@ def login_view(request):
             else:
                 return JsonResponse({ 'error': 'Your account has been disabled. Please contact <email> for assistance.'})
         else:
-            return JsonResponse({ 'error': "The username and/or password were incorrect."})
+            return JsonResponse({ 'error': "The username/password combination is incorrect."})
     else:
         return redirect(index)
 

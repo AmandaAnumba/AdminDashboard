@@ -1,3 +1,10 @@
 @import 'mmenu/jquery.mmenu.all';
 @import 'mmenu/jquery.mmenu.offcanvas';
 @import 'mmenu/jquery.mmenu.positioning';
+
+/* overrides */
+.mm-panels>.mm-panel>.mm-listview {
+    margin: 0;
+}
+
+.Hidden { display: none; }

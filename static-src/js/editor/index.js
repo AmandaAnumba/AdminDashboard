@@ -8,5 +8,6 @@ angular
 	.factory('autosaveService', require('./autosave.factory'))
 	.directive('wysiwyg', require('./wysiwyg.directive'))
 	.directive('dropdown', require('./dropdown.directive'))
+	.directive('header', require('./header.directive'))
 	.controller('ModalsController', require('./modals.controller'))
 	.controller('EditorController', require('./editor.controller'));
