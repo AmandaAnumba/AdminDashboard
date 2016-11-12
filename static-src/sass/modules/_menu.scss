@@ -1,95 +1,127 @@
-/**
- *  
- * styles for the left side menu 
- * (replace by push menu on mobile devices)
- *
-**/
-$menuWidth: 170px;
-$menuColor: #323436;
-$logoHighlightColor: #9CC7B9;
-$listElHeight: 75px;
+@import "../third-party/mmenu/_imp/import";
+@include mm_sizing('.mm-small', .30, 30%, 75%);
 
-#menuWrapper 
-{
-    height: 100%;
-    position: fixed;
-    width: $menuWidth;
-    background: $menuColor;
-    z-index: 50;
-    top: 0;
-    left: 0;
-}
+$border: 1px solid #ccc;
+#menu {
+    background: white;
+    border-right: $border;
 
-#menu 
-{
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    color: #AFB4BA;
-
-    li 
-    {
-        height: $listElHeight;
-        line-height: $listElHeight;
-        border-bottom: 1px solid #2F2F2F;
-        // padding-left: 35px;
-        text-align: center;
-
-        a 
-        {
-            display: block;
-            height: inherit;
-
-            &:hover,
-            &:focus
-            {
-                color: white;
-                outline: none;
-            }
-        }
-
-        &:hover,
-        &.active 
-        {
-            background-color: #1D1F24;
-
-            a
-            {
-                color: white;
-            }
-        }
-
-        &.disabled 
-        {
-            cursor: not-allowed;
-        }
-    }
-
-    li:first-child
-    {
-        height: $headerHeight + 1;
-        line-height: $headerHeight - 2;
-        background: $logoHighlightColor;
-        text-align: center;
-        padding: 0;
-
-        &:hover 
-        {
-            background: $logoHighlightColor;
-        }
-    }
+    &:not(.mm-offcanvas) { display: none; }
     
-    .icon 
-    {
-        padding-right: 10px;
+    .mm-panel { padding: 0 30px; }
+
+    .menu__title {
+        text-align: center;
+        font-size: 17px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin: 25px 0;
     }
 
-    .menu-item
-    {
-        font-size: 11px;
-        letter-spacing: 0.8px;
+    .menu__subtitle {
+        font-size: 10px;
         text-transform: uppercase;
-        font-family: "Open Sans",sans-serif;
+        letter-spacing: 0.7px;
+        padding-bottom: 6px;
+        border-bottom: $border;
+        margin-top: 50px;
+    }
+
+    .mm-listview>li:not(.mm-divider):after { display: none; }
+
+    .mm-listview>li {
+        font-size: 12px;
+        
+        &.active {
+            background-color: whitesmoke;
+            font-weight: bold;
+        }
+    }
+
+    .display-mobile { 
+        display: none;
+        // position: absolute;
+        // bottom: 0;
+        // left: 0;
+        // right: 0;
+        clear: both;
+        border-top: $border;
+        margin-top: 30px;
+        position: relative;
+        margin: 30px -30px;
+
+
+        $height: 50px;
+        div {
+            display: inline-block;
+            width: 50%;
+            float: left;
+            text-align: center;
+            height: $height;
+            line-height: $height;
+            box-sizing: border-box;
+            font-size: 12px;
+
+            &:first-child { 
+                border-right: $border;
+            }
+        }
     }
 }
+
+
+
+/*------------------------------------*\
+    RESPONSIVENESS
+\*------------------------------------*/
+    @media only screen
+    and (max-width : 780px) {
+        $width: 40%;
+        .mm-small.mm-opened {
+            #menu {
+                width: $width;
+                min-width: $width;
+            }
+
+            #content {
+                transform: translate($width, 0);
+                transform: translate3d($width, 0, 0);
+            }
+        }
+    }
+
+    @media only screen
+    and (max-width : 535px) {
+        #menu .display-mobile { display: block; }
+        
+        $width: 55%;
+        .mm-small.mm-opened {
+            #menu {
+                width: $width;
+                min-width: $width;
+            }
+
+            #content {
+                transform: translate($width, 0);
+                transform: translate3d($width, 0, 0);
+            }
+        }
+    }
+
+    @media only screen
+    and (max-width : 450px) {
+        $width: 75%;
+        .mm-small.mm-opened {
+            #menu {
+                width: $width;
+                min-width: $width;
+            }
+
+            #content {
+                transform: translate($width, 0);
+                transform: translate3d($width, 0, 0);
+            }
+        }
+    }
+
+

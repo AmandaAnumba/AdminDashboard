@@ -1,4 +1,8 @@
 <header id="headerWrapper" data-ng-controller="HeaderController as header">
+    <div id="hmbrgr">
+        <a href="#" class="hmbrgr" data-ng-click="app.toggleMenu()" hmbrgr></a>
+    </div>
+
     <div id="logo">
         <a href="{% url 'dashboard' %}">
             {% if data.page == 'dashboard' %}
@@ -21,9 +25,11 @@
             </div>
             <div class="username">{{ user.user.username }} <i class="uk-icon-caret-down"></i></div>
             
-            <div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom">
+            <div class="uk-dropdown uk-dropdown-menu uk-dropdown-navbar uk-dropdown-bottom">
+                <div class="dropdown-header">Menu</div>
+
                 <div class="dropdown-content">
-                    <ul class="uk-nav uk-nav-navbar">
+                    <ul>
                         <li><a href="{% url 'profile' %}">Edit Profile</a></li>
                     </ul>
                 </div>
@@ -34,12 +40,12 @@
         <li class="uk-parent nav-item" data-uk-dropdown="{mode:'click',pos:'bottom-center'}" aria-haspopup="true" aria-expanded="false">
             <a href="javascript:void(0);">
                 <span class="icon icon-mail2"></span>
-                <div class="uk-badge uk-badge-danger uk-badge-notification uk-hidden">{{ header.count }}</div>
+                <div class="uk-badge uk-badge-danger uk-badge-notification uk-hidden" data-ng-class="{ 'uk-hidden': header.mailCount === 0 }">{{ header.mailCount }}</div>
             </a>
 
             <div class="uk-dropdown uk-dropdown-menu uk-dropdown-navbar uk-dropdown-bottom">
                 <div class="dropdown-header">
-                    <ng-pluralize count="header.count"
+                    <ng-pluralize count="header.mailCount"
                         when="{'0': 'Messages',
                                '1': '{} New Message',
                                'other': '{} New Messages'}">
@@ -47,7 +53,7 @@
                 </div>
 
                 <div class="dropdown-content">
-                    <div data-ng-show="header.count = '0'">No recent messages</div>
+                    <div data-ng-show="header.mailCount === 0">No recent messages</div>
 
                     <div class="message" ng-repeat="x in header.mail">
                         <div class="message-avatar">
@@ -55,39 +61,17 @@
                         </div>
 
                         <div class="message-data">
-                            <div class="message__info"><strong>{{ x.form }}</strong></div>
-                            <div class="message__message">{{ x.message }} {{ x.article }}</div>
+                            <div class="message__info"><strong>{{ x.from }}</strong></div>
+                            <div class="message__message">{{ x.message }}</div>
                             <div class="message__date">{{ x.sent }}</div>
-                        </div>
-
-                        <div class="message-actions">
-                            <div>Approve?</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="dropdown-footer" data-ng-click="header.openMessenger()">View all Messages</div>
+                <div class="dropdown-footer" data-ng-click="app.openMessenger()">View all Messages</div>
             </div>
         </li>
         {% endverbatim %}
-        
-        {% comment %}
-        <li class="uk-parent nav-item" data-uk-dropdown="{mode:'click',pos:'bottom-center'}" aria-haspopup="true" aria-expanded="false">
-            <a href="javascript:void(0);"><span class="icon icon-cog"></span></a>
-
-            <div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom">
-                <ul class="uk-nav uk-nav-navbar">
-                    <li><a href="{% url 'profile' %}">Profile</a></li>
-                    
-                    <div class="hidden-menu">
-                        <li><a data-ng-click="header.openMessenger()">View Messages</a></li>
-                        <li class="uk-nav-divider"></li>
-                        <li><a href="#">Logout</a></li>
-                    </div>
-                </ul>
-            </div>
-        </li>
-        {% endcomment %}
 
         <li class="nav-item">
             <a href="{% url 'logout' %}">
@@ -95,7 +79,7 @@
             </a>
         </li>
 
-        <li class="uk-parent nav-item display-none" data-uk-dropdown="{mode:'click',pos:'bottom-center'}" aria-haspopup="true" aria-expanded="false">
+        <li class="uk-parent nav-item display-mobile" data-uk-dropdown="{mode:'click',pos:'bottom-center'}" aria-haspopup="true" aria-expanded="false">
             <div class="avatar">
                 <img src="https://s3.amazonaws.com/chicreptawr/avatars/{{ user.avatar }}" alt="avatar" />
             </div>
@@ -105,9 +89,9 @@
                 <div class="dropdown-content">
                     <ul class="uk-nav uk-nav-navbar">
                         <li><a href="{% url 'profile' %}">Profile</a></li>
-                        <li><a data-ng-click="header.openMessenger()">View Messages</a></li>
+                        <li><a href="javascript:void(0);" data-ng-click="app.openMessenger()">View Messages</a></li>
                         <li class="uk-nav-divider"></li>
-                        <li><a href="#">Logout</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
                     </ul>
                 </div>
             </div>

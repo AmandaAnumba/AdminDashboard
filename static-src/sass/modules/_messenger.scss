@@ -1,5 +1,8 @@
-#messager {
+#messenger {
+    &:not(.mm-offcanvas) { display: none; }
+    
     background-color: white;
+    box-shadow: 0px 4px 17px #dedede;
     
 
     $padding: 15px;
@@ -9,6 +12,10 @@
     
     .mm-listview>li:not(.mm-divider):last-child:after {
         border: none;
+    }
+
+    .mm-listview>li:not(.mm-divider):after {
+        left: 0;
     }
 
     .mm-navbar {
@@ -23,9 +30,7 @@
         .mm-next {
             padding-right: 30px;
 
-            &:after {
-                border: none;
-            }
+            &:after { border: none; }
         }
 
         .icon {
@@ -44,11 +49,10 @@
     }
 
     .message {
-        cursor: pointer;
         @include transition(all 0.4s ease-in-out);
+        cursor: pointer;
+        padding: 15px;
 
-        &:hover {
-            background-color: whitesmoke;
-        }
+        &:hover { background-color: whitesmoke; }
     }
 }

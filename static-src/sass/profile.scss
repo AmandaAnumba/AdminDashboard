@@ -1,7 +1,6 @@
-/* core styles for admin pages */
 @import 'modules/admin';
 @import 'modules/button';
-// import uikit
+@import 'modules/message';
 
 /**
  *  
@@ -74,6 +73,13 @@ $border: 1px solid darken(whitesmoke, 10%);
     color: white;
 }
 
+.uk-tooltip { 
+    color: white;
+    max-width: 250px;
+}
+
+.submit-btn { text-align: center; }
+
 
 
 /*------------------------------------*\
@@ -128,7 +134,6 @@ $border: 1px solid darken(whitesmoke, 10%);
 
 
 
-
 /*------------------------------------*\
     #EDIT
 \*------------------------------------*/
@@ -136,16 +141,29 @@ $border: 1px solid darken(whitesmoke, 10%);
 
 
 
-
 /*------------------------------------*\
     RESPONSIVENESS
 \*------------------------------------*/
     @media only screen
+    and (max-width : 768px) {
+        #edit { 
+            border-left: none; 
+
+            > .section-header { 
+                border-top: $border;
+                margin-top: 20px;
+            }
+        }
+    }
+
+    @media only screen
     and (max-width : 480px) {
-        #edit {
-            margin-top: 20px;
-            border-top: 1px solid #dcdcdc;
-            border-left: none;
+        .uk-form-row label { text-align: left; }
+
+        .submit-btn {
+            margin: 0 5.5%;
+
+            .btn-black { width: 100%; }
         }
     }
 

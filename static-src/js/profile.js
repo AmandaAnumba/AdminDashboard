@@ -20,4 +20,7 @@ angular
 
 require('./core');
 require('./blocks');
+require('./header');
+require('./menu');
+require('./messenger');
 require('./profile/index');

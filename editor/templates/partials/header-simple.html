@@ -1,0 +1,15 @@
+<header>
+    <div id="links">
+        <ul>
+            <li><a href="/dashboard/"><i class="icon-arrow-left"></i></a></li>
+            <li data-ng-click="vm.articlePublish()">Publish</li>
+            <li data-ng-click="vm.articleSave()">Save</li>
+            <li data-ng-click="vm.articleDelete()">Delete</li>
+            <div class="auto-save">saved <span data-ng-bind="vm.savedLast"></span></div>
+        </ul>
+    </div>
+    
+    <div id="hmbrgr"> 
+        <a href="#" class="hmbrgr" data-ng-click="vm.toggleMenu()" hmbrgr></a>
+    </div>
+</header>

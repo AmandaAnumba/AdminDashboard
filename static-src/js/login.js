@@ -13,4 +13,6 @@ angular
 
 require('./core');
 require('./blocks');
+require('./messenger');
+require('./menu');
 require('./authentication');

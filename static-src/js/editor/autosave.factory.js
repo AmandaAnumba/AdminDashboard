@@ -1,19 +1,14 @@
 'use strict';
 
-var autosaveService = function($interval, localStorageService) {
+var Autosave = function(logger, moment, localStorageService) {
     var service = {
-            // init: init,
-            startAutosave: startAutosave,
-            stopAutosave: stopAutosave,
+            init: init,
             save: save,
-            recover: recover,
             load: load,
             removeItem: removeItem,
-            clearAll: clearAll
-        },
-        interval,
-        autosaveStarted = false,
-        storageItems;
+            clearAll: clearAll,
+            saveInterval: 60000
+        };
 
     return service;
 
@@ -21,40 +16,26 @@ var autosaveService = function($interval, localStorageService) {
     ////////////////////////
 
 
-    function startAutosave() {
-        /* save current progress every minute */
-        $interval.cancel(interval);
-        autosaveStarted = true;
-    }
+    function init() {
+        logger.log('Autosave.init()');
 
-    function stopAutosave() {
-        interval = $interval(save, 60000);
-        autosaveStarted = false;
-    }
-
-    function recover() {
-        var lsLength = localStorageService.length();
+        var lsLength = localStorageService.length(),
+            drafts = [];
 
         if (lsLength > 0) {
-            $('#draftsList').empty();
-            
             var keys = localStorageService.keys();
-
             $.each(keys, function(index, key) {
-                var item = getItem(key),
-                    x = JSON.parse(item),
-                    html = '<li><span class="icon-circle-cross dLS" style="color:indianred;padding-right:15px;" data-ng-click="removeFromLS(' + key + ');"></span><span class="loadLS" style="cursor:pointer;" data-ng-click="loadFromLS(' + key + ')">' + x.title + ' - ' + x.timestamp + '</span></li>';
-                $('#draftsList').append(html);
+                var item = get(key),
+                    x = JSON.parse(item);
+                drafts.push[x];
             });
-        } else {
-            if ( !autosaveStarted ) {
-                startAutosave();
-            }
-        }   
+        }
+
+        return drafts; 
     }
 
     function load(key) {
-        var retrieved = localStorage.getItem(key),
+        var retrieved = localStorage.get(key),
             x = JSON.parse(retrieved);
 
         $('#post input[name=title]').val(x.title);
@@ -124,80 +105,23 @@ var autosaveService = function($interval, localStorageService) {
         // window.setInterval(autosave,60000);
     }
 
-    function save() {
-        var title           = $('#post input[name=title]').val(),
-            author          = $('#post input[name=author]').val(),
-            description     = $('#post textarea[name=description]').val(),
-            content         = $('#editor').editable('getHTML', false, true),
-            featureIMG      = $('#post input[name=featureIMGurl]').val(),
-            releaseDate     = $('input[name=release]').val(),
-            doctype         = $('#post input[name=doctype]:checked').val(),
-            docstyle        = $('#post input[name=docstyle]:checked').val(),
-            headerIMG       = $('#post input[name=headerIMGurl]').val(),
-            photoCred       = $('#post input[name=photo_cred]').val(),
-            selected        = [],
-            options         = [],
-            release         = "",
-            coAuthors       = [];
-
-        $('#tags_list p').each(function() {
-            selected.push($(this).text());
-        });
-        var tags = selected.join(", ");
-
-        $('#category option:selected').each(function() {
-            options.push($(this).val());
-        });
-        var category = options.join(", ");
-
-        if (title === "") {
-            var date = moment().format("MM/D/YYYY");
-            title = "Article "+ date;
+    function save( article ) {
+        if (article.title === "") {
+            var date = moment().format("MM/DD/YYYY");
+            article.title = "Article "+ date;
         }
 
-        if (releaseDate === "") {
-            release = null;
-        }
+        set(article.title, JSON.stringify(article));
 
-        if (releaseDate !== "") {
-            release = moment(releaseDate).toArray().toString();
-        }
-
-        if (featureIMG === "") {
-            if ($('#headerSame').prop("checked")) {
-                featureIMG = 'same';
-            }
-            else {
-                featureIMG = '';
-            }
-        }
-
-        $('#more-authors input:checkbox:checked').each(function() {
-            coAuthors.push($(this).val());
-        });
-        var ca = coAuthors.join(", ");
-
-        var x = {};
-        x.title = title;
-        x.author = author;
-        x.description = description;  
-        x.content = content; 
-        x.featureIMG = featureIMG;
-        x.releaseDate = release; 
-        x.doctype = doctype;  
-        x.docstyle = docstyle;  
-        x.headerIMG = headerIMG;    
-        x.coAuthor = ca;      
-        x.tags = tags;
-        x.category = category;
-        x.photoCred = photoCred;
-        x.timestamp = moment().format('MMMM Do YYYY, h:mm a');
-
-        // localStorage.clear();
-        localStorage.setItem(title, JSON.stringify(x));
+        /* update title */
+        return moment().fromNow();
     }
 
-    function getItem(key) {
+    function set(key, val) {
+        return localStorageService.set(key, val);
+    }
+
+    function get(key) {
         return localStorageService.get(key);
     }
 
@@ -210,4 +134,4 @@ var autosaveService = function($interval, localStorageService) {
     }
 };
 
-module.exports = autosaveService;
+module.exports = Autosave;

@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^dashboard/$', views.dashboard, name="dashboard"),
     url(r'^dashboard/profile/$', views.profile, name="profile"),
     url(r'^dashboard/articles/$', views.articles, name="articles"),
+    url(r'^dashboard/gallery/$', views.gallery, name="gallery"),
 ]

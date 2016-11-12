@@ -7,6 +7,7 @@ module.exports = {
 		browserify: true,
 		reporter : require('jshint-stylish'),
 		"-W030": true,
+		'esversion': 6,
 		globals: {
 			'$': true,
 			'console': false,

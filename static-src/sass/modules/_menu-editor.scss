@@ -1,0 +1,136 @@
+@import "../third-party/mmenu/_imp/import";
+@include mm_sizing('.mm-small', .30, 140px, 300px);
+@include mm_sizing_right('.mm-small', .30, 140px, 300px);
+
+
+/**
+ *  
+ * styles for the article header image
+ * article types: feature and regular
+ *      + feature - long top image
+ *      + regular - small side image
+ *
+**/
+
+#menu {
+    @include clearfix();
+    background: #393939;
+    color: darken(whitesmoke, 30%);
+
+    .mm-panel { padding: 15px; }
+    
+
+
+    // ----- mmenu overrides
+    .mm-panels>.mm-panel:after, 
+    .mm-panels>.mm-panel:before {
+        height: 0px;
+    }
+    
+    .mm-listview>li:not(.mm-divider):after { display: none; }
+
+    .mm-listview>li {
+        font-size: 12px;
+        
+        &.active {
+            background-color: whitesmoke;
+            font-weight: bold;
+        }
+    }
+
+
+    // ----- semantic accordian overrides
+    .ui.styled.accordion, 
+    .ui.styled.accordion .accordion {
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+    }
+    
+    .ui.styled.accordion .title {
+        font-size: 13px;
+        letter-spacing: 1.5px;
+        font-weight: 100;
+        text-transform: uppercase;
+        color: whitesmoke;
+
+        &:not(:first-child) {
+            border-top: 1px solid rgba(123, 123, 123, 0.15);
+        }
+
+        span {
+            text-transform: lowercase;
+            float: right;
+            color: #868686;
+            font-weight: normal;
+            letter-spacing: 0;
+        }
+    }
+
+
+
+    // ----- menu styles
+    .sidebar__block + .sidebar__block {
+        margin-top: 15px;
+    }
+
+    .sidebar__title {
+        font-size: 11px;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+        
+    .ui label,
+    .ui.toggle.checkbox input:checked ~ label { 
+        color: inherit !important; 
+    }
+
+    .ui.multiple.dropdown>.label {
+        font-size: 11px;
+    }
+    
+    &:not(.mm-offcanvas) { display: none; }
+    
+    .menu__title {
+        text-align: center;
+        font-size: 17px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin: 25px 0;
+    }
+
+    .menu__subtitle {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        padding-bottom: 5px;
+        margin-top: 15px;
+    }
+
+    .article__layout {
+        @include clearfix();
+        
+        > div {
+            text-align: center;
+            float: left;
+            width: 50%;
+            cursor: pointer;
+            padding: 10px 10px 5px;
+            
+            &:hover,
+            &.selected { background-color: #191919; }
+        }
+
+        .layout__img {
+            width: 90px;
+            border: 2px solid #6d6e71;
+            border-radius: 3px;
+        }
+
+        .layout__title {
+            font-size: 12px;
+            text-transform: lowercase;
+        }
+    }
+}

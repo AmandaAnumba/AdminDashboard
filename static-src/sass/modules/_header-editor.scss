@@ -6,78 +6,129 @@
  * (replaced by push menu/mmenu on mobile devices)
  *
 **/
+
 $height: 50px;
-$padding: $height / 2;
+$padding: 45px;
 
-#header {
-	@include transition-duration(.2s);
-	height: $height;
-	background: rgba(0, 0, 0, 0.8);
-	border-bottom: 1px solid #484848;
-	box-shadow: 0 0px 6px rgba(0,0,0,0.15);
-	color: whitesmoke;
-	font-size: 13px;
-	padding: 0 $padding;
-	top: 0;
-	left: 0;
-	right: 0;
-	z-index: 999;
-	position: fixed;
-	
-	.icon {
-		font-size: 17px;
-		vertical-align: -2px;
-		padding-right: 3px;
-		
-		&.icon-trash-can2 {
-			font-size: 21px;
-		}
-	}
+header {
+    @include clearfix();
+    height: $height;
+    line-height: $height;
+    
+    #hmbrgr { 
+        height: $height;
+        line-height: $height + 6;
+        margin-right: $padding;
+        float: right;
+    }
+
+    #links {
+        margin-left: $padding;
+        float: left;
+        height: $height;
+        line-height: $height;
+
+        ul {
+            @include list-inline();
+            color: #aaa;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.1px;
+        }
+
+        li {
+            @include transition(all, 0.2s, ease-in-out);
+            margin-left: 1.5em;
+            padding: 0px 12px;
+            cursor: pointer;
+            
+            &:hover {
+                color: black;
+            }
+        }
+
+        .auto-save {
+            line-height: 1;
+            text-transform: lowercase;
+            color: black;
+            letter-spacing: 0.5px;
+        }
+    }
 }
 
-#back {
-	line-height: $height;
-	float: left;
-	display: block;
-}
 
-#docLinks {
-	position: absolute;
-	left: 75px;
-	right: 0;
-	width: 50%;
 
-	.ui.menu {
-		margin: 0;
-	}
 
-	ul {
-		@include list-inline();
-		width: auto;
-		font-weight: bold;
-		height: $height;
-		line-height: $height;
-		float: left;
-	}
-}
 
-#extraLinks {
-	@include list-inline();
-	padding-right: $padding;
-	float: right;
-	height: $height;
-	line-height: $height;
+// #header {
+//  @include transition-duration(.2s);
+//  height: $height;
+//  background: rgba(0, 0, 0, 0.8);
+//  border-bottom: 1px solid #484848;
+//  box-shadow: 0 0px 6px rgba(0,0,0,0.15);
+//  color: whitesmoke;
+//  font-size: 13px;
+//  padding: 0 $padding;
+//  top: 0;
+//  left: 0;
+//  right: 0;
+//  z-index: 999;
+//  position: fixed;
+    
+//  .icon {
+//      font-size: 17px;
+//      vertical-align: -2px;
+//      padding-right: 3px;
+        
+//      &.icon-trash-can2 {
+//          font-size: 21px;
+//      }
+//  }
+// }
 
-	.item {
-		margin-left: 1.5em;
-		padding: 6px 8px;
-		font-size: 13px;
-		cursor: pointer;
+// #back {
+//  line-height: $height;
+//  float: left;
+//  display: block;
+// }
 
-		&:hover {
-			@include border-radius(3px);
-			background-color: lighten(#2c82c9, 5%);
-			color: whitesmoke;
-		}
-	}
-}
+// #docLinks {
+//  position: absolute;
+//  left: 75px;
+//  right: 0;
+//  width: 50%;
+
+//  .ui.menu {
+//      margin: 0;
+//  }
+
+//  ul {
+//      @include list-inline();
+//      width: auto;
+//      font-weight: bold;
+//      height: $height;
+//      line-height: $height;
+//      float: left;
+//  }
+// }
+
+// #extraLinks {
+//  @include list-inline();
+//  padding-right: $padding;
+//  float: right;
+//  height: $height;
+//  line-height: $height;
+
+//  .item {
+//      margin-left: 1.5em;
+//      padding: 6px 8px;
+//      font-size: 13px;
+//      cursor: pointer;
+
+//      &:hover {
+//          @include border-radius(3px);
+//          background-color: lighten(#2c82c9, 5%);
+//          color: whitesmoke;
+//      }
+//  }
+// }

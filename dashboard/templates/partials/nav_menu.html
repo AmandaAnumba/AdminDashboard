@@ -1,43 +1,40 @@
-<nav id="menuWrapper">
-	<ul id="menu">
-		<li>
-			<a href="{% url 'dashboard' %}">
-				<img src="" alt="Empire" width="50">
-			</a>
-		</li>
+<nav id="menu" class="mm-small" data-ng-controller="MenuController as menu">
+    <div class="Panel">
+        <div class="menu__title">Dashboard</div>
+        
+        <div class="menu__subtitle">Menu</div>
+        <ul>
+            <li><a href="{% url 'write' %}">Editor</a></li>
+            
+            {% if user.role == 'F' %}
+                <li><a href="javascript:void(0);">Review</a></li>
 
-		<li id="write">
-			<a href="">
-				<div class="menu-item">
-					<span>Write</span>
-				</div>
-			</a>
-		</li>
-		
-		{% if user.role == 'F' %}
-			<li id="review">
-				<a href="">
-					<div class="menu-item">
-						<span>Review</span>
-					</div>
-				</a>
-			</li>
+                <li {% if data.page == 'articles' %} class="active" {% endif %}><a href="{% url 'articles' %}">All Articles</a></li>
+            {% endif %}
+            
+            <li><a href="javascript:void(0);">Review Comments</a></li>
+            <li><a href="{% url 'gallery' %}">Gallery</a></li>
+        </ul>
 
-			<li id="all">
-				<a href="">
-					<div class="menu-item">
-						<span>All Articles</span>
-					</div>
-				</a>
-			</li>
-		{% endif %}
-		
-		<li>
-			<a href="javascript:void(0)">
-				<div class="menu-item">
-					<span>Comments</span>
-				</div>
-			</a>
-		</li>
-	</ul>
+        <div class="menu__subtitle">Recent Updates</div>
+
+        {% verbatim %}
+        <div class="message" ng-repeat="x in menu.messages">
+            <div class="message-avatar">
+                <img src="https://s3.amazonaws.com/chicreptawr/avatars/molly.png" width="40" height="40">
+            </div>
+
+            <div class="message-data">
+                <div class="message__info"><strong>{{ x.from }}</strong></div>
+                <div class="message__message">{{ x.message }}</div>
+                <div class="message__date">{{ x.sent }}</div>
+            </div>
+        </div>
+        {% endverbatim %}
+
+        <div class="display-mobile">
+            <div><a href="{% url 'profile' %}">Profile</a></div>
+            <div><a href="{% url 'logout' %}">Logout</a></div>
+        </div>
+    </div>
 </nav>

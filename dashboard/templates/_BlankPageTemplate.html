@@ -1,6 +1,6 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-<html lang="en" data-ng-app="adminApp">
+<html lang="en" data-ng-app="adminApp" data-ng-controller="AppController as app" data-ng-class="{ 'mm-small': app.isSidemenuOpen }">
     <head>
         <meta charset="utf-8">  
         <meta http-equiv="X-UA-Compatible" content="IE=edge">

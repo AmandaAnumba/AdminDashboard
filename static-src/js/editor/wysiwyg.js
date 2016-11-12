@@ -8,11 +8,13 @@ var wysiwyg = function(logger) {
     return directive;
 
     function link(scope, element, attrs) {
+        logger.log('wysiwyg.init()');
+        
         /* init froala editor */
-        element.editable({
+        $('#editor').editable({
             inlineMode: true, 
             minHeight: 400,
-            maxHeight: 500,
+            // maxHeight: 500,
             placeholder: 'Start typing here...',
             spellcheck: true,
             toolbarButtons: [
@@ -45,24 +47,21 @@ var wysiwyg = function(logger) {
             ]
         });
 
-        /* init rest of editor and inputs */
-        $('.ui.checkbox').checkbox();
-
         /* init auto expanding textarea */
-        $('#description textarea')
-            .one('focus', function(){
-                var savedValue = this.value;
-                this.value = '';
-                this.baseScrollHeight = this.scrollHeight;
-                this.value = savedValue;
-            })
-            .on('input', function(){
-                var minRows = this.getAttribute('data-min-rows')|0,
-                    rows;
-                this.rows = minRows;
-                rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 17);
-                this.rows = minRows + rows;
-            });
+    //     $('#description textarea')
+    //         .one('focus', function(){
+    //             var savedValue = this.value;
+    //             this.value = '';
+    //             this.baseScrollHeight = this.scrollHeight;
+    //             this.value = savedValue;
+    //         })
+    //         .on('input', function(){
+    //             var minRows = this.getAttribute('data-min-rows')|0,
+    //                 rows;
+    //             this.rows = minRows;
+    //             rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 17);
+    //             this.rows = minRows + rows;
+    //         });
     }
 };
 

@@ -11,9 +11,19 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.http import require_http_methods
 
-import json, time
+import boto3, botocore
+
+import json, time, os
 
 from .models import *
+
+
+# init boto3 client
+client = boto3.client(
+    's3',
+    aws_access_key_id=settings.AWS_ACCESS_KEY,
+    aws_secret_access_key=settings.AWS_SECRET_KEY,
+)
 
 
 # Global Variables
@@ -225,6 +235,63 @@ def articles(request):
             obj = serializers.serialize('json', selected)
             
             return JsonResponse({ 'article': obj })
+    else:
+        return redirect(index)
+
+
+
+@csrf_protect
+@require_http_methods(["GET"])
+def gallery(request):
+    PAGEDATA = {}
+    PAGEDATA.update(DATA)
+    PAGEDATA['page'] = 'gallery'
+
+    pics = []
+
+    if request.user.is_authenticated():
+        user = User.objects.get(username=request.session['username'])
+        u = Member.objects.get(user=user)
+        
+        response = client.list_objects(Bucket='chicreptawr', Prefix='articles')['Contents']
+        for key in response:
+            x = key['Key']
+            
+            if ( x != "articles/" ):
+                pics.append(x)
+
+        return render(request, 'pages/gallery.html', 
+            {
+                'data': PAGEDATA,
+                'user': u,
+                'pics': pics
+            })
+
+        # a = Article.objects.all()
+        # user = User.objects.get(username=request.session['username'])
+        # u = Member.objects.get(user=user)
+
+        # if request.method == 'GET':
+        #     drafts = a.filter(status='draft', author=user)
+        #     review = a.filter(status='ready')
+        #     queue = a.filter(status='queued')
+
+        #     return render(request, 'pages/articles.html', 
+        #         {
+        #             'data': PAGEDATA,
+        #             'drafts': drafts,
+        #             'review': review,
+        #             'queue': queue,
+        #             'user': u
+        #         })
+        # elif request.method == 'POST':
+        #     body = json.loads(request.body.decode('utf-8'))
+        #     articleId = body['id']
+
+        #     selected = a.filter(id=articleId)
+        #     obj = serializers.serialize('json', selected)
+            
+        #     return JsonResponse({ 'article': obj })
     else:
         return redirect(index)
 

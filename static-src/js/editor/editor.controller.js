@@ -1,10 +1,40 @@
 'use strict';
 
-var EditorController = function(logger, $scope, $timeout) {
-    var vm = this;
-    vm.viewData = viewData;
+var EditorController = function(logger, menu, Article, Autosave, $interval) {
+    var vm = this,
+        interval;
+    vm.draftCount = 0;
+    vm.draftsList = [];
+    vm.article = {
+        article_style: "informational",
+        article_type: "regular",
+        author: "",
+        category: "",
+        co_author: "",
+        content: "",
+        created_at: "",
+        cycle: "",
+        cycle_article: "",
+        description: "",
+        feature_image: "",
+        header_image: "",
+        photo_credit: "",
+        published_date: "",
+        search_terms: "",
+        slug: "",
+        status: "",
+        tags: "",
+        title: ""
+    };     // default article data
+    vm.articlePublish = articlePublish;
+    vm.articleSave = articleSave;
+    vm.articleDelete = articleDelete;
+    vm.toggleMenu = toggleMenu;
+    vm.setLayout = setLayout;
+    vm.getCategories = getCategories;
 
     activate();
+
 
     /**
     * @name activate
@@ -12,12 +42,57 @@ var EditorController = function(logger, $scope, $timeout) {
     */
     function activate() {
         logger.log('EditorController activated');
+        menu.init();
+        
+        /* load the drafts */
+        var drafts = Autosave.init();
+        vm.draftsList = drafts;
+        vm.draftCount = drafts.length;
+
+        startAutosave();
     }
 
+    function toggleMenu() {
+        if ( $('.hmbrgr').hasClass('expand') ) {
+            logger.log('EditorController.toggleMenu()  - close menu');
+            menu.close();
+        } else {
+            logger.log('EditorController.toggleMenu()  - open menu');
+            menu.open();
+        }
+    }
 
+    function startAutosave() {
+        interval = $interval(function() {
+            vm.savedLast = Autosave.save(vm.article);
+        }, Autosave.saveInterval);
+    }
 
-    function viewData() {
-        logger.log(vm);
+    function stopAutosave() {
+        $interval.cancel(interval);
+    }
+
+    function articlePublish() {
+        Article.publish(vm.article);
+    }
+
+    function articleSave() {
+        Article.save(vm.article);
+    }
+
+    function articleDelete() {
+        Article.delete(vm.article);
+    }
+
+    function setLayout( layout ) {
+        logger.log('EditorController.setLayout()');
+        vm.article.article_type = layout;
+    }
+
+    function getCategories() {
+        logger.log('EditorController.getCategories()');
+        var cat = $('#categories').dropdown('get value');
+        vm.article.category = cat;
     }
     
     /**

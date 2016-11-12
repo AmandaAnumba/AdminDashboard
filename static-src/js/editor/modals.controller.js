@@ -1,7 +1,7 @@
 'use strict';
 
 
-var ModalsController = function(logger, dataService, articleService, autosaveService) {
+var ModalsController = function(logger, dataService, Article, Autosave) {
     var ctrl = this;
     ctrl.loadFromLS = loadFromLS;
     ctrl.removeFromLS = removeFromLS;
@@ -20,36 +20,28 @@ var ModalsController = function(logger, dataService, articleService, autosaveSer
     */
     function activate() {
         logger.log('ModalsController activated');
-
-        /* load all drafts from LS if there are any */
-        var response = autosaveService.recover();
-        if (response) {
-            ctrl.modal('show');
-        }
-
-        /* init froala editor */
     }
 
     function loadFromLS( key ) {
-        autosaveService.load(key);
+        Autosave.load(key);
     }
 
     function removeFromLS( key ) {
-        autosaveService.removeItem(key);
+        Autosave.removeItem(key);
     }
 
     function clearStorage() {
-        autosaveService.clearAll();
+        Autosave.clearAll();
         ctrl.modal('hide');
-        autosaveService.startAutosave();
+        Autosave.startAutosave();
     }
 
     function deleteArticle( id ) {
-        articleService.delete(id);
+        Article.delete(id);
     }
 
     function markProofed( id ) {
-        articleService.markProofed(id);
+        Article.markProofed(id);
     }
 };
 

@@ -22,4 +22,7 @@ angular
 
 require('./core');
 require('./blocks');
+require('./header');
+require('./menu');
+require('./messenger');
 require('./articles/index');

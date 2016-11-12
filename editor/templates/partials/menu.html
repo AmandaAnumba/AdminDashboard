@@ -1,0 +1,89 @@
+<nav id="menu" class="mm-small">
+    <div class="Panel">
+        <div class="ui styled fluid accordion">
+            <div class="title active">Layout <span data-ng-bind="vm.article.article_type"></span></div>
+            <div class="content active">
+                <div class="transition visible">
+                    <div class="article__layout">
+                        <div data-ng-class="{selected: vm.article.article_type == 'regular'}" data-ng-click="vm.setLayout('regular')">
+                            <img class="layout__img" src="/static/images/layout-regular.png" />
+                            <div class="layout__title">Regular</div>
+                        </div>
+                        <div data-ng-class="{selected: vm.article.article_type == 'feature'}" data-ng-click="vm.setLayout('feature')">
+                            <img class="layout__img" src="/static/images/layout-feature.png" />
+                            <div class="layout__title">Feature</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="title">Settings</div>
+            <div class="content">
+                <div class="transition hidden">
+                    <div class="menu__subtitle">Publish Date</div>
+                    <div class="ui mini input">
+                        <input type="text" data-ng-model="vm.article.published_date" name="published_date" data-uk-datepicker="{format:'MM/DD/YYYY', minDate: '0'}" />
+                    </div>
+
+                    <div class="menu__subtitle">Cycle</div>
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" data-ng-model="vm.article.cycle_article" name="cycle_article" tabindex="0" value="true" class="hidden" />
+                        <label>Include this article in the current cycle: <br /><small>Cycle #{{ data.cycle.number }} - {{ data.cycle.title }}</small></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="title">Media</div>
+            <div class="content">
+                <div class="transition hidden">
+                    <div id="upload-drop" class="uk-placeholder">
+                        <a class="uk-form-file">
+                            Drop file(s) here to upload<input id="upload-select" type="file">
+                        </a>
+                    </div>
+
+                    <div id="progressbar" class="uk-progress display-none">
+                        <div class="uk-progress-bar" style="width: 5%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="title">Categories</div>
+            <div class="content">
+                <div class="transition hidden">
+                    <select id="categories" class="ui fluid search dropdown" multiple="">
+                        <option value="">Categories</option>
+                        {% for cat in categories %}
+                            <option value="{{ cat.name }}">{{ cat.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="title">Tags</div>
+            <div class="content">
+                <p class="transition hidden">Three common ways for a prospective owner to acquire a dog is from pet shops, private owners, or shelters.</p>
+            </div>
+
+            <div class="title">Drafts</div>
+            <div class="content">
+                <div class="transition hidden">
+                    <div class="menu__subtitle" data-ng-show="vm.draftCount === 0">No recent drafts</div>
+
+                    {% verbatim %}
+                    <div class="draft" ng-repeat="x in vm.draftsList">
+                        <div class="draft-info">
+                            <div class="draft__title"><strong>{{ x.title }}</strong></div>
+                            <div class="draft__date">{{ x.date }}</div>
+                        </div>
+
+                        <div class="draft-btns">
+                            
+                        </div>
+                    </div>
+                    {% endverbatim %}
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

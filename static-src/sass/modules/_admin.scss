@@ -5,6 +5,7 @@
 @import '../third-party/mmenu';
 @import '../third-party/animate';
 @import '../third-party/icomoon/style';
+@import '../third-party/_hmbrgr';
 
 /* partials + variables + responsiveness */
 @import '../partials/colors';
@@ -18,7 +19,8 @@
 @import 'header';
 @import 'loader';
 @import 'menu';
-@import 'messager';
+@import 'messenger';
+@import 'message';
 
 /* general page styles */
 body { background: whitesmoke; }

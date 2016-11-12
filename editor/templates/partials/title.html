@@ -1,13 +1,11 @@
 <div id="title" class="ui massive input">
-	<input type="text" name="title" class="" placeholder="Title" value="{{ title|default:'' }}" data-ng-model="vm.title"  />
+	<input type="text" name="title" class="" placeholder="Title" value="{{ title|default:'' }}" data-ng-model="vm.article.title"  />
 </div>
 
 <div id="description" class="field">
-	<textarea rows="1" data-ng-model="vm.description"></textarea>
-	<label>Article Description</label>
+	<textarea rows="2" data-ng-model="vm.article.description" placeholder="Article Description"></textarea>
 </div>
 
-{% comment %}
 <div class="form-group">
 	<p>Written by <strong>{{ author }}<span id="authors">{{ coAuthors|default:"" }}</span></strong></p>
 
@@ -36,6 +34,5 @@
 		</div>
 	</div>
 </div>
-{% endcomment %}
 
 <!-- <div class="help-block text-muted"><small>Note: When this article is published, usernames will be replaced with the user's full name.</small></div> -->

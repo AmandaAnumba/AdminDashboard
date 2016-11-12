@@ -1,6 +1,6 @@
 'use strict';
 
-var mmenu = function() {
+var mmenu = function(logger, $timeout) {
     var service = {
             init        : init,
             open        : open,
@@ -17,7 +17,9 @@ var mmenu = function() {
 
 
     function init() {
-        menu = $("#messager").data( "mmenu" );
+        $timeout(function() {
+            menu = $("#messenger").data("mmenu");
+        }, 100);
     }
 
     function open() {

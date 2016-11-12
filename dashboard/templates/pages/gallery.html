@@ -1,0 +1,30 @@
+{% extends "_BaseAdminTemplate.html" %}
+
+
+{% block title %}Articles{% endblock title %}
+
+
+{% block addtlContent %}
+	<div id="contentWrapper">
+		{% csrf_token %}
+		
+		<div class="tabs">
+			<ul class="no-padding">
+				<li data-position="1" data-target="#review" data-toggle-element=".section" class="active" slide-effect>Images ({{ pics|length }})</li>
+				<li data-position="2" data-target="#drafts" data-toggle-element=".section" slide-effect>Drafts ({{ drafts|length }})</li>
+				<li data-position="3" data-target="#queue" data-toggle-element=".section" slide-effect>Queued ({{ queue|length }})</li>
+			</ul>
+		</div>
+
+
+		<div id="grid" masonry>
+			{% for x in pics %}
+			<div class="grid__item">
+				<a data-uk-lightbox="{group:'gallery'}" href="https://s3.amazonaws.com/chicreptawr/{{ x }}">
+					<img src="https://s3.amazonaws.com/chicreptawr/{{ x }}" />
+				</a>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock addtlContent %}

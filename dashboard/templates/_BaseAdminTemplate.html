@@ -7,17 +7,21 @@
 
 
 {% block content %}
+    {% include "partials/messages_menu.html" %}
+    {% include "partials/nav_menu.html" %}
+    
     <main>
         {% include "partials/header.html" %}
         
         {% block addtlContent %}{% endblock addtlContent %}
-        
-        {% include "partials/mobile_menu.html" %}
-        {% include "partials/messages_menu.html" %}
     </main>
 {% endblock content %}
 
 
 {% block footer %}
+	<script type="text/ng-template" id="messages.html">
+        {% include "partials/messages.html" %}
+    </script>
+
     {% block addtlScripts %}{% endblock addtlScripts %}
 {% endblock footer %}

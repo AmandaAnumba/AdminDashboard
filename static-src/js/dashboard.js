@@ -27,4 +27,7 @@ angular
 	.constant('moment', moment);
 
 require('./blocks');
-require('./dashboard/index');
+require('./header');
+require('./menu');
+require('./messenger');
+require('./dash');

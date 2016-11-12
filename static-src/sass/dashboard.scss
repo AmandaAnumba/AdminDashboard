@@ -2,8 +2,6 @@
 @import 'modules/admin';
 @import 'modules/panel';
 @import 'modules/comment';
-@import 'modules/message';
-
 
 
 /**
@@ -21,7 +19,7 @@
     GENERAL STYLES
 \*------------------------------------*/
 #headerWrapper {
-	background: rgba(0, 0, 0, 0.53);
+    background: rgba(0, 0, 0, 0.53);
     border-bottom: 1px solid #484848;
     box-shadow: 0 0px 6px rgba(0,0,0,0.15);
     color: white;
@@ -29,6 +27,12 @@
 
 #widgets { padding-left: 0; }
 
+#updates ul { 
+    padding-top: 15px;
+    list-style-type: none;
+}
+
+#hmbrgr span { background-color: rgb(255, 255, 255) !important; }
 
 
 
@@ -36,160 +40,158 @@
 /*------------------------------------*\
     #CYCLE
 \*------------------------------------*/
-#cycleHeader {
-	padding-top: 60px;
-    background-color: black;
-    margin: 0 -30px;
-    box-shadow: 0 0 8px #464646;
-}
-
-#cycle {
-	background: url(/static/images/selfReflection3.jpg) no-repeat;
-    background-position-y: 38%;
-    background-size: 50%;
-    height: 265px;
-    position: relative;
-    color: white;
-}
-
-#currentCycle {
-	color: white;
-    position: absolute;
-    right: 3%;
-    top: 2%;
-    width: 54%;
-    outline: 0;
-	
-	&:hover
-	{
-		.nav-multithumb
-		{
-    		width: 200px
-		}
-
-		.nav-multithumb .icon-wrap::after 
-		{
-		    width: 200px;
-		    -webkit-transition-delay: 0s;
-		    transition-delay: 0s
-		}
-
-		.nav-multithumb div 
-		{
-		    pointer-events: auto
-		}
-
-		.nav-multithumb div::after 
-		{
-		    opacity: 1;
-		    -webkit-transition-delay: 0.3s;
-		    transition-delay: 0.3s;
-		    -webkit-transform: translateY(0);
-		    transform: translateY(0)
-		}
-	}
-
-	hr 
-	{
-    	border-top: 1px solid $logoHighlightColor;
-	}
-}
-
-.cycle-count {
-    margin-bottom: 10px;
-    font-family: "Noto Serif",sans-serif;
-    letter-spacing: 1.5px;
-    font-size: 14px;
-}
-
-.cycle-title {
-    font-size: 2em;
-    letter-spacing: 1px;
-    font-weight: 300;
-    margin: 10px 0;
-    font-family: $sans-serif !important;
-
-    strong {
-    	font-family: 'Noto Serif', serif;
+    #cycleHeader {
+        padding-top: 60px;
+        background-color: black;
+        margin: 0 -30px;
+        box-shadow: 0 0 8px #464646;
     }
-}
 
-.cycle-description 
-{
-    font-size: 12px;
-    font-weight: 300;
-    font-family: $sans-serif !important;
-    letter-spacing: 0.5px;
-}
+    #cycle {
+        background: url(/static/images/selfReflection3.jpg) no-repeat;
+        background-position-y: 38%;
+        background-size: 50%;
+        height: 265px;
+        position: relative;
+        color: white;
+    }
 
-.nav-multithumb 
-{
-    width: 60px;
-    height: 50px;
+    #currentCycle {
+        color: white;
+        position: absolute;
+        right: 3%;
+        top: 2%;
+        width: 54%;
+        outline: 0;
+        
+        &:hover
+        {
+            .nav-multithumb
+            {
+                width: 200px
+            }
 
-	.icon-wrap 
-	{
-	    position: absolute;
-	    top: 85%;
-	    display: block;
-	    width: 32px;
-	    height: 32px;
-	    -webkit-transform: translateY(-50%);
-	    transform: translateY(-50%);
-	    right: 18px;
-	}
-		
-	.icon-wrap::after {
-	    position: absolute;
-	    top: 50%;
-	    width: 20px;
-	    height: 1px;
-	    background: #fff;
-	    content: '';
-	    -webkit-transition: width 0.3s 0.2s;
-	    transition: width 0.3s 0.2s;
-	    right: -webkit-calc(100% - 10px);
-	    right: calc(100% - 10px);
-	}
+            .nav-multithumb .icon-wrap::after 
+            {
+                width: 200px;
+                -webkit-transition-delay: 0s;
+                transition-delay: 0s
+            }
 
-	svg.icon { fill: #fff; }
+            .nav-multithumb div 
+            {
+                pointer-events: auto
+            }
 
-	div {
-	    position: absolute;
-	    right: 33px;
-	    top: 81%;
-	    width: 290px;
-	    display: -webkit-box;
-	    display: -webkit-flex;
-	    display: -ms-flexbox;
-	    display: flex;
-	    -ms-flex-align: end;
-	    pointer-events: none;
-	    -webkit-box-align: end;
-	    -webkit-align-items: flex-end;
-	    align-items: flex-end;
+            .nav-multithumb div::after 
+            {
+                opacity: 1;
+                -webkit-transition-delay: 0.3s;
+                transition-delay: 0.3s;
+                -webkit-transform: translateY(0);
+                transform: translateY(0)
+            }
+        }
 
-	    &:after {
-	    	content: 'Browse This Cycle';
-		    text-align: right;
-		    position: absolute;
-		    top: 100%;
-		    right: 11px;
-		    margin: 19px 0;
-		    width: 100%;
-		    color: #fff;
-		    text-transform: uppercase;
-		    letter-spacing: 2px;
-		    font-weight: 300;
-		    font-size: 0.65em;
-		    opacity: 0;
-		    -webkit-transition: -webkit-transform 0.3s;
-		    transition: transform 0.3s, opacity 0.4s;
-		    -webkit-transform: translateY(-50%);
-		    transform: translateY(-50%);
-	    }
-	}
-}
+        hr 
+        {
+            border-top: 1px solid #9CC7B9;
+        }
+    }
+
+    .cycle-count {
+        margin-bottom: 10px;
+        font-family: "Noto Serif",sans-serif;
+        letter-spacing: 1.5px;
+        font-size: 14px;
+    }
+
+    .cycle-title {
+        font-size: 2em;
+        letter-spacing: 1px;
+        font-weight: 300;
+        margin: 10px 0;
+        font-family: $sans-serif !important;
+
+        strong {
+            font-family: 'Noto Serif', serif;
+        }
+    }
+
+    .cycle-description {
+        font-size: 12px;
+        font-weight: 300;
+        font-family: $sans-serif !important;
+        letter-spacing: 0.5px;
+    }
+
+    .nav-multithumb {
+        width: 60px;
+        height: 50px;
+
+        .icon-wrap 
+        {
+            position: absolute;
+            top: 85%;
+            display: block;
+            width: 32px;
+            height: 32px;
+            -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+            right: 18px;
+        }
+            
+        .icon-wrap::after {
+            position: absolute;
+            top: 50%;
+            width: 20px;
+            height: 1px;
+            background: #fff;
+            content: '';
+            -webkit-transition: width 0.3s 0.2s;
+            transition: width 0.3s 0.2s;
+            right: -webkit-calc(100% - 10px);
+            right: calc(100% - 10px);
+        }
+
+        svg.icon { fill: #fff; }
+
+        div {
+            position: absolute;
+            right: 33px;
+            top: 81%;
+            width: 290px;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-align: end;
+            pointer-events: none;
+            -webkit-box-align: end;
+            -webkit-align-items: flex-end;
+            align-items: flex-end;
+
+            &:after {
+                content: 'Browse This Cycle';
+                text-align: right;
+                position: absolute;
+                top: 100%;
+                right: 11px;
+                margin: 19px 0;
+                width: 100%;
+                color: #fff;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                font-weight: 300;
+                font-size: 0.65em;
+                opacity: 0;
+                -webkit-transition: -webkit-transform 0.3s;
+                transition: transform 0.3s, opacity 0.4s;
+                -webkit-transform: translateY(-50%);
+                transform: translateY(-50%);
+            }
+        }
+    }
 
 
 
@@ -197,47 +199,47 @@
 /*------------------------------------*\
     #STATS
 \*------------------------------------*/
-#stats 
-{
-	text-align: center;
-	margin: 25px 0;
-	
-	.container-fluid 
-	{
-		padding-left: 0;
-	}
+    #stats 
+    {
+        text-align: center;
+        margin: 25px 0;
+        
+        .container-fluid 
+        {
+            padding-left: 0;
+        }
 
-	.col-xs-3:first-child 
-	{
-		padding-left: 0;
-	}
+        .col-xs-3:first-child 
+        {
+            padding-left: 0;
+        }
 
-	.col-xs-3:last-child 
-	{
-		padding-right: 0;
-	}
-}
+        .col-xs-3:last-child 
+        {
+            padding-right: 0;
+        }
+    }
 
-.stat-card 
-{
-	color: #4a4a4a;
+    .stat-card 
+    {
+        color: #4a4a4a;
 
-	.stat-card__label
-	{
-		font-weight: bold;
-		text-transform: uppercase;
-		letter-spacing: 0.3px;
-		font-size: 11px;
-		line-height: 1.2;
-		margin-top: 6px;
-	}
+        .stat-card__label
+        {
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            font-size: 11px;
+            line-height: 1.2;
+            margin-top: 6px;
+        }
 
-	.stat-card__value 
-	{
-		font-size: 30px;
-		font-weight: 300;
-	}
-}
+        .stat-card__value 
+        {
+            font-size: 30px;
+            font-weight: 300;
+        }
+    }
 
 
 
@@ -245,10 +247,10 @@
 /*------------------------------------*\
     #COMMENTS
 \*------------------------------------*/
-#reviewComments .panel-body { 
-	padding: 0; 
-	border-bottom: none;
-}
+    #reviewComments .panel-body { 
+        padding: 0; 
+        border-bottom: none;
+    }
 
 
 
@@ -256,61 +258,61 @@
 /*------------------------------------*\
     #DASHMESSAGE
 \*------------------------------------*/
-#dashMessage 
-{
-	width: 550px;
-	margin: 0 auto;
-	margin-bottom: 25px;
-	text-align: center;
+    #dashMessage 
+    {
+        width: 550px;
+        margin: 0 auto;
+        margin-bottom: 25px;
+        text-align: center;
 
-	h3 
-	{
-		margin-bottom:10px;
-		color:indianred;
-	}
-}
+        h3 
+        {
+            margin-bottom:10px;
+            color:indianred;
+        }
+    }
 
 
 
 /*------------------------------------*\
     RESPONSIVENESS
 \*------------------------------------*/
-@media only screen
-and (max-width : 768px) {
-	#cycle {
-		height: auto;
-		margin: 0;
-		background-size: cover;
-	}
+    @media only screen
+    and (max-width : 768px) {
+        #cycle {
+            height: auto;
+            margin: 0;
+            background-size: cover;
+        }
 
-	#currentCycle {
-		color: white;
-		position: relative;
-		width: auto;
-		display: block;
-		padding: 25px;
-		left: 0;
-	}
-}
+        #currentCycle {
+            color: white;
+            position: relative;
+            width: auto;
+            display: block;
+            padding: 25px;
+            left: 0;
+        }
+    }
 
-@media only screen
-and (max-width : 480px) {
-	#contentWrapper {
-		padding: 0 15px 30px;
-	}
+    @media only screen
+    and (max-width : 480px) {
+        #contentWrapper {
+            padding: 0 15px 30px;
+        }
 
-	.panel-title ul {
-		padding-left: 0px;
-		display: block;
+        .panel-title ul {
+            padding-left: 0px;
+            display: block;
 
-		li {
-			padding: 3px 9px 3px 0;
-			letter-spacing: 0.4px;
+            li {
+                padding: 3px 9px 3px 0;
+                letter-spacing: 0.4px;
 
-			&:last-child { padding-right: 0; }
-		}
-	}
-}
+                &:last-child { padding-right: 0; }
+            }
+        }
+    }
 
 
 

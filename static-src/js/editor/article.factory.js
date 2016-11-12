@@ -1,9 +1,10 @@
 'use strict';
 
-var articleService = function( dataService, $timeout, $window, logger ) {
+var Article = function( dataService, $timeout, $window, logger ) {
     var service = {
             delete: deleteArticle,
-            markProofed: markProofed,
+            publish: publish,
+            save: save
         };
 
     return service;
@@ -35,9 +36,13 @@ var articleService = function( dataService, $timeout, $window, logger ) {
             });
     }
 
-    function markProofed() {
-        logger.log('markProofed');
+    function publish(article) {
+        logger.log(article);
+    }
+
+    function save(article) {
+        logger.log(article);
     }
 };
 
-module.exports = articleService;
+module.exports = Article;

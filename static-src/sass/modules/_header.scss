@@ -12,7 +12,7 @@
     $headerHeight: 60px;
     #headerWrapper {
         background: rgba(255, 255, 255, 0.53);
-        height: 60px;
+        height: $headerHeight;
         border-bottom: 1px solid #d2d1d1;
         box-shadow: 0 0px 6px rgba(0,0,0,0.15);
         color: #7b7b7b;
@@ -41,6 +41,13 @@
         }
     }
 
+    #hmbrgr { 
+        height: $headerHeight;
+        line-height: $headerHeight + 6;
+        margin-left: 45px;
+        float: left; 
+    }
+
 
 /*------------------------------------*\
     MINI NAVBAR
@@ -61,11 +68,13 @@
     
         .hidden-menu { display: none; }
 
-        .nav-item:not(.display-none) {
+        .nav-item {
             display: inline-block;
             position: relative;
             padding: 0 15px;
             line-height: $headerHeight;
+
+            &.display-mobile { display: none; }
         }
         
         $avatarSize: 35px;
@@ -87,48 +96,35 @@
             margin-left: $avatarSize + 10px;
             cursor: pointer;
         }
-
-        .nav-item:nth-child(5) {
-            position: relative;
-            padding: 0 15px;
-            line-height: $headerHeight;
-            
-            .username { cursor: pointer; }
-        }
     }
 
     .uk-dropdown { line-height: 1.4; }
+
 
 
 /*------------------------------------*\
     RESPONSIVENESS
 \*------------------------------------*/
     @media only screen
-    and (max-width : 768px) {
-        .nav-item:nth-child(2),
-        .nav-item:nth-child(4)
-        {
-            display: none;
-        }
-
-        .nav-item:nth-child(3) .hidden-menu {
-            display: block;
+    and (max-width : 645px) {
+        .mini-nav {
+            .nav-item:nth-child(1),
+            .nav-item:nth-child(2),
+            .nav-item:nth-child(3) {
+                display: none;
+            }
+            
+            .nav-item.display-mobile { display: block; }
         }
     }
 
     @media only screen
-    and (max-width : 480px) {
-        .mini-nav { padding-right: 10px; }
-        
-        .nav-item:nth-child(1),
-        .nav-item:nth-child(2),
-        .nav-item:nth-child(3),
-        .nav-item:nth-child(4)
-        {
-            display: none !important;
-        }
-
-        .nav-item:nth-child(5) { display: block; }
-
-        #logo { margin-left: 25px; }
+    and (max-width : 535px) {
+        #headerWrapper #editor { display: none; }
     }
+
+    @media only screen
+    and (max-width : 455px) {
+        .mini-nav .nav-item.display-mobile { display: none; }
+    }
+
