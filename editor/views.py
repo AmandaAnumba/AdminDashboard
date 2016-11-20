@@ -17,10 +17,10 @@ CYCLE = Cycle.objects.get(is_current=True)
 DEBUG = settings.DEBUG
 V = '2016-06-04-1350'
 DATA = {
-    'page': '',
+    'page': 'write',
     'version': V,
     'hasPageJS': False,
-    'hasPageCSS': True,
+    'hasPageCSS': False,
     'debug': DEBUG,
     'cycle': CYCLE,
     'loggedIn': False
@@ -30,40 +30,35 @@ CATEGORIES = Topic.objects.all()
 
 
 @csrf_protect
+@require_http_methods(["GET"])
 def write(request):
     if 'username' in request.session:
-        PAGEDATA = {}
-        PAGEDATA.update(DATA)
-        PAGEDATA['page'] = 'write'
-        PAGEDATA['hasPageCSS'] = False
+        DATA['page'] = 'write'
         
-        return render(request, 'pages/write.html', {
+        return render(request, 'pages/editor.html', {
             'username': request.session['username'], 
-            'data': PAGEDATA,
+            'data': DATA,
             'categories': CATEGORIES
         })
     else:
         return redirect('dashboard.views.index')
 
 
-# def read(id):
-#     # reading drafts
-    
-#     PAGEDATA = {}
-#     PAGEDATA.update(DATA)
-#     PAGEDATA['page'] = 'read'
-#     PAGEDATA['hasPageCSS'] = False
+@csrf_protect
+@require_http_methods(["GET"])
+def edit(request, article_id):
+    if 'username' in request.session:
+        a = Article.objects.get(id=article_id)
+        DATA['page'] = 'edit'
 
-    #if 'status' in result:
-    #    if result['status'] == 'ready':
-    #        return render_template('editor_proof.html', article=result)
-
-    #    if result['status'] == 'draft':
-    #        return render_template('editor_continue_draft.html', article=result, data=PAGEDATA)
-    #else:
-    #    print ("error, couldn't find article")
-    #    # make a notification
-    #    return redirect(url_for('dashboard.admin'))
+        return render(request, 'pages/editor.html', {
+            'username': request.session['username'], 
+            'data': DATA,
+            'article': a,
+            'categories': CATEGORIES
+        })
+    else:
+        return redirect('dashboard.views.index')
 
 
 # def reread(id):

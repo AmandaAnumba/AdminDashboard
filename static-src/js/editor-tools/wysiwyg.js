@@ -1,6 +1,6 @@
 'use strict';
 
-var wysiwyg = function(logger) {
+var wysiwyg = function(logger, $rootScope) {
     var directive = {
         restrict: 'A',
         link: link,
@@ -9,8 +9,7 @@ var wysiwyg = function(logger) {
 
     function link(scope, element, attrs) {
         logger.log('wysiwyg.init()');
-        
-        /* init froala editor */
+
         $('#editor').editable({
             inlineMode: true, 
             minHeight: 400,
@@ -47,21 +46,7 @@ var wysiwyg = function(logger) {
             ]
         });
 
-        /* init auto expanding textarea */
-    //     $('#description textarea')
-    //         .one('focus', function(){
-    //             var savedValue = this.value;
-    //             this.value = '';
-    //             this.baseScrollHeight = this.scrollHeight;
-    //             this.value = savedValue;
-    //         })
-    //         .on('input', function(){
-    //             var minRows = this.getAttribute('data-min-rows')|0,
-    //                 rows;
-    //             this.rows = minRows;
-    //             rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 17);
-    //             this.rows = minRows + rows;
-    //         });
+        $rootScope.$broadcast('setHTML');
     }
 };
 

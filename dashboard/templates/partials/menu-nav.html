@@ -7,13 +7,22 @@
             <li><a href="{% url 'write' %}">Editor</a></li>
             
             {% if user.role == 'F' %}
-                <li><a href="javascript:void(0);">Review</a></li>
+                <li class="locked">
+                    <a href="javascript:void(0);">Review <span class="icon icon-lock"></span></a>
+                </li>
 
                 <li {% if data.page == 'articles' %} class="active" {% endif %}><a href="{% url 'articles' %}">All Articles</a></li>
             {% endif %}
             
-            <li><a href="javascript:void(0);">Review Comments</a></li>
-            <li><a href="{% url 'gallery' %}">Gallery</a></li>
+            <li class="locked">
+                <a href="javascript:void(0);">Review Comments <span class="icon icon-lock"></span></a>
+            </li>
+            
+            <li class="locked">
+                <a href="javascript:void(0);">Gallery <span class="icon icon-lock"></span></a>
+            </li>
+
+            <!-- <li><a href="{% url 'gallery' %}">Gallery</a></li> -->
         </ul>
 
         <div class="menu__subtitle">Recent Updates</div>

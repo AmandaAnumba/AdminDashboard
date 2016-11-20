@@ -17,17 +17,14 @@
 /* partials + variables */
 @import 'partials/colors';
 @import 'partials/fonts';
-@import 'partials/mixins';
 @import 'partials/helpers';
 
 /* base */
+@import 'mixins/bg-image-overlay';
 @import 'modules/base';
 @import 'modules/loader';
 @import 'modules/button';
 @import 'modules/input';
-
-/* responsiveness   */
-@import 'partials/responsive';
 
 
 

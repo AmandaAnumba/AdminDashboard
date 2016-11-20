@@ -1,10 +1,8 @@
 'use strict';
 
-var EditorController = function(logger, menu, Article, Autosave, $interval) {
-    var vm = this,
-        interval;
-    vm.draftCount = 0;
-    vm.draftsList = [];
+var EditorController = function($scope, logger, menu, moment, Article, Autosave, Editable, $window) {
+    var vm = this;
+    
     vm.article = {
         article_style: "informational",
         article_type: "regular",
@@ -12,10 +10,10 @@ var EditorController = function(logger, menu, Article, Autosave, $interval) {
         category: "",
         co_author: "",
         content: "",
-        created_at: "",
         cycle: "",
         cycle_article: "",
         description: "",
+        display_date: moment().format("MM/DD/YYYY"),
         feature_image: "",
         header_image: "",
         photo_credit: "",
@@ -26,6 +24,7 @@ var EditorController = function(logger, menu, Article, Autosave, $interval) {
         tags: "",
         title: ""
     };     // default article data
+    vm.goBack = goBack;
     vm.articlePublish = articlePublish;
     vm.articleSave = articleSave;
     vm.articleDelete = articleDelete;
@@ -35,6 +34,11 @@ var EditorController = function(logger, menu, Article, Autosave, $interval) {
 
     activate();
 
+    $scope.$on('setHTML', function() {
+        Editable.setHTML(vm.article.content);
+    });
+
+    $scope.$on('loadArticle', loadArticle);
 
     /**
     * @name activate
@@ -43,13 +47,17 @@ var EditorController = function(logger, menu, Article, Autosave, $interval) {
     function activate() {
         logger.log('EditorController activated');
         menu.init();
-        
-        /* load the drafts */
-        var drafts = Autosave.init();
-        vm.draftsList = drafts;
-        vm.draftCount = drafts.length;
 
-        startAutosave();
+        /* loop through all of the data and update the view */
+        $('[data-ng-model*=vm]').each(function() {
+            var $this = $(this),
+                name = $this.attr('name'),
+                val = $this.attr('value');
+            vm.article[name] = val;
+        });
+
+        Article.data = vm.article;
+        vm.drafts = Autosave.drafts;
     }
 
     function toggleMenu() {
@@ -62,14 +70,14 @@ var EditorController = function(logger, menu, Article, Autosave, $interval) {
         }
     }
 
-    function startAutosave() {
-        interval = $interval(function() {
-            vm.savedLast = Autosave.save(vm.article);
-        }, Autosave.saveInterval);
+    function loadArticle() {
+        logger.log('EditorController.loadArticle()');
+        
+        vm.article = Article.data;
     }
 
-    function stopAutosave() {
-        $interval.cancel(interval);
+    function goBack() {
+        $window.history.back();
     }
 
     function articlePublish() {
@@ -81,7 +89,9 @@ var EditorController = function(logger, menu, Article, Autosave, $interval) {
     }
 
     function articleDelete() {
-        Article.delete(vm.article);
+        logger.log('EditorController.articleDelete()');
+        $('#deleteModal').modal('show');
+        // Article.delete(vm.article);
     }
 
     function setLayout( layout ) {

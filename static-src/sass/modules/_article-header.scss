@@ -1,130 +1,45 @@
-@import "../mixins/list-inline";
+@import "../third-party/uikit/core/overlay";
+@import "../third-party/uikit/core/flex";
 
 
 /**
  *  
  * styles for the article header image
  * article types: feature and regular
- * 		+ feature - long top image
- * 		+ regular - small side image
+ *      + feature - long top image
+ *      + regular - small side image
  *
 **/
-.article__header-image
-{
-	position: relative;
-	height: 250px;
-	background-color: white;
-	border: 1px solid darken(whitesmoke, 10%);
-	text-align: center;
-	margin-top: 25px;
-	overflow: hidden;
+.article__header-image {
+    position: relative;
+    text-align: center;
+    margin-top: 30px;
+    
+    .image-placeholder {
+        &.regular { 
+            display: block;
 
-	&.hover .image-overlay
-	{
-		background: none;
-		color: white;
+            img { height: 270px; }
+        }
 
-		.icon-camera,
-		.overlay-text,
-		.custom-file-upload
-		{
-			display: none;
-		}
-
-		&:hover 
-		{
-			background-color: rgba(0, 0, 0, 0.4);
-
-			.overlay-buttons,
-			.icon-camera 
-			{
-				display: block;
-			}
-		}
-	}
-}
-
-.image-overlay
-{
-    @include bkg_img_overlay("/static/images/12.jpg", rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    cursor: pointer;
-    padding-top: 50px;
-    @include transition-property(all);
-	@include transition-duration(.2s);
-	@include transition-timing-function(ease-in-out);
-
-    .icon-camera
-    {
-    	font-size: 40px;
+        &:not(.selected) { display: none; }
+    }
+    
+    .feature .bg-parallax {
+        height: 375px;
+        width: 100vw;
+        background: url(/static/images/placeholder-feature.jpg) no-repeat center center fixed;
+        background-position-y: -77px;
     }
 
-	.overlay-text 
-	{
-		font-size: 20px;
-	}
+    .image-details {
+        margin-top: 10px;
 
-    .custom-file-upload
-	{
-		display: none;
-		position: relative;
+        input[name="photo_credit"] { width: 400px !important; }
+    }
 
-		&.filled .file-custom:after
-		{
-			content: "";
-		}
-
-		.file-custom, 
-		.file-custom:before 
-		{
-			height: 1.95rem;
-	    	line-height: 1;
-	    	text-align: left;
-		}
-
-		.cancel-upload
-		{
-			position: absolute;
-		    font-size: 20px;
-		    color: #6F6F6F;
-		    left: 45%;
-		    top: 0;
-		    cursor: pointer;
-
-		    &:hover 
-		    {
-		    	color: indianred;
-		    }
-		}
-	}
-
-	.overlay-buttons
-	{
-		display: none;
-
-		ul 
-		{
-			@include list-inline();
-		}
-
-		li 
-		{
-			padding: 3px 15px;
-		}
-	}
-}
-
-.image-details,
-.image
-{
-	display: none;
-}
-
-.image img 
-{
-	width: 100%;
+    .ui.basic.button.white { 
+        color: white !important;
+        box-shadow: 0px 0px 0px 1px rgba(255,255,255,0.15) inset; 
+    }
 }

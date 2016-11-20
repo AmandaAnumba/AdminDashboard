@@ -99,3 +99,22 @@ $padding: 15px;
 	}
 }
 
+
+
+/*------------------------------------*\
+    RESPONSIVENESS
+\*------------------------------------*/
+    @media only screen
+    and (max-width : 480px) {
+        .panel-title ul {
+            padding-left: 0px;
+            display: block;
+
+            li {
+                padding: 3px 9px 3px 0;
+                letter-spacing: 0.4px;
+
+                &:last-child { padding-right: 0; }
+            }
+        }
+    }

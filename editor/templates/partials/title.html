@@ -1,14 +1,15 @@
 <div id="title" class="ui massive input">
-	<input type="text" name="title" class="" placeholder="Title" value="{{ title|default:'' }}" data-ng-model="vm.article.title"  />
+	<input type="text" name="title" class="" placeholder="Title" value="{{ article.title|default:'' }}" data-ng-model="vm.article.title"  />
 </div>
 
 <div id="description" class="field">
-	<textarea rows="2" data-ng-model="vm.article.description" placeholder="Article Description"></textarea>
+	<textarea rows="2" data-ng-model="vm.article.description" placeholder="Article Description" value="{{ article.description|default:'' }}"></textarea>
 </div>
 
 <div class="form-group">
-	<p>Written by <strong>{{ author }}<span id="authors">{{ coAuthors|default:"" }}</span></strong></p>
-
+	<p>By <strong>{{ article.author.first_name|default:username }} {{ article.author.last_name }}<span id="authors">{{ coAuthors|default:"" }}</span></strong></p>
+	
+	{% if data.page = 'write' %}
 	<div class="custom-dropdown" dropdown>
 		<div class="custom-dropdown-toggle" id="addAuthor">
 			<span class="icon icon-circle-plus"></span>
@@ -21,18 +22,62 @@
 
 		<div class="custom-dropdown-menu" id="authorSelect">
 			<ul>
-				<li><label><input type="checkbox" value="Amanda" />Amanda</label></li>
-				<li><label><input type="checkbox" value="ceymasterflex" />ceymasterflex</label></li>
-				<li><label><input type="checkbox" value="empressomeko1" />empressomeko1</label></li>
-				<li><label><input type="checkbox" value="jazzj409" />jazzj409</label></li>
-				<li><label><input type="checkbox" value="LaFemmeCompatissante" />LaFemmeCompatissante</label></li>
-				<li><label><input type="checkbox" value="mariagaddis" />mariagaddis</label></li>
-				<li><label><input type="checkbox" value="naakienartey" />naakienartey</label></li>
-				<li><label><input type="checkbox" value="rona.abara" />rona.abara</label></li>
-				<li><label><input type="checkbox" value="shantaviae" />shantaviae</label></li>
-			</ul>
+				<li>
+					<label>
+						<input type="checkbox" value="Amanda" />Amanda
+					</label>
+				</li>
+				
+				<li>
+					<label>
+						<input type="checkbox" value="ceymasterflex" />ceymasterflex
+					</label>
+				</li>
+				
+				<li>
+					<label>
+						<input type="checkbox" value="empressomeko1" />empressomeko1
+					</label>
+				</li>
+				
+				<li>
+					<label>
+						<input type="checkbox" value="jazzj409" />jazzj409
+					</label>
+				</li>
+				
+				<li>
+					<label>
+						<input type="checkbox" value="LaFemmeCompatissante" />LaFemmeCompatissante
+					</label>
+				</li>
+				
+				<li>
+					<label>
+						<input type="checkbox" value="mariagaddis" />mariagaddis
+					</label>
+				</li>
+				
+				<li>
+					<label>
+						<input type="checkbox" value="naakienartey" />naakienartey
+					</label>
+				</li>
+				
+				<li>
+					<label>
+						<input type="checkbox" value="rona.abara" />rona.abara
+					</label>
+				</li>
+				
+				<li>
+					<label>
+						<input type="checkbox" value="shantaviae" />shantaviae
+					</label>
+				</li>
+			</ul
+			>
 		</div>
 	</div>
+	{% endif %}
 </div>
-
-<!-- <div class="help-block text-muted"><small>Note: When this article is published, usernames will be replaced with the user's full name.</small></div> -->

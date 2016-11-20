@@ -202,7 +202,7 @@ var hmbrgr = function(logger) {
 };
 
 module.exports = hmbrgr;
-},{"../third-party/jquery.hmbrgr.js":18}],6:[function(require,module,exports){
+},{"../third-party/jquery.hmbrgr.js":19}],6:[function(require,module,exports){
 'use strict';
 
 var angular = require('angular');
@@ -210,9 +210,11 @@ var angular = require('angular');
 angular
 	.module('adminApp')
 	.factory('menu', require('./mmenu'))
+	.directive('wysiwyg', require('./wysiwyg'))
 	.directive('hmbrgr', require('./hmbrgr'))
+	.directive('modal', require('./modals'))
 	.directive('nav', require('./nav.directive'));
-},{"./hmbrgr":5,"./mmenu":7,"./nav.directive":8,"angular":27}],7:[function(require,module,exports){
+},{"./hmbrgr":5,"./mmenu":7,"./modals":8,"./nav.directive":9,"./wysiwyg":10,"angular":29}],7:[function(require,module,exports){
 'use strict';
 
 var menu = function(logger, $timeout) {
@@ -248,6 +250,39 @@ var menu = function(logger, $timeout) {
 
 module.exports = menu;
 },{}],8:[function(require,module,exports){
+'use strict';
+
+var modal = function(logger, Autosave) {
+    var directive = {
+        restrict: 'C',
+        link: link
+    };
+    return directive;
+
+
+    /////////////////////
+
+    
+    function link(scope, element, attrs) {
+        logger.log('modal.link()');
+
+        $('.ui.modal').modal();
+
+        scope.$on('openAutosave', openAutosave);
+        scope.$on('closeAutosave', closeAutosave);
+
+        function openAutosave() {
+            Autosave.$modal.modal('show');
+        }
+
+        function closeAutosave() {
+            Autosave.$modal.modal('hide');
+        }
+    }
+};
+
+module.exports = modal;
+},{}],9:[function(require,module,exports){
 'use strict';
 
 var nav = function(logger, $timeout) {
@@ -287,14 +322,69 @@ var nav = function(logger, $timeout) {
 };
 
 module.exports = nav;
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
+'use strict';
+
+var wysiwyg = function(logger, $rootScope) {
+    var directive = {
+        restrict: 'A',
+        link: link,
+    };
+    return directive;
+
+    function link(scope, element, attrs) {
+        logger.log('wysiwyg.init()');
+
+        $('#editor').editable({
+            inlineMode: true, 
+            minHeight: 400,
+            // maxHeight: 500,
+            placeholder: 'Start typing here...',
+            spellcheck: true,
+            toolbarButtons: [
+                "bold",
+                "italic",
+                "underline",
+                "strikeThrough",
+                "fontSize",
+                "fontFamily",
+                "color",
+                "sep",
+                "subscript",
+                "superscript",
+                "formatBlock",
+                "blockStyle",
+                "align",
+                "insertOrderedList",
+                "insertUnorderedList",
+                "outdent",
+                "indent",
+                "sep",
+                "selectAll",
+                "createLink",
+                "undo",
+                "removeFormat",
+                "redo",
+                "html",
+                "insertHorizontalRule",
+                "table"
+            ]
+        });
+
+        $rootScope.$broadcast('setHTML');
+    }
+};
+
+module.exports = wysiwyg;
+},{}],11:[function(require,module,exports){
 'use strict';
 
 var angular = require('angular');
 require('angular-animate');
 require('angular-toastr');
 require('angular-local-storage');
-require('./third-party/uikit-datepicker');
+require('./third-party/uikit/datepicker');
+require('./third-party/uikit/notify');
 var moment = require('moment');
 
 angular
@@ -305,18 +395,18 @@ angular
     ])
     .constant('moment', moment);
     
-
 require('./core');
 require('./editor-tools');
 require('./editor/index');
-},{"./core":4,"./editor-tools":6,"./editor/index":14,"./third-party/uikit-datepicker":19,"angular":27,"angular-animate":21,"angular-local-storage":23,"angular-toastr":25,"moment":28}],10:[function(require,module,exports){
+},{"./core":4,"./editor-tools":6,"./editor/index":17,"./third-party/uikit/datepicker":20,"./third-party/uikit/notify":21,"angular":29,"angular-animate":23,"angular-local-storage":25,"angular-toastr":27,"moment":30}],12:[function(require,module,exports){
 'use strict';
 
 var Article = function( dataService, $timeout, $window, logger ) {
     var service = {
             delete: deleteArticle,
             publish: publish,
-            save: save
+            save: save,
+            data: {}
         };
 
     return service;
@@ -330,22 +420,24 @@ var Article = function( dataService, $timeout, $window, logger ) {
             id: id
         };
 
-        dataService.sendRequest('/delete/', params)
-            .then(function(data) {
-                $('#deleteModal').modal('hide');
+
+
+        // dataService.sendRequest('/delete/', params)
+        //     .then(function(data) {
+        //         $('#deleteModal').modal('hide');
                 
-                if ( data.success ) {
-                    logger.success(data.success, 'Article Deleted.');
+        //         if ( data.success ) {
+        //             logger.success(data.success, 'Article Deleted.');
 
-                    $timeout(function(){
-                        $window.location = "/dashboard/";
-                    }, 2700);
-                }
+        //             $timeout(function(){
+        //                 $window.location = "/dashboard/";
+        //             }, 2700);
+        //         }
 
-                if ( data.error ) {
-                    logger.error(data.error, 'Error Occurred');
-                }
-            });
+        //         if ( data.error ) {
+        //             logger.error(data.error, 'Error Occurred');
+        //         }
+        //     });
     }
 
     function publish(article) {
@@ -358,18 +450,113 @@ var Article = function( dataService, $timeout, $window, logger ) {
 };
 
 module.exports = Article;
-},{}],11:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
+/* globals UIkit */
+
+'use strict';
+
+var AutosaveController = function($scope, logger, Autosave, Article, $interval, $timeout) {
+    var ctrl = this,
+        interval = '';
+    ctrl.drafts = [];
+    ctrl.load = load;
+    ctrl.remove = remove;
+    ctrl.clearStorage = clearStorage;
+
+    activate();
+
+
+    /**
+    * @name activate
+    * @desc Actions to be performed when this controller is instantiated:
+            check if there are any drafts and then load them
+    */
+    function activate() {
+        logger.log('AutosaveController activated');
+
+        /* load the drafts */
+        ctrl.drafts = Autosave.drafts;
+
+        if ( ctrl.drafts.length > 0 ) {
+            $timeout(function() {
+                $scope.$broadcast('openAutosave');
+            }, 1000);
+        } else {
+            startAutosave();
+        }
+
+        /* general bindings */
+        $(window).on('unload', stopAutosave);
+    }
+
+    function startAutosave() {
+        logger.log('AutosaveController.startAutosave()');
+        
+        interval = $interval(function() {
+            var savedLast = Autosave.save(Article.data);
+            UIkit.notify({
+                message : "saved " + savedLast,
+                status  : 'info',
+                timeout : 3500,
+                pos     : 'bottom-left'
+            });
+        }, Autosave.saveInterval);
+    }
+
+    function stopAutosave() {
+        logger.log('AutosaveController.stopAutosave()');
+        $interval.cancel(interval);
+    }
+
+    function load( key ) {
+        logger.log('AutosaveController.load( ' + key + ' )');
+        
+        var a = Autosave.load(key);
+        Article.data = a;
+
+        $scope.$emit('loadArticle');
+        $scope.$broadcast('closeAutosave');
+
+        if (interval === '') {
+            startAutosave();
+        }
+    }
+
+    function remove( key ) {
+        logger.log('AutosaveController.remove( ' + key + ' )');
+        
+        Autosave.removeItem(key);
+    }
+
+    function clearStorage() {
+        logger.log('AutosaveController.clearStorage()');
+        
+        Autosave.clearAll();
+        $scope.$broadcast('closeAutosave');
+        
+        if (interval === '') {
+            startAutosave();
+        }
+    }
+};
+
+
+module.exports = AutosaveController;
+},{}],14:[function(require,module,exports){
 'use strict';
 
 var Autosave = function(logger, moment, localStorageService) {
     var service = {
-            init: init,
+            drafts: [],
             save: save,
             load: load,
             removeItem: removeItem,
             clearAll: clearAll,
-            saveInterval: 60000
+            saveInterval: 60000,
+            $modal: $("#autosaveModal")
         };
+
+    init();
 
     return service;
 
@@ -385,88 +572,27 @@ var Autosave = function(logger, moment, localStorageService) {
 
         if (lsLength > 0) {
             var keys = localStorageService.keys();
+
             $.each(keys, function(index, key) {
                 var item = get(key),
                     x = JSON.parse(item);
-                drafts.push[x];
+                drafts.push(x);
             });
         }
 
-        return drafts; 
+        service.drafts = drafts;
     }
 
     function load(key) {
-        var retrieved = localStorage.get(key),
-            x = JSON.parse(retrieved);
+        logger.log('Autosave.load( ' + key + ' )');
+        
+        var item = get(key),
+            x = JSON.parse(item);
 
-        $('#post input[name=title]').val(x.title);
-        $('#post input[name=author]').val(x.author);
-        $('#post textarea[name=description]').val(x.description);
-        $('#editor').editable("setHTML", x.content, true);
-        $('#post input[name=headerIMGurl]').val(x.headerIMG);
-        $('#post input[name=photo_cred]').val(x.photoCred);
-
-        if (x.doctype) {
-            $("input[name=doctype][value=" + x.doctype + "]").prop('checked', true);
-        }
-
-        if (x.docstyle) {
-            $("input[name=docstyle][value=" + x.docstyle + "]").prop('checked', true);
-        }
-
-        if ((x.releaseDate === 'None') || (x.releaseDate === null) || (x.releaseDate === "")) {
-            $('#rDate').empty().append('No date selected');
-            $('#date').show();
-        }
-
-        if ((x.releaseDate !== 'None') && (x.releaseDate !== null) && (x.releaseDate !== "")) {
-            var y = x.releaseDate.split(','),
-                date = moment(y).format("dddd, MMMM Do YYYY");
-            $('#rDate').empty().append(date).val(x.releaseDate);
-            $('#date').show();
-        }
-
-        if (x.featureIMG === 'same') {
-            $('#headerSame').prop("checked", true);
-        }
-
-        var tags = x.tags.split(','),
-            coAuth = x.coAuthor.split(','),
-            cat = x.category.split(',');
-
-        if ((tags.length > 0) && (tags[0] !== "")) {
-            for (var i=0; i < tags.length; i++) {
-                if (tags[i] !== "") {
-                    $('#tags_list').append('<p><span class="icon-circle-cross remove_tag" onclick="$(this).parent().hide();"></span>'+tags[i].trim()+'</p>');
-                }
-            }
-            $('#tags_list').show();
-        }
-
-        if ((coAuth.length > 0) && (coAuth[0] !== "")) {
-            for (var j=0; j < coAuth.length; j++) {
-                if ((coAuth[j] !== "") && (coAuth[j] !== 'None')) {
-                    $('#more-authors input:checkbox[value="' + coAuth[j] + '"]').prop('checked', true);
-                }
-            }
-            $('#more-authors').show();
-        }
-
-        if ((cat.length > 0) && (cat[0] !== "")) {
-            for (var k=0; k < cat.length; k++) {
-                if ((cat[k] !== "") && (cat[k] !== 'None')) {
-                    $('#category input:checkbox[value="' + cat[k] + '"]').prop('checked', true);
-                }
-            }
-        }
-
-        $('#autosaveDrafts').modal('hide');
-
-        // autosave every 1.5 mins
-        // window.setInterval(autosave,60000);
+        return x;
     }
 
-    function save( article ) {
+    function save(article) {
         if (article.title === "") {
             var date = moment().format("MM/DD/YYYY");
             article.title = "Article "+ date;
@@ -496,7 +622,7 @@ var Autosave = function(logger, moment, localStorageService) {
 };
 
 module.exports = Autosave;
-},{}],12:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 'use strict';
 
 var dropdown = function(logger) {
@@ -547,14 +673,12 @@ var dropdown = function(logger) {
 };
 
 module.exports = dropdown;
-},{}],13:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
-var EditorController = function(logger, menu, Article, Autosave, $interval) {
-    var vm = this,
-        interval;
-    vm.draftCount = 0;
-    vm.draftsList = [];
+var EditorController = function($scope, logger, menu, moment, Article, Autosave, Editable, $window) {
+    var vm = this;
+    
     vm.article = {
         article_style: "informational",
         article_type: "regular",
@@ -562,10 +686,10 @@ var EditorController = function(logger, menu, Article, Autosave, $interval) {
         category: "",
         co_author: "",
         content: "",
-        created_at: "",
         cycle: "",
         cycle_article: "",
         description: "",
+        display_date: moment().format("MM/DD/YYYY"),
         feature_image: "",
         header_image: "",
         photo_credit: "",
@@ -576,6 +700,7 @@ var EditorController = function(logger, menu, Article, Autosave, $interval) {
         tags: "",
         title: ""
     };     // default article data
+    vm.goBack = goBack;
     vm.articlePublish = articlePublish;
     vm.articleSave = articleSave;
     vm.articleDelete = articleDelete;
@@ -585,6 +710,11 @@ var EditorController = function(logger, menu, Article, Autosave, $interval) {
 
     activate();
 
+    $scope.$on('setHTML', function() {
+        Editable.setHTML(vm.article.content);
+    });
+
+    $scope.$on('loadArticle', loadArticle);
 
     /**
     * @name activate
@@ -593,13 +723,17 @@ var EditorController = function(logger, menu, Article, Autosave, $interval) {
     function activate() {
         logger.log('EditorController activated');
         menu.init();
-        
-        /* load the drafts */
-        var drafts = Autosave.init();
-        vm.draftsList = drafts;
-        vm.draftCount = drafts.length;
 
-        startAutosave();
+        /* loop through all of the data and update the view */
+        $('[data-ng-model*=vm]').each(function() {
+            var $this = $(this),
+                name = $this.attr('name'),
+                val = $this.attr('value');
+            vm.article[name] = val;
+        });
+
+        Article.data = vm.article;
+        vm.drafts = Autosave.drafts;
     }
 
     function toggleMenu() {
@@ -612,14 +746,14 @@ var EditorController = function(logger, menu, Article, Autosave, $interval) {
         }
     }
 
-    function startAutosave() {
-        interval = $interval(function() {
-            vm.savedLast = Autosave.save(vm.article);
-        }, Autosave.saveInterval);
+    function loadArticle() {
+        logger.log('EditorController.loadArticle()');
+        
+        vm.article = Article.data;
     }
 
-    function stopAutosave() {
-        $interval.cancel(interval);
+    function goBack() {
+        $window.history.back();
     }
 
     function articlePublish() {
@@ -631,7 +765,9 @@ var EditorController = function(logger, menu, Article, Autosave, $interval) {
     }
 
     function articleDelete() {
-        Article.delete(vm.article);
+        logger.log('EditorController.articleDelete()');
+        $('#deleteModal').modal('show');
+        // Article.delete(vm.article);
     }
 
     function setLayout( layout ) {
@@ -742,7 +878,7 @@ var EditorController = function(logger, menu, Article, Autosave, $interval) {
 };
 
 module.exports = EditorController;
-},{}],14:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 angular
@@ -751,70 +887,20 @@ angular
 	.factory('loader', require('../blocks/loader'))
 	.factory('Article', require('./article.factory'))
 	.factory('Autosave', require('./autosave.factory'))
-	.factory('Wysiwyg', require('./wysiwyg.factory'))
-	.directive('wysiwyg', require('./wysiwyg'))
+	.factory('Editable', require('./wysiwyg.factory'))
 	.directive('dropdown', require('./dropdown.directive'))
-	.controller('ModalsController', require('./modals.controller'))
+	.controller('AutosaveController', require('./autosave.controller'))
 	.controller('EditorController', require('./editor.controller'));
 
-},{"../blocks/loader":1,"../blocks/logger":2,"./article.factory":10,"./autosave.factory":11,"./dropdown.directive":12,"./editor.controller":13,"./modals.controller":15,"./wysiwyg":17,"./wysiwyg.factory":16}],15:[function(require,module,exports){
+},{"../blocks/loader":1,"../blocks/logger":2,"./article.factory":12,"./autosave.controller":13,"./autosave.factory":14,"./dropdown.directive":15,"./editor.controller":16,"./wysiwyg.factory":18}],18:[function(require,module,exports){
 'use strict';
 
-
-var ModalsController = function(logger, dataService, Article, Autosave) {
-    var ctrl = this;
-    ctrl.loadFromLS = loadFromLS;
-    ctrl.removeFromLS = removeFromLS;
-    ctrl.clearStorage = clearStorage;
-    ctrl.deleteArticle = deleteArticle;
-    ctrl.markProofed = markProofed;
-    ctrl.modal = $("#autosaveDrafts");
-
-    activate();
-
-
-    /**
-    * @name activate
-    * @desc Actions to be performed when this controller is instantiated:
-            check if there are any drafts and then load them
-    */
-    function activate() {
-        logger.log('ModalsController activated');
-    }
-
-    function loadFromLS( key ) {
-        Autosave.load(key);
-    }
-
-    function removeFromLS( key ) {
-        Autosave.removeItem(key);
-    }
-
-    function clearStorage() {
-        Autosave.clearAll();
-        ctrl.modal('hide');
-        Autosave.startAutosave();
-    }
-
-    function deleteArticle( id ) {
-        Article.delete(id);
-    }
-
-    function markProofed( id ) {
-        Article.markProofed(id);
-    }
-};
-
-
-module.exports = ModalsController;
-},{}],16:[function(require,module,exports){
-'use strict';
-
-var Wysiwyg = function(logger) {
+var Editable = function(logger) {
     var service = {
             getHTML: getHTML,
             setHTML: setHTML
-        };
+        },
+        $editable = $('#editor');
 
     return service;
 
@@ -822,92 +908,19 @@ var Wysiwyg = function(logger) {
     ////////////////////////
 
 
-    function init() {
-
-    }
-
     function getHTML() {
-        // interval = $interval(save, 60000);
-        // autosaveStarted = true;
+        logger.log('Editable.getHTML()');
+        return $editable.editable('getHTML', false, true);
     }
 
-    function setHTML() {
-        // $interval.cancel(interval);
-        // autosaveStarted = false;
-    }
-};
-
-module.exports = Wysiwyg;
-},{}],17:[function(require,module,exports){
-'use strict';
-
-var wysiwyg = function(logger) {
-    var directive = {
-        restrict: 'A',
-        link: link,
-    };
-    return directive;
-
-    function link(scope, element, attrs) {
-        logger.log('wysiwyg.init()');
-        
-        /* init froala editor */
-        $('#editor').editable({
-            inlineMode: true, 
-            minHeight: 400,
-            // maxHeight: 500,
-            placeholder: 'Start typing here...',
-            spellcheck: true,
-            toolbarButtons: [
-                "bold",
-                "italic",
-                "underline",
-                "strikeThrough",
-                "fontSize",
-                "fontFamily",
-                "color",
-                "sep",
-                "subscript",
-                "superscript",
-                "formatBlock",
-                "blockStyle",
-                "align",
-                "insertOrderedList",
-                "insertUnorderedList",
-                "outdent",
-                "indent",
-                "sep",
-                "selectAll",
-                "createLink",
-                "undo",
-                "removeFormat",
-                "redo",
-                "html",
-                "insertHorizontalRule",
-                "table"
-            ]
-        });
-
-        /* init auto expanding textarea */
-    //     $('#description textarea')
-    //         .one('focus', function(){
-    //             var savedValue = this.value;
-    //             this.value = '';
-    //             this.baseScrollHeight = this.scrollHeight;
-    //             this.value = savedValue;
-    //         })
-    //         .on('input', function(){
-    //             var minRows = this.getAttribute('data-min-rows')|0,
-    //                 rows;
-    //             this.rows = minRows;
-    //             rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 17);
-    //             this.rows = minRows + rows;
-    //         });
+    function setHTML(content) {
+        logger.log('Editable.setHTML()');
+        $editable.editable("setHTML", content, true);
     }
 };
 
-module.exports = wysiwyg;
-},{}],18:[function(require,module,exports){
+module.exports = Editable;
+},{}],19:[function(require,module,exports){
 /*!
  * jquery-hmbrgr.js v0.0.2
  * https://github.com/MorenoDiDomenico/jquery-hmbrgr
@@ -1024,9 +1037,9 @@ module.exports = wysiwyg;
 
 }( jQuery ));
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 (function (global){
-/*! UIkit 2.26.3 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.27.2 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(addon) {
 
     var component;
@@ -1035,8 +1048,8 @@ module.exports = wysiwyg;
         component = addon(UIkit);
     }
 
-    if (typeof define == "function" && define.amd) {
-        define("uikit-datepicker", ["uikit"], function(){
+    if (typeof define == 'function' && define.amd) {
+        define('uikit-datepicker', ['uikit'], function(){
             return component || addon(UIkit);
         });
     }
@@ -1058,7 +1071,7 @@ module.exports = wysiwyg;
                 months        : ['January','February','March','April','May','June','July','August','September','October','November','December'],
                 weekdays      : ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
             },
-            format: "YYYY-MM-DD",
+            format: 'YYYY-MM-DD',
             offsettop: 5,
             maxDate: false,
             minDate: false,
@@ -1148,7 +1161,7 @@ module.exports = wysiwyg;
 
         boot: function() {
 
-            UI.$win.on("resize orientationchange", function() {
+            UI.$win.on('resize orientationchange', function() {
 
                 if (active) {
                     active.hide();
@@ -1156,22 +1169,22 @@ module.exports = wysiwyg;
             });
 
             // init code
-            UI.$html.on("focus.datepicker.uikit", "[data-uk-datepicker]", function(e) {
+            UI.$html.on('focus.datepicker.uikit', '[data-uk-datepicker]', function(e) {
 
                 var ele = UI.$(this);
 
-                if (!ele.data("datepicker")) {
+                if (!ele.data('datepicker')) {
                     e.preventDefault();
-                    UI.datepicker(ele, UI.Utils.options(ele.attr("data-uk-datepicker")));
-                    ele.trigger("focus");
+                    UI.datepicker(ele, UI.Utils.options(ele.attr('data-uk-datepicker')));
+                    ele.trigger('focus');
                 }
             });
 
-            UI.$html.on("click focus", '*', function(e) {
+            UI.$html.on('click focus', '*', function(e) {
 
                 var target = UI.$(e.target);
 
-                if (active && target[0] != dropdown[0] && !target.data("datepicker") && !target.parents(".uk-datepicker:first").length) {
+                if (active && target[0] != dropdown[0] && !target.data('datepicker') && !target.parents('.uk-datepicker:first').length) {
                     active.hide();
                 }
             });
@@ -1188,9 +1201,9 @@ module.exports = wysiwyg;
 
             this.current  = this.element.val() ? moment(this.element.val(), this.options.format) : moment();
 
-            this.on("click focus", function(){
-                if (active!==$this) $this.pick(this.value ? this.value:($this.options.minDate ? $this.options.minDate :''));
-            }).on("change", function(){
+            this.on('click focus', function(){
+                if (active!==$this) $this.pick(this.value ? this.value:'');
+            }).on('change', function(){
 
                 if ($this.element.val() && !moment($this.element.val(), $this.options.format).isValid()) {
                    $this.element.val(moment().format($this.options.format));
@@ -1202,7 +1215,7 @@ module.exports = wysiwyg;
 
                 dropdown = UI.$('<div class="uk-dropdown uk-datepicker"></div>');
 
-                dropdown.on("click", ".uk-datepicker-next, .uk-datepicker-previous, [data-date]", function(e){
+                dropdown.on('click', '.uk-datepicker-next, .uk-datepicker-previous, [data-date]', function(e){
 
                     e.stopPropagation();
                     e.preventDefault();
@@ -1226,14 +1239,14 @@ module.exports = wysiwyg;
                     active[select.is('.update-picker-year') ? 'setYear':'setMonth'](Number(select.val()));
                 });
 
-                dropdown.appendTo("body");
+                dropdown.appendTo('body');
             }
         },
 
         pick: function(initdate) {
 
             var offset = this.element.offset(),
-                css    = {"left": offset.left, "right":""};
+                css    = {left: offset.left, right:''};
 
             this.current  = isNaN(initdate) ? moment(initdate, this.options.format):moment();
             this.initdate = this.current.format("YYYY-MM-DD");
@@ -1242,7 +1255,7 @@ module.exports = wysiwyg;
 
             if (UI.langdirection == 'right') {
                 css.right = window.innerWidth - (css.left + this.element.outerWidth());
-                css.left  = "";
+                css.left  = '';
             }
 
             var posTop    = (offset.top - this.element.outerHeight() + this.element.height()) - this.options.offsettop - dropdown.outerHeight(),
@@ -1293,15 +1306,16 @@ module.exports = wysiwyg;
                 now    = moment().format('YYYY-MM-DD'),
                 days   = [31, (year % 4 === 0 && year % 100 !== 0 || year % 400 === 0) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month],
                 before = new Date(year, month, 1, 12).getDay(),
-                data   = {"month":month, "year":year,"weekdays":[],"days":[], "maxDate": false, "minDate": false},
+                data   = {month:month, year:year, weekdays:[], days:[], maxDate:false, minDate:false},
                 row    = [];
 
+            // We need these to be midday to avoid issues from DST transition protection.
             if (opts.maxDate!==false){
-                data.maxDate = isNaN(opts.maxDate) ? moment(opts.maxDate, opts.format) : moment().add(opts.maxDate, 'days');
+                data.maxDate = isNaN(opts.maxDate) ? moment(opts.maxDate, opts.format).startOf('day').hours(12) : moment().add(opts.maxDate, 'days').startOf('day').hours(12);
             }
 
             if (opts.minDate!==false){
-                data.minDate = isNaN(opts.minDate) ? moment(opts.minDate, opts.format) : moment().add(opts.minDate-1, 'days');
+                data.minDate = isNaN(opts.minDate) ? moment(opts.minDate, opts.format).startOf('day').hours(12) : moment().add(opts.minDate-1, 'days').startOf('day').hours(12);
             }
 
             data.weekdays = (function(){
@@ -1343,10 +1357,10 @@ module.exports = wysiwyg;
 
                 day = moment(day);
 
-                isSelected = this.initdate == day.format("YYYY-MM-DD");
-                isToday    = now == day.format("YYYY-MM-DD");
+                isSelected = this.initdate == day.format('YYYY-MM-DD');
+                isToday    = now == day.format('YYYY-MM-DD');
 
-                row.push({"selected": isSelected, "today": isToday, "disabled": isDisabled, "day":day, "inmonth":isInMonth});
+                row.push({selected: isSelected, today: isToday, disabled: isDisabled, day:day, inmonth:isInMonth});
 
                 if (++r === 7) {
                     data.days.push(row);
@@ -4194,7 +4208,198 @@ module.exports = wysiwyg;
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
+/*! UIkit 2.27.2 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+(function(addon) {
+
+    var component;
+
+    if (window.UIkit) {
+        component = addon(UIkit);
+    }
+
+    if (typeof define == 'function' && define.amd) {
+        define('uikit-notify', ['uikit'], function(){
+            return component || addon(UIkit);
+        });
+    }
+
+})(function(UI){
+
+    "use strict";
+
+    var containers = {},
+        messages   = {},
+
+        notify     =  function(options){
+
+            if (UI.$.type(options) == 'string') {
+                options = { message: options };
+            }
+
+            if (arguments[1]) {
+                options = UI.$.extend(options, UI.$.type(arguments[1]) == 'string' ? {status:arguments[1]} : arguments[1]);
+            }
+
+            return (new Message(options)).show();
+        },
+        closeAll  = function(group, instantly){
+
+            var id;
+
+            if (group) {
+                for(id in messages) { if(group===messages[id].group) messages[id].close(instantly); }
+            } else {
+                for(id in messages) { messages[id].close(instantly); }
+            }
+        };
+
+    var Message = function(options){
+
+        this.options = UI.$.extend({}, Message.defaults, options);
+
+        this.uuid    = UI.Utils.uid('notifymsg');
+        this.element = UI.$([
+
+            '<div class="uk-notify-message">',
+                '<a class="uk-close"></a>',
+                '<div></div>',
+            '</div>'
+
+        ].join('')).data("notifyMessage", this);
+
+        this.content(this.options.message);
+
+        // status
+        if (this.options.status) {
+            this.element.addClass('uk-notify-message-'+this.options.status);
+            this.currentstatus = this.options.status;
+        }
+
+        this.group = this.options.group;
+
+        messages[this.uuid] = this;
+
+        if(!containers[this.options.pos]) {
+            containers[this.options.pos] = UI.$('<div class="uk-notify uk-notify-'+this.options.pos+'"></div>').appendTo('body').on("click", ".uk-notify-message", function(){
+
+                var message = UI.$(this).data('notifyMessage');
+
+                message.element.trigger('manualclose.uk.notify', [message]);
+                message.close();
+            });
+        }
+    };
+
+
+    UI.$.extend(Message.prototype, {
+
+        uuid: false,
+        element: false,
+        timout: false,
+        currentstatus: "",
+        group: false,
+
+        show: function() {
+
+            if (this.element.is(':visible')) return;
+
+            var $this = this;
+
+            containers[this.options.pos].show().prepend(this.element);
+
+            var marginbottom = parseInt(this.element.css('margin-bottom'), 10);
+
+            this.element.css({opacity:0, marginTop: -1*this.element.outerHeight(), marginBottom:0}).animate({opacity:1, marginTop:0, marginBottom:marginbottom}, function(){
+
+                if ($this.options.timeout) {
+
+                    var closefn = function(){ $this.close(); };
+
+                    $this.timeout = setTimeout(closefn, $this.options.timeout);
+
+                    $this.element.hover(
+                        function() { clearTimeout($this.timeout); },
+                        function() { $this.timeout = setTimeout(closefn, $this.options.timeout);  }
+                    );
+                }
+
+            });
+
+            return this;
+        },
+
+        close: function(instantly) {
+
+            var $this    = this,
+                finalize = function(){
+                    $this.element.remove();
+
+                    if (!containers[$this.options.pos].children().length) {
+                        containers[$this.options.pos].hide();
+                    }
+
+                    $this.options.onClose.apply($this, []);
+                    $this.element.trigger('close.uk.notify', [$this]);
+
+                    delete messages[$this.uuid];
+                };
+
+            if (this.timeout) clearTimeout(this.timeout);
+
+            if (instantly) {
+                finalize();
+            } else {
+                this.element.animate({opacity:0, marginTop: -1* this.element.outerHeight(), marginBottom:0}, function(){
+                    finalize();
+                });
+            }
+        },
+
+        content: function(html){
+
+            var container = this.element.find(">div");
+
+            if(!html) {
+                return container.html();
+            }
+
+            container.html(html);
+
+            return this;
+        },
+
+        status: function(status) {
+
+            if (!status) {
+                return this.currentstatus;
+            }
+
+            this.element.removeClass('uk-notify-message-'+this.currentstatus).addClass('uk-notify-message-'+status);
+
+            this.currentstatus = status;
+
+            return this;
+        }
+    });
+
+    Message.defaults = {
+        message: "",
+        status: "",
+        timeout: 5000,
+        group: null,
+        pos: 'top-center',
+        onClose: function() {}
+    };
+
+    UI.notify          = notify;
+    UI.notify.message  = Message;
+    UI.notify.closeAll = closeAll;
+
+    return notify;
+});
+
+},{}],22:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.8
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -8335,11 +8540,11 @@ angular.module('ngAnimate', [], function initAngularHelpers() {
 
 })(window, window.angular);
 
-},{}],21:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 require('./angular-animate');
 module.exports = 'ngAnimate';
 
-},{"./angular-animate":20}],22:[function(require,module,exports){
+},{"./angular-animate":22}],24:[function(require,module,exports){
 /**
  * An Angular module that gives you access to the browsers local storage
  * @version v0.5.0 - 2016-08-29
@@ -8886,11 +9091,11 @@ angular
       }];
   });
 })(window, window.angular);
-},{}],23:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 require('./dist/angular-local-storage.js');
 module.exports = 'LocalStorageModule';
 
-},{"./dist/angular-local-storage.js":22}],24:[function(require,module,exports){
+},{"./dist/angular-local-storage.js":24}],26:[function(require,module,exports){
 (function() {
   'use strict';
 
@@ -9400,12 +9605,12 @@ module.exports = 'LocalStorageModule';
 
 angular.module("toastr").run(["$templateCache", function($templateCache) {$templateCache.put("directives/progressbar/progressbar.html","<div class=\"toast-progress\"></div>\n");
 $templateCache.put("directives/toast/toast.html","<div class=\"{{toastClass}} {{toastType}}\" ng-click=\"tapToast()\">\n  <div ng-switch on=\"allowHtml\">\n    <div ng-switch-default ng-if=\"title\" class=\"{{titleClass}}\" aria-label=\"{{title}}\">{{title}}</div>\n    <div ng-switch-default class=\"{{messageClass}}\" aria-label=\"{{message}}\">{{message}}</div>\n    <div ng-switch-when=\"true\" ng-if=\"title\" class=\"{{titleClass}}\" ng-bind-html=\"title\"></div>\n    <div ng-switch-when=\"true\" class=\"{{messageClass}}\" ng-bind-html=\"message\"></div>\n  </div>\n  <progress-bar ng-if=\"progressBar\"></progress-bar>\n</div>\n");}]);
-},{}],25:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 require('./dist/angular-toastr.tpls.js');
 module.exports = 'toastr';
 
 
-},{"./dist/angular-toastr.tpls.js":24}],26:[function(require,module,exports){
+},{"./dist/angular-toastr.tpls.js":26}],28:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.8
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -41174,11 +41379,11 @@ $provide.value("$locale", {
 })(window);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],27:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":26}],28:[function(require,module,exports){
+},{"./angular":28}],30:[function(require,module,exports){
 //! moment.js
 //! version : 2.15.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -45413,4 +45618,4 @@ module.exports = angular;
     return _moment;
 
 }));
-},{}]},{},[9]);
+},{}]},{},[11]);

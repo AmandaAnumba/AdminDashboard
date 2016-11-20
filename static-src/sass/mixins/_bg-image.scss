@@ -1,0 +1,6 @@
+@mixin bkg_image($url, $size) {
+    background-image: url($url);
+    background-position: center;
+    background-repeat: no-repeat;
+    @include background-size($size);
+}

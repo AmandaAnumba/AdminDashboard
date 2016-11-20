@@ -37,124 +37,83 @@
     <body data-ng-controller="EditorController as vm">
         <div id="content">
             <main>
-                {% include "partials/header-simple.html" %}
+                {% include "partials/header-editor.html" %}
                 {% include "partials/menu.html" %}
                 
                 {% block addtlContent %}{% endblock addtlContent %}
                 
-                <div id="modals" data-ng-controller="ModalsController as ctrl">
+                <div id="modals" data-ng-controller="AutosaveController as ctrl">
                     {% verbatim %}
-                    <div id="autosaveModal" class="ui modal">
-                        <a class="ui modal-close uk-close"></a>
+                        <div id="autosaveModal" class="ui small modal">
+                            <div class="header">Saved Drafts</div>
 
-                        <div class="content uk-text-center">
-                            <h3>Here are the autosaved versions of your article. Click one to continue with it or to delete it.</h3>
+                            <div class="content">
+                                <h4>You have {{ ctrl.drafts.length }} saved drafts. Click one to continue with it or to delete it.</h4>
+                                
+                                <div class="ui items">
+                                    <div class="item" data-ng-repeat="x in ctrl.drafts">
+                                        <div class="ui tiny image">
+                                            <span class="icon-paper"></span>
+                                        </div>
+
+                                        <div class="content">
+                                            <a href="javascript:void(0);" class="header" data-ng-click="ctrl.load(x.title)">{{ x.title }}</a>
+                                            <div class="extra">Started on {{ x.display_date }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             
-                            <ul id="draftsList"></ul>
+                            <div class="actions">
+                                <div class="ui black cancel button">Close</div>
+                                <div class="ui basic button" data-ng-click="ctrl.clearStorage()">Delete All Drafts</div>
+                            </div>
                         </div>
-
-                        <div class="ui modal-footer">
-                            <button type="button" class="uk-button ui modal-close">Close</button> 
-                            <button type="button" class="uk-button uk-button-danger" data-ng-click="ctrl.clearStorage()">Delete These</button>
-                        </div>
-                    </div>
                     {% endverbatim %}
                     
-
-                    <div class="ui modal">
-                        <div class="header">Media Uploads</div>
-
+                    <div id="saveModal" class="ui basic small modal">
+                        <div class="header">Are you sure?</div>
+    
                         <div class="content">
-                            <p class="description" style="color:white;font-size: 0.8em;margin:0;"><span class="padder icon icon-warning"></span> <span class="label">Note: </span> All media used in your article needs to be uploaded to the web server. When your media has been successfully uploaded, you will be provided with the HTML code to paste into your article.</p>
+                            <div class="infinity-loader">
+                                <div class="loader"></div>
+                            </div>
+                        </div>
 
-                            <!-- <p class="label">Media types for an article</p>
-                            <ol style="font-weight: 300;font-size: 0.8em;letter-spacing: 0.3px;color:white;">
-                                <li>Required: article header image</li>
-                                <li>Required: image/gif for home page display
-                                    <ul>
-                                        <li>featured article- at least 600px wide</li>
-                                        <li>regular article- no larger than 350px wide</li>
-                                        <li>sponsored article- at least 400px wide</li>
-                                    </ul>
-                                </li>
-                                <li>Optional: Images throughout the article, not including external media</li>
-                            </ol> -->
-
-                            <p class="label">Upload Dashboard Image</p>
-                            <p class="description" style="color:white;font-size: 0.75em;margin:0;">(the image for the article that will be displayed on Empire's front page)</p>
-                            <!-- <ul class="list-unstyled clear-input-small3" id="media" placeholder="None" style="line-height: 0px !important;">
-                                <li>
-                                    <input id="media-0" name="feature-media" type="radio" value="image" checked> 
-                                    <label for="media-0">image/picture/gif</label>
-                                </li>
-                                <li class="video" data-toggle="tooltip" data-placement="top" title="video support coming soon!">
-                                    <input id="media-2" name="feature-media" type="radio" value="video" disabled> 
-                                    <label for="media-2">video</label>
-                                </li>
-                            </ul> -->
-
-                            <div class="checkbox clear-input-small3">
-                                <label>
-                                    <input type="checkbox" value="headerSame" id="headerSame">
-                                    Use same image from header
-                                </label>
+                        <div class="actions">
+                            <div class="ui basic cancel inverted button">
+                                <i class="remove icon"></i>
+                                No
                             </div>
 
-                            <input class="clear-input-small2" id="featureIMG" name="featureIMG" type="file" accept="image/png,image/jpg,image/jpeg,image/gif">
-                            
-                            <p id="upload_btn2" class="btn btn-primary" hidden>Upload</p>
-                            
-                            <div id="progress2" hidden></div>
-                            
-                            <div class="response" id="success_upload2" style="text-align:center;" hidden><span style="color: #4CDBA5;" class="icon icon-check"></span></div>
-                            
-                            <div class="response" id="error_upload2" style="text-align:center;" hidden><span style="color: #FA626E;" class="icon icon-cross"></span></div>
-
-                            <p class="label">Upload all other media</p>
-                            <p class="description" style="color:white;font-size: 0.75em;margin:0;">(upload files one at a time)</p>
-                            
-                            <!-- <ul class="list-unstyled clear-input-small3" id="media" placeholder="None" style="line-height: 0px !important;">
-                                <li>
-                                    <input id="media-0" name="media" type="radio" value="image" checked> 
-                                    <label for="media-0">image/picture/gif</label>
-                                </li>
-                                <li class="video" data-toggle="tooltip" data-placement="top" title="video support coming soon!">
-                                    <input id="media-2" name="media" type="radio" value="video" disabled> 
-                                    <label for="media-2">video</label>
-                                </li>
-                            </ul> -->
-
-                            <input class="clear-input-small2" id="allmedia" name="allmedia" type="file" accept="image/png,image/jpg,image/jpeg,image/gif">
-
-                            <p id="upload_btn3" class="btn btn-primary" hidden>Upload</p>
-
-                            <div id="progress3" hidden></div>
-                            
-                            <div class="response" id="success_upload3" style="text-align:center;" hidden><span style="color: #4CDBA5;" class="icon icon-check"></span></div>
-                            
-                            <div class="response" id="error_upload3" style="text-align:center;" hidden><span style="color: #FA626E;" class="icon icon-cross"></span></div>
+                            <div class="ui red ok inverted button" data-ng-click="vm.articleDelete('{{ article.id }}')">
+                                <i class="checkmark icon"></i>
+                                Yes, Delete it
+                            </div>
                         </div>
                     </div>
 
-
                     {% if data.page != 'write' %}
-                    <div id="deleteModal" class="ui modal">
-                        <div class="ui modal-dialog">
-                            <a class="ui modal-close uk-close"></a>
-                            
-                            <div class="modal-content uk-text-center">
+                        <div id="deleteModal" class="ui basic small modal">
+                            <div class="header">Are you sure?</div>
+        
+                            <div class="content">
                                 <h4>Are you sure you want to delete this article?</h4>
                             </div>
 
-                            <div class="ui modal-footer">
-                                <button type="button" class="uk-button uk-button-primary" data-ng-click="ctrl.deleteArticle('{{ article.id }}')">Yeah, do it</button>
-                                <button type="button" class="uk-button ui modal-close">No, don't delete it</button> 
+                            <div class="actions">
+                                <div class="ui basic cancel inverted button">
+                                    <i class="remove icon"></i>
+                                    No
+                                </div>
+
+                                <div class="ui red ok inverted button" data-ng-click="vm.articleDelete('{{ article.id }}')">
+                                    <i class="checkmark icon"></i>
+                                    Yes, Delete it
+                                </div>
                             </div>
                         </div>
-                    </div>
                     {% endif %}
-                    
-                    {% block modals %}{% endblock modals %}
                 </div>
             </main>
             
@@ -164,19 +123,13 @@
                 <script src="{% static 'js/third-party/froala-editor.js' %}"></script>
                 <script src="{% static 'js/third-party/semantic.js' %}"></script>
                 <script src="{% static 'js/editor.js' %}?v={{ data.version }}"></script>
-                
                 <script>
-                    $('.ui.accordion').accordion();
-                    $('.ui.checkbox').checkbox();
-                    $('.ui.dropdown').dropdown();
-                    $('.ui.modal').modal();
+                    $(function() {
+                        $('.ui.accordion').accordion();
+                        $('.ui.checkbox').checkbox();
+                        $('.ui.dropdown').dropdown();
+                    });
                 </script>
-
-                {% block addtlFooter %}{% endblock addtlFooter %}
-
-                {% if data.hasPageJS %}
-                    <script src="/static/js/{{ data.page }}.js?v={{ data.version }}"></script>
-                {% endif %}
             </footer>
         </div>
     </body>

@@ -1,6 +1,6 @@
 @import 'modules/admin';
-@import 'modules/panel';
 @import 'mixins/clearfix';
+@import 'third-party/uikit/core/modal';
 @import 'third-party/uikit/components/slidenav';
 
 
@@ -19,32 +19,22 @@
 /*------------------------------------*\
     GENERAL STYLES
 \*------------------------------------*/
-#contentWrapper { padding-top: 70px; }
+#contentWrapper { padding-top: 85px; }
 
 #grid {
     @include clearfix();
-    width: 80%;
-    margin: 0 auto;
+    text-align: center;
+    // width: 90%;
+    // margin: 0 auto;
 }
 
 .grid__item {
-    padding-right: 0 !important;
-    padding-left: 0 !important;
-    width: 250px;
-    float: left;
+    width: 295px;
+    margin-bottom: 15px;
 
     a {
         position: relative;
-        height: 100%;
-        width: 100%;
         display: block;
-        color: inherit;
-    }
-
-    img {
-        vertical-align: middle;
-        max-width: 100%;
-        height: auto;
     }
 }
 

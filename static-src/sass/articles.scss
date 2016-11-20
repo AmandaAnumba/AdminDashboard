@@ -1,6 +1,6 @@
 @import 'modules/admin';
-@import 'modules/panel';
 @import 'third-party/froala';
+@import 'third-party/uikit/core/table';
 
 
 
@@ -18,38 +18,115 @@
 /*------------------------------------*\
     GENERAL STYLES
 \*------------------------------------*/
-.releasedate { visibility: hidden; }
+    #contentWrapper { 
+        padding: 90px 0 0; 
+        min-height: 100vh;
+    }
 
-#contentWrapper { padding-top: 70px; }
+    $border: 1px solid #ccc;
+    #table, 
+    #preview {
+        border-top: $border;
+        background-color: white;
+    }
 
-#articles {
-	height: 85vh;
-    position: relative;
-}
+    #preview {
+        border-left: $border;
+    }
 
-.panel-body {
-	height: 72vh;
-    overflow-y: scroll;
-}
+    #loadMore {
+        font-size: 11px;
+        text-align: center;
+        margin: 25px 0;
+        color: #78a5c5;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+    }
 
-#previewPlaceholder {
-	text-align: center;
-	font-size: 25px;
-	position: relative;
-	height: 100%;
 
-	.icon {
-		margin-bottom: 15px;
-		font-size: 57px;
-	}
-}
 
-.article-preview {
-	display: none;
-    position: absolute;
-    height: 100%;
-    overflow-y: scroll;
-    width: 100%;
-}
+/*------------------------------------*\
+    UiKit table overrides
+\*------------------------------------*/
+    .uk-table {
+        margin-top: 0;
+
+        th { 
+            padding: 14px 10px;
+        }
+
+        tbody {
+            font-size: 12px;
+            
+            tr { cursor: pointer; }
+        }
+    }
+
+
+
+/*------------------------------------*\
+    PREVIEW
+\*------------------------------------*/
+    #placeholder {
+        text-align: center;
+        margin-top: 120px;
+        
+        .icon {
+            display: inline-block;
+            font-size: 70px;
+            padding: 15px 9px;
+            border: 3px solid #444;
+            border-radius: 5px;
+        }
+
+        p { color: #a5a5a5; }
+    }
+
+    #preview {
+        .preview-actions {
+            border-bottom: $border;
+            margin-bottom: 25px;
+            height: 48px;
+            line-height: 48px;
+            text-align: right;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 1px;
+            padding: 0 25px;
+        }
+        
+        .preview-title {
+            font-size: 30px;
+            text-align: center;
+            line-height: 30px;
+            margin: 15px 0 30px;
+        }
+
+        .preview-content {
+            padding: 0 30px;
+
+            + .preview-actions {
+                border-top: $border;
+            }
+        }
+    }
+
+    #article {
+        display: none;
+
+        &.visible { display: block; }
+    }
+
+
+
+/*------------------------------------*\
+    RESPONSIVENESS
+\*------------------------------------*/
+    @media only screen
+    and (max-width : 575px) {
+        #preview { display: none; }
+
+        #table { width: 100%; }
+    }
 
 

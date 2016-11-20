@@ -5,88 +5,90 @@
 
 
 {% block addtlContent %}
-	<div id="contentWrapper" class="uk-grid" data-ng-controller="ArticleViewController as vm">
-        {% csrf_token %}
-		
-		<div class="uk-width-medium-1-3">
-			<section id="articles" class="panel">
-				<div class="panel-title">
-					<div>Articles</div>
-					<ul class="no-padding">
-						<li data-position="1" data-target="#review" data-toggle-element=".section" class="active" slide-effect>Needs Review ({{ review|length }})</li>
-						<li data-position="2" data-target="#drafts" data-toggle-element=".section" slide-effect>Drafts ({{ drafts|length }})</li>
-						<li data-position="3" data-target="#queue" data-toggle-element=".section" slide-effect>Queued ({{ queue|length }})</li>
-					</ul>
-				</div>
+    {% csrf_token %}
+    <div id="contentWrapper" class="uk-grid uk-grid-collapse" data-ng-controller="ArticleViewController as vm">
+        <div class="page-loader">
+            <div class="circle-loader">Loading...</div>
+        </div>
 
-				<div class="panel-body wrapper">
-					<div data-position="1" class="section active" id="review">
-						<div class="articles b-b-none">
-						{% if review %}
-							{% for x in review %}
-								<div class="article" data-ng-click="vm.loadPreview({{ x.id }})">
-									<div class="article-title">{{ x.title }}</div>
-									<div class="article-date small release-date">{{ x.published_date|date }}</div>
-								</div>
-							{% endfor %}
-						{% else %}
-							<div class="uk-text-center uk-text-muted"><small>No Articles to Review</small></div>
-						{% endif %}
-						</div>
-					</div>
+        <div id="table" class="uk-width-4-10">
+            <table class="uk-table uk-table-hover">
+                <thead>
+                    <tr>
+                        <th>Article Name</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if articles %}
+                        {% for i in articles %}
+                            <tr data-ng-click="vm.loadPreview('{{ i.id }}', '{{ i.slug }}', '{{ i.status }}')">
+                                <td>{{ i.title }}</td>
+                                <td>
+                                    {% if i.status == 'review' %}
+                                        <div class="uk-badge uk-badge-danger">
+                                            {{ i.status }}
+                                        </div>
+                                    {% else %}
+                                        <div class="uk-badge">
+                                            {{ i.status }}
+                                        </div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <div class="uk-text-center uk-text-muted padding-v"><small>No Articles to Review</small></div>
+                    {% endif %}
+                    
+                    <div data-ng-show="vm.articles.length > 0">
+                        {% verbatim %}
+                            <tr data-ng-repeat="i in vm.articles" data-ng-click="vm.loadPreview(i.pk, i.fields.slug, i.fields.status)">
+                                <td>{{ i.fields.title }}</td>
+                                <td>
+                                    <div data-ng-class="{ 'uk-badge-danger': i.fields.status === 'ready', 'uk-badge-warning': i.fields.status === 'draft' }" class="uk-badge">
+                                        {{ i.fields.status }}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endverbatim %}
+                    </div>
+                </tbody>
+            </table>
+            
+            <div id="loadMore" data-ng-click="vm.loadMore()" data-ng-hide="vm.pageCount >= vm.maxPages">View More Articles</div>
+        </div>
 
-					<div data-position="2" class="section" id="drafts">
-						<div class="articles b-b-none">
-						{% if drafts %}
-							{% for y in drafts %}
-								<div class="article" data-ng-click="vm.loadPreview({{ y.id }})">
-									<div class="article-title">{{ y.title }}</div>
-									<div class="article-date small release-date">{{ y.published_date|date }}</div>
-									<div class="small">Continue Draft</div>
-								</div>
-							{% endfor %}
-						{% else %}
-							<div class="uk-text-center uk-text-muted"><small>You currently have no saved drafts</small></div>
-						{% endif %}
-						</div>
-					</div>
+        <div id="preview" class="uk-width-6-10">
+            <div id="placeholder" data-ng-show="!vm.showPreview">
+                <span class="icon icon-read-more"></span>
+                <p>Select an article to preview it</p>
+            </div>
+            
+            {% verbatim %}
+            <div id="article" data-ng-class="{'visible':vm.showPreview}">
+                <div class="preview-actions">
+                    <a data-ng-if="vm.preview.status !== 'published'" href="/editor/id={{ vm.preview.id }}/">
+                        <span data-ng-if="vm.preview.status === 'draft'">continue draft</span>
+                        <span data-ng-if="vm.preview.status === 'ready'">proofread article</span>
+                        <span data-ng-if="vm.preview.status === 'queued'">preview article</span>
+                    </a>
 
-					<div data-position="3" class="section" id="queue">
-						<div class="articles b-b-none">
-						{% if queue %}
-							{% for z in queue %}
-								<div class="article" data-ng-click="vm.loadPreview({{ z.id }})">
-									<div class="article-title">{{ z.title }}</div>
-									<div class="article-author">by {{ z.author.first_name }} {{ z.author.last_name }}</div>
-									<div class="article-date small release-date">{{ z.published_date|date }}</div>
-								</div>
-							{% endfor %}
-						{% endif %}
-						</div>
-					</div>
-				</div>
-			</section>
-		</div>
+                    <a data-ng-if="vm.preview.status === 'published'" target="_blank" href="https://chicreptawr-blog.herokuapp.com/cycle/{{ vm.preview.slug }}/"><span>read article</span></a>
+                </div>
+                <div class="preview-title">{{ vm.preview.title }}</div>
+                <div class="preview-content" ng-bind-html="vm.preview.content"></div>
+                <div class="preview-actions">
+                    <a data-ng-if="vm.preview.status !== 'published'" href="/editor/id={{ vm.preview.id }}/">
+                        <span data-ng-if="vm.preview.status === 'draft'">continue draft</span>
+                        <span data-ng-if="vm.preview.status === 'ready'">proofread article</span>
+                        <span data-ng-if="vm.preview.status === 'queued'">preview article</span>
+                    </a>
 
-		<div class="uk-width-medium-2-3">
-			<div id="previewPlaceholder">
-				<div class="page-loader">
-					<div class="circle-loader">Loading...</div>
-				</div>
-				
-				<div class="placeholder">
-					<span class="icon icon-focus"></span>
-					<p>Article Preview</p>
-				</div>
-				
-				{% verbatim %}
-				<div class="article-preview">
-					<div class="preview-actions"></div>
-					<div class="preview-title">{{ vm.article.title }}</div>
-					<div class="preview-content" ng-bind-html="vm.article.content"></div>
-				</div>
-				{% endverbatim %}
-			</div>
-		</div>
-	</div>
+                    <a data-ng-if="vm.preview.status === 'published'" target="_blank" href="https://chicreptawr-blog.herokuapp.com/cycle/{{ vm.preview.slug }}/"><span>read article</span></a>
+                </div>
+            </div>
+            {% endverbatim %}
+        </div>
+    </div>
 {% endblock addtlContent %}

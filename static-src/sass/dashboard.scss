@@ -18,21 +18,21 @@
 /*------------------------------------*\
     GENERAL STYLES
 \*------------------------------------*/
-#headerWrapper {
-    background: rgba(0, 0, 0, 0.53);
-    border-bottom: 1px solid #484848;
-    box-shadow: 0 0px 6px rgba(0,0,0,0.15);
-    color: white;
-}
+    #headerWrapper {
+        background: rgba(0, 0, 0, 0.53);
+        border-bottom: 1px solid #484848;
+        box-shadow: 0 0px 6px rgba(0,0,0,0.15);
+        color: white;
+    }
 
-#widgets { padding-left: 0; }
+    #widgets { padding-left: 0; }
 
-#updates ul { 
-    padding-top: 15px;
-    list-style-type: none;
-}
+    #updates ul { 
+        padding-top: 15px;
+        list-style-type: none;
+    }
 
-#hmbrgr span { background-color: rgb(255, 255, 255) !important; }
+    #hmbrgr span { background-color: rgb(255, 255, 255) !important; }
 
 
 
@@ -64,44 +64,31 @@
         width: 54%;
         outline: 0;
         
-        &:hover
-        {
-            .nav-multithumb
-            {
-                width: 200px
-            }
+        &:hover {
+            .nav-multithumb { width: 200px; }
 
-            .nav-multithumb .icon-wrap::after 
-            {
+            .nav-multithumb .icon-wrap::after {
                 width: 200px;
                 -webkit-transition-delay: 0s;
-                transition-delay: 0s
+                transition-delay: 0s;
             }
 
-            .nav-multithumb div 
-            {
-                pointer-events: auto
-            }
+            .nav-multithumb div { pointer-events: auto; }
 
-            .nav-multithumb div::after 
-            {
+            .nav-multithumb div::after {
                 opacity: 1;
                 -webkit-transition-delay: 0.3s;
                 transition-delay: 0.3s;
                 -webkit-transform: translateY(0);
-                transform: translateY(0)
+                transform: translateY(0);
             }
         }
 
-        hr 
-        {
-            border-top: 1px solid #9CC7B9;
-        }
+        hr { border-top: 1px solid #9CC7B9; }
     }
 
     .cycle-count {
         margin-bottom: 10px;
-        font-family: "Noto Serif",sans-serif;
         letter-spacing: 1.5px;
         font-size: 14px;
     }
@@ -112,10 +99,6 @@
         font-weight: 300;
         margin: 10px 0;
         font-family: $sans-serif !important;
-
-        strong {
-            font-family: 'Noto Serif', serif;
-        }
     }
 
     .cycle-description {
@@ -199,33 +182,21 @@
 /*------------------------------------*\
     #STATS
 \*------------------------------------*/
-    #stats 
-    {
+    #stats {
         text-align: center;
         margin: 25px 0;
         
-        .container-fluid 
-        {
-            padding-left: 0;
-        }
+        .container-fluid { padding-left: 0; }
 
-        .col-xs-3:first-child 
-        {
-            padding-left: 0;
-        }
+        .col-xs-3:first-child { padding-left: 0; }
 
-        .col-xs-3:last-child 
-        {
-            padding-right: 0;
-        }
+        .col-xs-3:last-child { padding-right: 0; }
     }
 
-    .stat-card 
-    {
+    .stat-card {
         color: #4a4a4a;
 
-        .stat-card__label
-        {
+        .stat-card__label {
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 0.3px;
@@ -234,8 +205,7 @@
             margin-top: 6px;
         }
 
-        .stat-card__value 
-        {
+        .stat-card__value {
             font-size: 30px;
             font-weight: 300;
         }
@@ -258,15 +228,13 @@
 /*------------------------------------*\
     #DASHMESSAGE
 \*------------------------------------*/
-    #dashMessage 
-    {
+    #dashMessage {
         width: 550px;
         margin: 0 auto;
         margin-bottom: 25px;
         text-align: center;
 
-        h3 
-        {
+        h3 {
             margin-bottom:10px;
             color:indianred;
         }
@@ -297,24 +265,10 @@
 
     @media only screen
     and (max-width : 480px) {
-        #contentWrapper {
-            padding: 0 15px 30px;
-        }
+        #contentWrapper { padding: 0 15px 30px; }
 
-        .panel-title ul {
-            padding-left: 0px;
-            display: block;
-
-            li {
-                padding: 3px 9px 3px 0;
-                letter-spacing: 0.4px;
-
-                &:last-child { padding-right: 0; }
-            }
-        }
+        #cycleHeader { margin: 0 -15px; }
     }
-
-
 
 
 

@@ -4,7 +4,8 @@ var Article = function( dataService, $timeout, $window, logger ) {
     var service = {
             delete: deleteArticle,
             publish: publish,
-            save: save
+            save: save,
+            data: {}
         };
 
     return service;
@@ -18,22 +19,24 @@ var Article = function( dataService, $timeout, $window, logger ) {
             id: id
         };
 
-        dataService.sendRequest('/delete/', params)
-            .then(function(data) {
-                $('#deleteModal').modal('hide');
+
+
+        // dataService.sendRequest('/delete/', params)
+        //     .then(function(data) {
+        //         $('#deleteModal').modal('hide');
                 
-                if ( data.success ) {
-                    logger.success(data.success, 'Article Deleted.');
+        //         if ( data.success ) {
+        //             logger.success(data.success, 'Article Deleted.');
 
-                    $timeout(function(){
-                        $window.location = "/dashboard/";
-                    }, 2700);
-                }
+        //             $timeout(function(){
+        //                 $window.location = "/dashboard/";
+        //             }, 2700);
+        //         }
 
-                if ( data.error ) {
-                    logger.error(data.error, 'Error Occurred');
-                }
-            });
+        //         if ( data.error ) {
+        //             logger.error(data.error, 'Error Occurred');
+        //         }
+        //     });
     }
 
     function publish(article) {

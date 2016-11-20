@@ -1,7 +1,7 @@
 {% verbatim %}
 <li class="message" ng-repeat="y in messenger.list | orderBy : 'id'" data-message-id="{{ y.id }}" data-ng-click="messenger.view(y.id)">
     <div class="message-avatar">
-        <img class="lazy" data-original="https://s3.amazonaws.com/chicreptawr/avatars/{{ y.avatar }}" width="35" height="35" />
+        <img ng-src="https://s3.amazonaws.com/chicreptawr/avatars/{{ y.avatar }}" width="35" height="35" />
     </div>
 
     <div class="message-data">

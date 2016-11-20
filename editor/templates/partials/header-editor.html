@@ -1,0 +1,21 @@
+<header>
+    <div id="links">
+        <ul>
+            <li data-ng-click="vm.goBack()"><i class="icon-arrow-left"></i></li>
+
+            {% if article.status != 'published' %}
+                <li data-ng-click="vm.articlePublish()">Publish</li>
+            {% endif %}
+            
+            <li data-toggle="modal" data-target="#saveModal" data-ng-click="vm.articleSave()">Save</li>
+
+            {% if data.page != 'write' and article.status != 'published' %}
+                <li data-toggle="modal" data-target="#deleteModal" data-ng-click="vm.articleDelete()">Delete</li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <div id="hmbrgr"> 
+        <a href="#" class="hmbrgr" data-ng-click="vm.toggleMenu()" hmbrgr></a>
+    </div>
+</header>

@@ -1,0 +1,54 @@
+<section class="article__header-image">
+    <div class="image-placeholder regular" data-ng-class="{selected: vm.article.article_type === 'regular'}">
+        <figure class="uk-overlay uk-overlay-hover">
+            {% if article.header_image %}
+                <img src="{{ article.header_image }}" />
+            {% else %}
+                <img src="/static/images/placeholder-regular.jpg" alt="Placeholder for regular article types" />
+            {% endif %}
+
+            <figcaption class="uk-overlay-panel uk-overlay-fade uk-overlay-background uk-flex uk-flex-center uk-flex-middle uk-text-center">
+                <div class="uk-form-file">
+                    <button class="ui basic button white">
+                        {% if article.header_image %}
+                            Change Image
+                        {% else %}
+                            Upload Image
+                        {% endif %}
+                    </button>
+                    
+                    <input type="file" accept="image/*" name="header_image" data-ng-model="vm.article.header_image" />
+                </div>
+            </figcaption>
+        </figure>
+    </div>
+
+    <div class="image-placeholder feature" data-ng-class="{selected: vm.article.article_type === 'feature'}">
+        <figure class="uk-overlay uk-overlay-hover" >
+            {% if article.header_image %}
+                <div class="bg-parallax" data-uk-parallax="{bg: '-200'}" style="background-image: url({{ article.header_image }});"></div>
+            {% else %}
+                <div class="bg-parallax" data-uk-parallax="{bg: '-200'}"></div>
+            {% endif %}
+
+            <figcaption class="uk-overlay-panel uk-overlay-fade uk-overlay-background uk-flex uk-flex-center uk-flex-middle">
+                <div class="uk-form-file">
+                    <button class="ui basic button white">
+                        {% if article.header_image %}
+                            Change Image
+                        {% else %}
+                            Upload Image
+                        {% endif %}
+                    </button>
+                    
+                    <input type="file" accept="image/*" name="header_image" data-ng-model="vm.article.header_image" />
+                </div>
+            </figcaption>
+        </figure>
+    </div>
+
+    <div class="image-details">
+        <input type="text" name="photo_credit" placeholder="Photo Credit" ng-model="vm.article.photo_credit" value="{{ article.photo_credit|default:'' }}" />
+        <input type="hidden" name="feature_image" value="{{ article.feature_image }}" data-ng-model="vm.article.feature_image" />
+    </div>
+</section>

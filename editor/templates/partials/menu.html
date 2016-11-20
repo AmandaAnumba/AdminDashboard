@@ -1,15 +1,27 @@
 <nav id="menu" class="mm-small">
     <div class="Panel">
+        <div id="mobileLinks" class="ui two column grid">
+            <div class="column">
+                <button data-ng-click="vm.articleSave()" class="ui small button">Save</button>
+            </div>
+            
+            <div class="column">
+                <button data-ng-click="vm.articlePublish()" class="ui small primary button">Publish</button>
+            </div>
+        </div>
+        
+        <div class="auto-save">saved <span data-ng-bind="vm.savedLast"></span></div>
+
         <div class="ui styled fluid accordion">
             <div class="title active">Layout <span data-ng-bind="vm.article.article_type"></span></div>
             <div class="content active">
                 <div class="transition visible">
                     <div class="article__layout">
-                        <div data-ng-class="{selected: vm.article.article_type == 'regular'}" data-ng-click="vm.setLayout('regular')">
+                        <div data-ng-class="{selected: vm.article.article_type === 'regular'}" data-ng-click="vm.setLayout('regular')">
                             <img class="layout__img" src="/static/images/layout-regular.png" />
                             <div class="layout__title">Regular</div>
                         </div>
-                        <div data-ng-class="{selected: vm.article.article_type == 'feature'}" data-ng-click="vm.setLayout('feature')">
+                        <div data-ng-class="{selected: vm.article.article_type === 'feature'}" data-ng-click="vm.setLayout('feature')">
                             <img class="layout__img" src="/static/images/layout-feature.png" />
                             <div class="layout__title">Feature</div>
                         </div>

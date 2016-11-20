@@ -40,11 +40,6 @@ DATA = {
     'cycle': CYCLE,
     'loggedIn': False
 }
-ARTICLES = {
-    'drafts':'',
-    'all':'',
-    'ready':''
-}
 
 
 def index(request):
@@ -202,45 +197,56 @@ def profile(request):
         return redirect(index)
 
 
-@csrf_protect
-@require_http_methods(["GET", "POST"])
+@require_http_methods(["GET"])
 def articles(request):
     PAGEDATA = {}
     PAGEDATA.update(DATA)
     PAGEDATA['page'] = 'articles'
 
     if request.user.is_authenticated():
-        a = Article.objects.all()
+        limit = 15
+        a = Article.objects.all()[:limit]
         user = User.objects.get(username=request.session['username'])
         u = Member.objects.get(user=user)
 
-        if request.method == 'GET':
-            drafts = a.filter(status='draft', author=user)
-            review = a.filter(status='ready')
-            queue = a.filter(status='queued')
-
-            return render(request, 'pages/articles.html', 
-                {
-                    'data': PAGEDATA,
-                    'drafts': drafts,
-                    'review': review,
-                    'queue': queue,
-                    'user': u
-                })
-        elif request.method == 'POST':
-            body = json.loads(request.body.decode('utf-8'))
-            articleId = body['id']
-
-            selected = a.filter(id=articleId)
-            obj = serializers.serialize('json', selected)
-            
-            return JsonResponse({ 'article': obj })
+        return render(request, 'pages/articles.html', 
+            {
+                'data': PAGEDATA,
+                'articles': a,
+                'user': u
+            })
     else:
         return redirect(index)
 
 
+@csrf_protect
+@require_http_methods(["POST"])
+def load_articles(request):
+    body = json.loads(request.body.decode('utf-8'))
+    page = int(body['page'])
+    
+    limit = 15
+    lower = page * limit + 1
+    upper = lower + limit
+    
+    a = Article.objects.all()[lower:upper]
+    obj = serializers.serialize('json', a)
+
+    return JsonResponse({ 'articles': obj })
+
 
 @csrf_protect
+@require_http_methods(["POST"])
+def get_article(request):
+    body = json.loads(request.body.decode('utf-8'))
+    articleId = body['id']
+    
+    a = Article.objects.all().filter(id=articleId)
+    obj = serializers.serialize('json', a)
+
+    return JsonResponse({ 'article': obj })
+
+
 @require_http_methods(["GET"])
 def gallery(request):
     PAGEDATA = {}
@@ -266,32 +272,6 @@ def gallery(request):
                 'user': u,
                 'pics': pics
             })
-
-        # a = Article.objects.all()
-        # user = User.objects.get(username=request.session['username'])
-        # u = Member.objects.get(user=user)
-
-        # if request.method == 'GET':
-        #     drafts = a.filter(status='draft', author=user)
-        #     review = a.filter(status='ready')
-        #     queue = a.filter(status='queued')
-
-        #     return render(request, 'pages/articles.html', 
-        #         {
-        #             'data': PAGEDATA,
-        #             'drafts': drafts,
-        #             'review': review,
-        #             'queue': queue,
-        #             'user': u
-        #         })
-        # elif request.method == 'POST':
-        #     body = json.loads(request.body.decode('utf-8'))
-        #     articleId = body['id']
-
-        #     selected = a.filter(id=articleId)
-        #     obj = serializers.serialize('json', selected)
-            
-        #     return JsonResponse({ 'article': obj })
     else:
         return redirect(index)
 

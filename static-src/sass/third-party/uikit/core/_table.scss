@@ -28,7 +28,8 @@ $table-striped-background:                       #f5f5f5 !default;
 $table-condensed-padding-vertical:               4px !default;
 $table-condensed-padding-horizontal:             8px !default;
 
-$table-hover-background:                         #EEE !default;
+$table-hover-background:                         whitesmoke !default;
+// $table-hover-background:                         #EEE !default;
 
 $table-active-background:                        $table-hover-background !default;
 
@@ -61,7 +62,7 @@ $table-active-background:                        $table-hover-background !defaul
 
 .uk-table th,
 .uk-table td {
-    padding: $table-padding-vertical $table-padding-horizontal;
+    padding: 10px;
     @include hook-table();
 }
 

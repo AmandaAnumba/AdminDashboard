@@ -2,26 +2,26 @@
 @mixin hook-datepicker-nav-item(){}
 
 @mixin hook-datepicker-table-item(){
-	border: 1px solid transparent;
+    border: 1px solid transparent;
     border-radius: 4px;
     background-origin: border-box;
 }
 
 @mixin hook-datepicker-table-item-hover(){
-	border-color: rgba(0,0,0,.2);
+    border-color: rgba(0,0,0,.2);
     border-bottom-color: rgba(0,0,0,.3);
     text-shadow: 0 1px 0 #fff;
 }
 
 @mixin hook-datepicker-table-item-onclick(){
-	border-color: rgba(0,0,0,.2);
+    border-color: rgba(0,0,0,.2);
     border-top-color: rgba(0,0,0,.3);
     background-image: none;
     box-shadow: inset 0 2px 4px rgba(0,0,0,.1);
 }
 
 @mixin hook-datepicker-table-item-active(){
-	border: 1px solid rgba(0,0,0,.2);
+    border: 1px solid rgba(0,0,0,.2);
     border-bottom-color: rgba(0,0,0,.4);
     background-origin: border-box;
     background-image: -webkit-linear-gradient(top,#00b4f5,#008dc5);
@@ -75,7 +75,11 @@
 @mixin hook-nestable-panel(){}
 @mixin hook-nestable-misc(){}
 @mixin hook-notify(){}
-@mixin hook-notify-message(){}
+
+@mixin hook-notify-message(){
+    font-weight: 300;
+}
+
 @mixin hook-notify-message-primary(){}
 @mixin hook-notify-message-success(){}
 @mixin hook-notify-message-warning(){}
@@ -132,10 +136,35 @@
 @mixin hook-article-divider(){}
 @mixin hook-article-misc(){}
 @mixin hook-animation-misc(){}
-@mixin hook-badge(){}
-@mixin hook-badge-success(){}
-@mixin hook-badge-warning(){}
-@mixin hook-badge-danger(){}
+
+@mixin hook-badge(){
+    border: 1px solid rgba(0,0,0,.2);
+    border-bottom-color: rgba(0,0,0,.3);
+    background-origin: border-box;
+    background-image: -webkit-linear-gradient(top,#00b4f5,#008dc5);
+    background-image: linear-gradient(to bottom,#00b4f5,#008dc5);
+    border-radius: 2px;
+    text-shadow: 0 -1px 0 rgba(0,0,0,.2);
+}
+
+@mixin hook-badge-success(){
+    background-color: #82bb42;
+    background-image: -webkit-linear-gradient(top,#9fd256,#6fac34);
+    background-image: linear-gradient(to bottom,#9fd256,#6fac34);
+}
+
+@mixin hook-badge-warning(){
+    background-color: #f9a124;
+    background-image: -webkit-linear-gradient(top,#fbb450,#f89406);
+    background-image: linear-gradient(to bottom,#fbb450,#f89406);
+}
+
+@mixin hook-badge-danger(){
+    background-color: #d32c46;
+    background-image: -webkit-linear-gradient(top,#ee465a,#c11a39);
+    background-image: linear-gradient(to bottom,#ee465a,#c11a39);
+}
+
 @mixin hook-badge-misc(){}
 @mixin hook-base-body(){}
 @mixin hook-base-link(){}
@@ -224,81 +253,81 @@
 @mixin hook-description-list-misc(){}
 
 @mixin hook-dropdown-docs(){
-	border: 1px solid #d3d3d3;
+    border: 1px solid #d3d3d3;
     border-radius: 4px;
     box-shadow: 0 2px 5px rgba(0,0,0,.1);
 }
 @mixin hook-dropdown(){
-	width: 225px;
-	font-family: 'Open Sans', sans-serif;
-	padding: 0;
-	
-	$border: #e6e6e6;
-	&:after, 
-	&:before {
-		bottom: 100%;
-		left: 50%;
-		border: solid transparent;
-		content: " ";
-		height: 0;
-		width: 0;
-		position: absolute;
-		pointer-events: none;
-	}
+    width: 225px;
+    font-family: 'Open Sans', sans-serif;
+    padding: 0;
+    
+    $border: #e6e6e6;
+    &:after, 
+    &:before {
+        bottom: 100%;
+        left: 50%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+    }
 
-	&:after {
-		top: -29px;
-		border-color: rgba(56, 56, 56, 0);
-		border-bottom-color: white;
-		border-width: 15px;
-		margin-left: -15px;
-	}
+    &:after {
+        top: -29px;
+        border-color: rgba(56, 56, 56, 0);
+        border-bottom-color: white;
+        border-width: 15px;
+        margin-left: -15px;
+    }
 
-	&:before {
-	    top: -31px;
-		border-color: rgba(207, 207, 207, 0);
-		border-bottom-color: $border;
-		border-width: 16px;
-		margin-left: -16px;
-	}
+    &:before {
+        top: -31px;
+        border-color: rgba(207, 207, 207, 0);
+        border-bottom-color: $border;
+        border-width: 16px;
+        margin-left: -16px;
+    }
 
-	.dropdown-header {
-		background-color: white;
-		color: #383838;
-		// color: lighten(whitesmoke, 2%);
-		text-align: center;
-		padding: 9px 0;
-		font-size: 11px;
-		letter-spacing: 1px;
-		font-weight: 300;
-		border: 1px solid $border;
-    	border-bottom: none;
-	}
+    .dropdown-header {
+        background-color: white;
+        color: #383838;
+        // color: lighten(whitesmoke, 2%);
+        text-align: center;
+        padding: 9px 0;
+        font-size: 11px;
+        letter-spacing: 1px;
+        font-weight: 300;
+        border: 1px solid $border;
+        border-bottom: none;
+    }
 
-	.dropdown-content {
-		// min-height: 150px;
-		color: #383838;
-		padding: 10px;
-		background-color: white;
-		border: 1px solid $border;
-	}
+    .dropdown-content {
+        // min-height: 150px;
+        color: #383838;
+        padding: 10px;
+        background-color: white;
+        border: 1px solid $border;
+    }
 
-	.dropdown-footer {
-		padding: 6px 0;
-		text-align: center;
-		color: #383838;
-		font-size: 11px;
-		letter-spacing: 1px;
-		border: 1px solid $border;
-		border-top: none;
-		cursor: pointer;
-	}
+    .dropdown-footer {
+        padding: 6px 0;
+        text-align: center;
+        color: #383838;
+        font-size: 11px;
+        letter-spacing: 1px;
+        border: 1px solid $border;
+        border-top: none;
+        cursor: pointer;
+    }
 
-	ul {
-		list-style-type: none;
-		margin: 0;
-		padding: 0;
-	}
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
 }
 
 @mixin hook-dropdown-navbar(){}
@@ -407,7 +436,19 @@
 @mixin hook-subnav-disabled(){}
 @mixin hook-subnav-misc(){}
 @mixin hook-switcher-misc(){}
-@mixin hook-table(){}
+
+@mixin hook-table(){
+    border-bottom: 1px solid #ccc;
+
+    &:first-child {
+        padding-left: 50px;
+    }
+
+    &:not(:last-child) {
+        border-right: 1px solid #ccc;
+    }
+}
+
 @mixin hook-table-active(){}
 @mixin hook-table-striped(){}
 @mixin hook-table-condensed(){}

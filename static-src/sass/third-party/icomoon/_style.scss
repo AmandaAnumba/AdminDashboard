@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: 'icomoon';
-  src:  url('#{$icomoon-font-path}/icomoon.eot?jhfkfh');
-  src:  url('#{$icomoon-font-path}/icomoon.eot?jhfkfh#iefix') format('embedded-opentype'),
-    url('#{$icomoon-font-path}/icomoon.ttf?jhfkfh') format('truetype'),
-    url('#{$icomoon-font-path}/icomoon.woff?jhfkfh') format('woff'),
-    url('#{$icomoon-font-path}/icomoon.svg?jhfkfh#icomoon') format('svg');
+  src:  url('#{$icomoon-font-path}/icomoon.eot?rj4kdi');
+  src:  url('#{$icomoon-font-path}/icomoon.eot?rj4kdi#iefix') format('embedded-opentype'),
+    url('#{$icomoon-font-path}/icomoon.ttf?rj4kdi') format('truetype'),
+    url('#{$icomoon-font-path}/icomoon.woff?rj4kdi') format('woff'),
+    url('#{$icomoon-font-path}/icomoon.svg?rj4kdi#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -26,9 +26,44 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-read-more {
+  &:before {
+    content: $icon-read-more;
+  }
+}
+.icon-facebook {
+  &:before {
+    content: $icon-facebook;
+  }
+}
+.icon-document-text {
+  &:before {
+    content: $icon-document-text;
+  }
+}
+.icon-global {
+  &:before {
+    content: $icon-global;
+  }
+}
+.icon-checkmark {
+  &:before {
+    content: $icon-checkmark;
+  }
+}
+.icon-cancel {
+  &:before {
+    content: $icon-cancel;
+  }
+}
 .icon-navigate_next {
   &:before {
     content: $icon-navigate_next;
+  }
+}
+.icon-paper {
+  &:before {
+    content: $icon-paper;
   }
 }
 .icon-rate_review {
@@ -171,16 +206,6 @@
     content: $icon-mail2;
   }
 }
-.icon-camera {
-  &:before {
-    content: $icon-camera;
-  }
-}
-.icon-paper {
-  &:before {
-    content: $icon-paper;
-  }
-}
 .icon-location {
   &:before {
     content: $icon-location;
@@ -209,6 +234,16 @@
 .icon-chevron-right {
   &:before {
     content: $icon-chevron-right;
+  }
+}
+.icon-lock {
+  &:before {
+    content: $icon-lock;
+  }
+}
+.icon-unread {
+  &:before {
+    content: $icon-unread;
   }
 }
 .icon-new-message {
@@ -254,36 +289,6 @@
 .icon-twitter {
   &:before {
     content: $icon-twitter;
-  }
-}
-.icon-trash-can {
-  &:before {
-    content: $icon-trash-can;
-  }
-}
-.icon-trash-can {
-  &:before {
-    content: $icon-trash-can;
-  }
-}
-.icon-global {
-  &:before {
-    content: $icon-global;
-  }
-}
-.icon-checkmark {
-  &:before {
-    content: $icon-checkmark;
-  }
-}
-.icon-cancel {
-  &:before {
-    content: $icon-cancel;
-  }
-}
-.icon-facebook {
-  &:before {
-    content: $icon-facebook;
   }
 }
 

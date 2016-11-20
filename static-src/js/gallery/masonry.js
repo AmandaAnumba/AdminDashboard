@@ -17,7 +17,7 @@ var masonry = function($timeout) {
         var options = {
                 itemSelector: '.grid__item',
                 columnWidth: '.grid__item',
-                gutter: 10,
+                gutter: 15,
                 percentPosition: true 
             },
             msnry = new Masonry('#grid', options);
@@ -26,7 +26,7 @@ var masonry = function($timeout) {
         imagesLoaded(msnry, function() {
             $timeout( function() {
                 msnry.layout();
-            }, 500);
+            }, 1000);
         });
     }
 };

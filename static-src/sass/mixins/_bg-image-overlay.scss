@@ -1,0 +1,4 @@
+@mixin bkg_img_overlay($img, $color, $color2) {
+    background: linear-gradient($color, $color2), url($img) no-repeat center center fixed;
+    @include background-size(cover);
+}

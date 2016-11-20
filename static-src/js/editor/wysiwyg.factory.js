@@ -1,10 +1,11 @@
 'use strict';
 
-var Wysiwyg = function(logger) {
+var Editable = function(logger) {
     var service = {
             getHTML: getHTML,
             setHTML: setHTML
-        };
+        },
+        $editable = $('#editor');
 
     return service;
 
@@ -12,19 +13,15 @@ var Wysiwyg = function(logger) {
     ////////////////////////
 
 
-    function init() {
-
-    }
-
     function getHTML() {
-        // interval = $interval(save, 60000);
-        // autosaveStarted = true;
+        logger.log('Editable.getHTML()');
+        return $editable.editable('getHTML', false, true);
     }
 
-    function setHTML() {
-        // $interval.cancel(interval);
-        // autosaveStarted = false;
+    function setHTML(content) {
+        logger.log('Editable.setHTML()');
+        $editable.editable("setHTML", content, true);
     }
 };
 
-module.exports = Wysiwyg;
+module.exports = Editable;

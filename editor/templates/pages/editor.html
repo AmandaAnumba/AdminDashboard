@@ -1,0 +1,23 @@
+{% extends "_BaseEditorTemplate.html" %}
+
+
+{% block title %}Editor{% endblock title %}
+
+
+{% block addtlContent %}
+    <form method="post" name="article" id="article" role="form" class="ui form" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="article_type" value="{{ article.article_type|default:'regular' }}" data-ng-model="vm.article.article_type" />
+        <input type="hidden" name="author" value="{{ username }}" data-ng-model="vm.article.author" />
+        
+        {% include "partials/header-image.html" %}
+
+        <div class="ui container">
+            <section class="article__info">
+                {% include "partials/title.html" %}
+            </section>
+
+            <div id="editor" wysiwyg data-ng-model="vm.article.content" name="content" value="{{ article.content }}"></div>
+        </div>
+    </form>
+{% endblock addtlContent %}
