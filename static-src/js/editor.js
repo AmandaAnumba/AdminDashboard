@@ -6,6 +6,8 @@ require('angular-toastr');
 require('angular-local-storage');
 require('./third-party/uikit/datepicker');
 require('./third-party/uikit/notify');
+require('./third-party/jquery.caret.min');
+require('./third-party/jquery.tag-editor.min');
 var moment = require('moment');
 
 angular

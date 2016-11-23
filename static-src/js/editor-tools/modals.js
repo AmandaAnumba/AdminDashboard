@@ -14,7 +14,21 @@ var modal = function(logger, Autosave) {
     function link(scope, element, attrs) {
         logger.log('modal.link()');
 
-        $('.ui.modal').modal();
+        /* save modal */
+        $('#saveModal')
+            .modal({
+                inverted: true
+            })
+            .modal('attach events', '[data-target="#saveModal"]', 'show');
+
+        $('#autosaveModal, #deleteModal').modal();
+
+        // $('[data-toggle="modal"]').on('click', function() {
+        //     var $this = $(this),
+        //         $modal = $( $this.data('target') );
+
+        //     $modal.modal('show');
+        // });
 
         scope.$on('openAutosave', openAutosave);
         scope.$on('closeAutosave', closeAutosave);

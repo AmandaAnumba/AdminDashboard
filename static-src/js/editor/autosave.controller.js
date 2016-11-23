@@ -12,7 +12,9 @@ var AutosaveController = function($scope, logger, Autosave, Article, $interval, 
 
     activate();
 
-
+    $scope.$on('startAutosave', startAutosave);
+    $scope.$on('stopAutosave', stopAutosave);
+    
     /**
     * @name activate
     * @desc Actions to be performed when this controller is instantiated:
@@ -23,17 +25,6 @@ var AutosaveController = function($scope, logger, Autosave, Article, $interval, 
 
         /* load the drafts */
         ctrl.drafts = Autosave.drafts;
-
-        if ( ctrl.drafts.length > 0 ) {
-            $timeout(function() {
-                $scope.$broadcast('openAutosave');
-            }, 1000);
-        } else {
-            startAutosave();
-        }
-
-        /* general bindings */
-        $(window).on('unload', stopAutosave);
     }
 
     function startAutosave() {
@@ -73,6 +64,16 @@ var AutosaveController = function($scope, logger, Autosave, Article, $interval, 
         logger.log('AutosaveController.remove( ' + key + ' )');
         
         Autosave.removeItem(key);
+
+        $scope.$emit('deleteDraft', { key: key });
+        $scope.$broadcast('deleteDraft', { key: key });
+
+        for (var i = 0; i < ctrl.drafts.length; i ++) {
+            if (ctrl.drafts[i].title === key) {
+                ctrl.drafts.splice(i,1);
+                break;
+            }
+        }
     }
 
     function clearStorage() {

@@ -176,6 +176,33 @@ module.exports = dataService;
 },{"./data.service":3}],5:[function(require,module,exports){
 'use strict';
 
+var draft = function(logger) {
+    var directive = {
+        restrict: 'E',
+        link: link
+    };
+    return directive;
+
+
+    /////////////////////
+
+    
+    function link(scope, element, attrs) {
+        logger.log('draft.link()');
+
+        scope.$on('deleteDraft', deleteDraft);
+        
+        function deleteDraft(event, args) {
+            var $draft = $('draft[data-draft-id="' + args.key + '"]');
+            $draft.remove();
+        }
+    }
+};
+
+module.exports = draft;
+},{}],6:[function(require,module,exports){
+'use strict';
+
 require('../third-party/jquery.hmbrgr.js');
 
 var hmbrgr = function(logger) {
@@ -202,7 +229,7 @@ var hmbrgr = function(logger) {
 };
 
 module.exports = hmbrgr;
-},{"../third-party/jquery.hmbrgr.js":19}],6:[function(require,module,exports){
+},{"../third-party/jquery.hmbrgr.js":21}],7:[function(require,module,exports){
 'use strict';
 
 var angular = require('angular');
@@ -210,11 +237,12 @@ var angular = require('angular');
 angular
 	.module('adminApp')
 	.factory('menu', require('./mmenu'))
+	.directive('draft', require('./drafts'))
 	.directive('wysiwyg', require('./wysiwyg'))
 	.directive('hmbrgr', require('./hmbrgr'))
 	.directive('modal', require('./modals'))
 	.directive('nav', require('./nav.directive'));
-},{"./hmbrgr":5,"./mmenu":7,"./modals":8,"./nav.directive":9,"./wysiwyg":10,"angular":29}],7:[function(require,module,exports){
+},{"./drafts":5,"./hmbrgr":6,"./mmenu":8,"./modals":9,"./nav.directive":10,"./wysiwyg":11,"angular":32}],8:[function(require,module,exports){
 'use strict';
 
 var menu = function(logger, $timeout) {
@@ -249,7 +277,7 @@ var menu = function(logger, $timeout) {
 };
 
 module.exports = menu;
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 var modal = function(logger, Autosave) {
@@ -266,7 +294,21 @@ var modal = function(logger, Autosave) {
     function link(scope, element, attrs) {
         logger.log('modal.link()');
 
-        $('.ui.modal').modal();
+        /* save modal */
+        $('#saveModal')
+            .modal({
+                inverted: true
+            })
+            .modal('attach events', '[data-target="#saveModal"]', 'show');
+
+        $('#autosaveModal, #deleteModal').modal();
+
+        // $('[data-toggle="modal"]').on('click', function() {
+        //     var $this = $(this),
+        //         $modal = $( $this.data('target') );
+
+        //     $modal.modal('show');
+        // });
 
         scope.$on('openAutosave', openAutosave);
         scope.$on('closeAutosave', closeAutosave);
@@ -282,7 +324,7 @@ var modal = function(logger, Autosave) {
 };
 
 module.exports = modal;
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 var nav = function(logger, $timeout) {
@@ -322,7 +364,7 @@ var nav = function(logger, $timeout) {
 };
 
 module.exports = nav;
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 var wysiwyg = function(logger, $rootScope) {
@@ -376,7 +418,7 @@ var wysiwyg = function(logger, $rootScope) {
 };
 
 module.exports = wysiwyg;
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 var angular = require('angular');
@@ -385,6 +427,8 @@ require('angular-toastr');
 require('angular-local-storage');
 require('./third-party/uikit/datepicker');
 require('./third-party/uikit/notify');
+require('./third-party/jquery.caret.min');
+require('./third-party/jquery.tag-editor.min');
 var moment = require('moment');
 
 angular
@@ -398,7 +442,7 @@ angular
 require('./core');
 require('./editor-tools');
 require('./editor/index');
-},{"./core":4,"./editor-tools":6,"./editor/index":17,"./third-party/uikit/datepicker":20,"./third-party/uikit/notify":21,"angular":29,"angular-animate":23,"angular-local-storage":25,"angular-toastr":27,"moment":30}],12:[function(require,module,exports){
+},{"./core":4,"./editor-tools":7,"./editor/index":18,"./third-party/jquery.caret.min":20,"./third-party/jquery.tag-editor.min":22,"./third-party/uikit/datepicker":23,"./third-party/uikit/notify":24,"angular":32,"angular-animate":26,"angular-local-storage":28,"angular-toastr":30,"moment":33}],13:[function(require,module,exports){
 'use strict';
 
 var Article = function( dataService, $timeout, $window, logger ) {
@@ -450,7 +494,7 @@ var Article = function( dataService, $timeout, $window, logger ) {
 };
 
 module.exports = Article;
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /* globals UIkit */
 
 'use strict';
@@ -465,7 +509,9 @@ var AutosaveController = function($scope, logger, Autosave, Article, $interval, 
 
     activate();
 
-
+    $scope.$on('startAutosave', startAutosave);
+    $scope.$on('stopAutosave', stopAutosave);
+    
     /**
     * @name activate
     * @desc Actions to be performed when this controller is instantiated:
@@ -476,17 +522,6 @@ var AutosaveController = function($scope, logger, Autosave, Article, $interval, 
 
         /* load the drafts */
         ctrl.drafts = Autosave.drafts;
-
-        if ( ctrl.drafts.length > 0 ) {
-            $timeout(function() {
-                $scope.$broadcast('openAutosave');
-            }, 1000);
-        } else {
-            startAutosave();
-        }
-
-        /* general bindings */
-        $(window).on('unload', stopAutosave);
     }
 
     function startAutosave() {
@@ -526,6 +561,16 @@ var AutosaveController = function($scope, logger, Autosave, Article, $interval, 
         logger.log('AutosaveController.remove( ' + key + ' )');
         
         Autosave.removeItem(key);
+
+        $scope.$emit('deleteDraft', { key: key });
+        $scope.$broadcast('deleteDraft', { key: key });
+
+        for (var i = 0; i < ctrl.drafts.length; i ++) {
+            if (ctrl.drafts[i].title === key) {
+                ctrl.drafts.splice(i,1);
+                break;
+            }
+        }
     }
 
     function clearStorage() {
@@ -542,7 +587,7 @@ var AutosaveController = function($scope, logger, Autosave, Article, $interval, 
 
 
 module.exports = AutosaveController;
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 'use strict';
 
 var Autosave = function(logger, moment, localStorageService) {
@@ -622,7 +667,7 @@ var Autosave = function(logger, moment, localStorageService) {
 };
 
 module.exports = Autosave;
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 var dropdown = function(logger) {
@@ -673,10 +718,10 @@ var dropdown = function(logger) {
 };
 
 module.exports = dropdown;
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
-var EditorController = function($scope, logger, menu, moment, Article, Autosave, Editable, $window) {
+var EditorController = function($scope, logger, menu, moment, Article, Autosave, Editable, $window, $timeout) {
     var vm = this;
     
     vm.article = {
@@ -733,7 +778,22 @@ var EditorController = function($scope, logger, menu, moment, Article, Autosave,
         });
 
         Article.data = vm.article;
+
+        /* load the drafts */
         vm.drafts = Autosave.drafts;
+
+        if ( vm.drafts.length > 0 ) {
+            $timeout(function() {
+                $scope.$broadcast('openAutosave');
+            }, 1000);
+        } else {
+            $scope.$broadcast('startAutosave');
+        }
+
+        /* general bindings */
+        $(window).on('unload', function() {
+            $scope.$broadcast('stopAutosave');
+        });
     }
 
     function toggleMenu() {
@@ -748,7 +808,6 @@ var EditorController = function($scope, logger, menu, moment, Article, Autosave,
 
     function loadArticle() {
         logger.log('EditorController.loadArticle()');
-        
         vm.article = Article.data;
     }
 
@@ -757,17 +816,18 @@ var EditorController = function($scope, logger, menu, moment, Article, Autosave,
     }
 
     function articlePublish() {
+        logger.log('EditorController.articlePublish()');
         Article.publish(vm.article);
     }
 
     function articleSave() {
+        logger.log('EditorController.articleSave()');
         Article.save(vm.article);
     }
 
     function articleDelete() {
         logger.log('EditorController.articleDelete()');
-        $('#deleteModal').modal('show');
-        // Article.delete(vm.article);
+        Article.delete(vm.article);
     }
 
     function setLayout( layout ) {
@@ -780,105 +840,16 @@ var EditorController = function($scope, logger, menu, moment, Article, Autosave,
         var cat = $('#categories').dropdown('get value');
         vm.article.category = cat;
     }
-    
-    /**
-    * @name postArticle
-    * @desc Log the user in
-    */
-    // function postArticle() {
-        // var title           = $('#post input[name=title]').val(),
-        //     author          = $('#post input[name=author]').val(),
-        //     description     = $('#post textarea[name=description]').val(),
-        //     content         = $('#editor').editable('getHTML', false, true),
-        //     featureIMG      = $('#post input[name=featureIMGurl]').val(),
-        //     releaseDate     = $('input[name=release]').val(),
-        //     doctype         = $('#post input[name=doctype]:checked').val(),
-        //     docstyle        = $('#post input[name=docstyle]:checked').val(),
-        //     cycle           = $('#post input[name=feature-cycle]:checked').val(),
-        //     headerIMG       = $('#post input[name=headerIMGurl]').val(),
-        //     photoCred       = $('#post input[name=photo_cred]').val(),
-        //     selected        = [],
-        //     options         = [],
-        //     release         = "",
-        //     coAuthors       = [],
-        //     currentCycle    = "";
 
-        // $('#tags_list p').each(function() {
-        //     selected.push($(this).text());
-        // });
-        // var tags = selected.join(", ");
-
-        // $('#category input:checkbox:checked').each(function() {
-        //     options.push($(this).val());
-        // });
-        // var category = options.join(", ");
-
-        // if (title == "") {
-        //     var date = moment().format("MM/D/YYYY");
-        //     title = "Article "+ date;
-        // }
-
-        // if (releaseDate == "") {
-        //     release = null;
-        // }
-
-        // if (releaseDate != "") {
-        //     release = moment(releaseDate).toArray().toString();
-        // }
-
-        // if (featureIMG === "") {
-        //     if ($('#headerSame').prop("checked")) {
-        //         featureIMG = headerIMG || 'same';
-        //     }
-        //     else {
-        //         featureIMG = '';
-        //     }
-        // }
-
-        // $('#more-authors input:checkbox:checked').each(function() {
-        //     coAuthors.push($(this).val());
-        // });
-        // var ca = coAuthors.join(", ");
-
-        // $.post('/submit', {
-        //     title: title,
-        //     author: author,
-        //     description: description,  
-        //     content: content, 
-        //     featureIMG: featureIMG,
-        //     status: action,
-        //     releaseDate: release, 
-        //     doctype: doctype,  
-        //     docstyle: docstyle,
-        //     cycle: cycle,
-        //     headerIMG: headerIMG,    
-        //     coAuthor: ca,      
-        //     tags: tags,
-        //     category: category,
-        //     photoCred: photoCred
-        // }).done(function(message) {
-        //     if (message['success']) {
-        //         $('#success_msg > .message').empty().append(message['success']);
-        //         $('#success_msg').show();
-        //         localStorage.clear();
-        //         setTimeout('window.location = "/dashboard";', 3500);
-        //     }
-
-        //     if (message['error']) {
-        //         $('#errorAlert > .message').empty().append(message['error']);
-        //         $('#errorAlert').show();
-        //     }
-        // }).fail(function() {
-        //     $('#errorAlert > .message').empty().append('<strong>Error: </strong> An error occured while trying to save your article. Please try again.');
-        //     $('#errorAlert').show();
-        // });
-
-        // dataservice.postData(data);
-    // }
+    function getTags() {
+        logger.log('EditorController.getTags()');
+        var tags = $('#tags').tagEditor('getTags')[0].tags;
+        vm.article.tags = tags.join();
+    }
 };
 
 module.exports = EditorController;
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 angular
@@ -892,7 +863,7 @@ angular
 	.controller('AutosaveController', require('./autosave.controller'))
 	.controller('EditorController', require('./editor.controller'));
 
-},{"../blocks/loader":1,"../blocks/logger":2,"./article.factory":12,"./autosave.controller":13,"./autosave.factory":14,"./dropdown.directive":15,"./editor.controller":16,"./wysiwyg.factory":18}],18:[function(require,module,exports){
+},{"../blocks/loader":1,"../blocks/logger":2,"./article.factory":13,"./autosave.controller":14,"./autosave.factory":15,"./dropdown.directive":16,"./editor.controller":17,"./wysiwyg.factory":19}],19:[function(require,module,exports){
 'use strict';
 
 var Editable = function(logger) {
@@ -920,7 +891,11 @@ var Editable = function(logger) {
 };
 
 module.exports = Editable;
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
+// http://code.accursoft.com/caret - 1.3.3
+!function(e){e.fn.caret=function(e){var t=this[0],n="true"===t.contentEditable;if(0==arguments.length){if(window.getSelection){if(n){t.focus();var o=window.getSelection().getRangeAt(0),r=o.cloneRange();return r.selectNodeContents(t),r.setEnd(o.endContainer,o.endOffset),r.toString().length}return t.selectionStart}if(document.selection){if(t.focus(),n){var o=document.selection.createRange(),r=document.body.createTextRange();return r.moveToElementText(t),r.setEndPoint("EndToEnd",o),r.text.length}var e=0,c=t.createTextRange(),r=document.selection.createRange().duplicate(),a=r.getBookmark();for(c.moveToBookmark(a);0!==c.moveStart("character",-1);)e++;return e}return t.selectionStart?t.selectionStart:0}if(-1==e&&(e=this[n?"text":"val"]().length),window.getSelection)n?(t.focus(),window.getSelection().collapse(t.firstChild,e)):t.setSelectionRange(e,e);else if(document.body.createTextRange)if(n){var c=document.body.createTextRange();c.moveToElementText(t),c.moveStart("character",e),c.collapse(!0),c.select()}else{var c=t.createTextRange();c.move("character",e),c.select()}return n||t.focus(),e}}(jQuery);
+
+},{}],21:[function(require,module,exports){
 /*!
  * jquery-hmbrgr.js v0.0.2
  * https://github.com/MorenoDiDomenico/jquery-hmbrgr
@@ -1037,7 +1012,11 @@ module.exports = Editable;
 
 }( jQuery ));
 
-},{}],20:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
+// jQuery tagEditor v1.0.20
+// https://github.com/Pixabay/jQuery-tagEditor
+!function(t){t.fn.tagEditorInput=function(){var e=" ",i=t(this),a=parseInt(i.css("fontSize")),r=t("<span/>").css({position:"absolute",top:-9999,left:-9999,width:"auto",fontSize:i.css("fontSize"),fontFamily:i.css("fontFamily"),fontWeight:i.css("fontWeight"),letterSpacing:i.css("letterSpacing"),whiteSpace:"nowrap"}),l=function(){if(e!==(e=i.val())){r.text(e);var t=r.width()+a;20>t&&(t=20),t!=i.width()&&i.width(t)}};return r.insertAfter(i),i.bind("keyup keydown focus",l)},t.fn.tagEditor=function(e,a,r){function l(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}var n,o=t.extend({},t.fn.tagEditor.defaults,e),c=this;if(o.dregex=new RegExp("["+o.delimiter.replace("-","-")+"]","g"),"string"==typeof e){var s=[];return c.each(function(){var i=t(this),l=i.data("options"),n=i.next(".tag-editor");if("getTags"==e)s.push({field:i[0],editor:n,tags:n.data("tags")});else if("addTag"==e){if(l.maxTags&&n.data("tags").length>=l.maxTags)return!1;t('<li><div class="tag-editor-spacer">&nbsp;'+l.delimiter[0]+'</div><div class="tag-editor-tag"></div><div class="tag-editor-delete"><i></i></div></li>').appendTo(n).find(".tag-editor-tag").html('<input type="text" maxlength="'+l.maxLength+'">').addClass("active").find("input").val(a).blur(),r?t(".placeholder",n).remove():n.click()}else"removeTag"==e?(t(".tag-editor-tag",n).filter(function(){return t(this).text()==a}).closest("li").find(".tag-editor-delete").click(),r||n.click()):"destroy"==e&&i.removeClass("tag-editor-hidden-src").removeData("options").off("focus.tag-editor").next(".tag-editor").remove()}),"getTags"==e?s:this}return window.getSelection&&t(document).off("keydown.tag-editor").on("keydown.tag-editor",function(e){if(8==e.which||46==e.which||e.ctrlKey&&88==e.which){try{var a=getSelection(),r="BODY"==document.activeElement.tagName?t(a.getRangeAt(0).startContainer.parentNode).closest(".tag-editor"):0}catch(e){r=0}if(a.rangeCount>0&&r&&r.length){var l=[],n=a.toString().split(r.prev().data("options").dregex);for(i=0;i<n.length;i++){var o=t.trim(n[i]);o&&l.push(o)}return t(".tag-editor-tag",r).each(function(){~t.inArray(t(this).text(),l)&&t(this).closest("li").find(".tag-editor-delete").click()}),!1}}}),c.each(function(){function e(){!o.placeholder||c.length||t(".deleted, .placeholder, input",s).length||s.append('<li class="placeholder"><div>'+o.placeholder+"</div></li>")}function i(i){var a=c.toString();c=t(".tag-editor-tag:not(.deleted)",s).map(function(e,i){var a=t.trim(t(this).hasClass("active")?t(this).find("input").val():t(i).text());return a?a:void 0}).get(),s.data("tags",c),r.val(c.join(o.delimiter[0])),i||a!=c.toString()&&o.onChange(r,s,c),e()}function a(e){for(var a,n=e.closest("li"),d=e.val().replace(/ +/," ").split(o.dregex),g=e.data("old_tag"),f=c.slice(0),h=!1,u=0;u<d.length;u++)if(v=t.trim(d[u]).slice(0,o.maxLength),o.forceLowercase&&(v=v.toLowerCase()),a=o.beforeTagSave(r,s,f,g,v),v=a||v,a!==!1&&v&&(o.removeDuplicates&&~t.inArray(v,f)&&t(".tag-editor-tag",s).each(function(){t(this).text()==v&&t(this).closest("li").remove()}),f.push(v),n.before('<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag">'+l(v)+'</div><div class="tag-editor-delete"><i></i></div></li>'),o.maxTags&&f.length>=o.maxTags)){h=!0;break}e.attr("maxlength",o.maxLength).removeData("old_tag").val(""),h?e.blur():e.focus(),i()}var r=t(this),c=[],s=t("<ul "+(o.clickDelete?'oncontextmenu="return false;" ':"")+'class="tag-editor"></ul>').insertAfter(r);r.addClass("tag-editor-hidden-src").data("options",o).on("focus.tag-editor",function(){s.click()}),s.append('<li style="width:1px">&nbsp;</li>');var d='<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag"></div><div class="tag-editor-delete"><i></i></div></li>';s.click(function(e,i){var a,r,l=99999;if(!window.getSelection||""==getSelection())return o.maxTags&&s.data("tags").length>=o.maxTags?(s.find("input").blur(),!1):(n=!0,t("input:focus",s).blur(),n?(n=!0,t(".placeholder",s).remove(),i&&i.length?r="before":t(".tag-editor-tag",s).each(function(){var n=t(this),o=n.offset(),c=o.left,s=o.top;e.pageY>=s&&e.pageY<=s+n.height()&&(e.pageX<c?(r="before",a=c-e.pageX):(r="after",a=e.pageX-c-n.width()),l>a&&(l=a,i=n))}),"before"==r?t(d).insertBefore(i.closest("li")).find(".tag-editor-tag").click():"after"==r?t(d).insertAfter(i.closest("li")).find(".tag-editor-tag").click():t(d).appendTo(s).find(".tag-editor-tag").click(),!1):!1)}),s.on("click",".tag-editor-delete",function(){if(t(this).prev().hasClass("active"))return t(this).closest("li").find("input").caret(-1),!1;var a=t(this).closest("li"),l=a.find(".tag-editor-tag");return o.beforeTagDelete(r,s,c,l.text())===!1?!1:(l.addClass("deleted").animate({width:0},o.animateDelete,function(){a.remove(),e()}),i(),!1)}),o.clickDelete&&s.on("mousedown",".tag-editor-tag",function(a){if(a.ctrlKey||a.which>1){var l=t(this).closest("li"),n=l.find(".tag-editor-tag");return o.beforeTagDelete(r,s,c,n.text())===!1?!1:(n.addClass("deleted").animate({width:0},o.animateDelete,function(){l.remove(),e()}),i(),!1)}}),s.on("click",".tag-editor-tag",function(e){if(o.clickDelete&&(e.ctrlKey||e.which>1))return!1;if(!t(this).hasClass("active")){var i=t(this).text(),a=Math.abs((t(this).offset().left-e.pageX)/t(this).width()),r=parseInt(i.length*a),n=t(this).html('<input type="text" maxlength="'+o.maxLength+'" value="'+l(i)+'">').addClass("active").find("input");if(n.data("old_tag",i).tagEditorInput().focus().caret(r),o.autocomplete){var c=t.extend({},o.autocomplete),d="select"in c?o.autocomplete.select:"";c.select=function(e,i){d&&d(e,i),setTimeout(function(){s.trigger("click",[t(".active",s).find("input").closest("li").next("li").find(".tag-editor-tag")])},20)},n.autocomplete(c)}}return!1}),s.on("blur","input",function(d){d.stopPropagation();var g=t(this),f=g.data("old_tag"),h=t.trim(g.val().replace(/ +/," ").replace(o.dregex,o.delimiter[0]));if(h){if(h.indexOf(o.delimiter[0])>=0)return void a(g);if(h!=f)if(o.forceLowercase&&(h=h.toLowerCase()),cb_val=o.beforeTagSave(r,s,c,f,h),h=cb_val||h,cb_val===!1){if(f)return g.val(f).focus(),n=!1,void i();try{g.closest("li").remove()}catch(d){}f&&i()}else o.removeDuplicates&&t(".tag-editor-tag:not(.active)",s).each(function(){t(this).text()==h&&t(this).closest("li").remove()})}else{if(f&&o.beforeTagDelete(r,s,c,f)===!1)return g.val(f).focus(),n=!1,void i();try{g.closest("li").remove()}catch(d){}f&&i()}g.parent().html(l(h)).removeClass("active"),h!=f&&i(),e()});var g;s.on("paste","input",function(){t(this).removeAttr("maxlength"),g=t(this),setTimeout(function(){a(g)},30)});var f;s.on("keypress","input",function(e){o.delimiter.indexOf(String.fromCharCode(e.which))>=0&&(f=t(this),setTimeout(function(){a(f)},20))}),s.on("keydown","input",function(e){var i=t(this);if((37==e.which||!o.autocomplete&&38==e.which)&&!i.caret()||8==e.which&&!i.val()){var a=i.closest("li").prev("li").find(".tag-editor-tag");return a.length?a.click().find("input").caret(-1):!i.val()||o.maxTags&&s.data("tags").length>=o.maxTags||t(d).insertBefore(i.closest("li")).find(".tag-editor-tag").click(),!1}if((39==e.which||!o.autocomplete&&40==e.which)&&i.caret()==i.val().length){var l=i.closest("li").next("li").find(".tag-editor-tag");return l.length?l.click().find("input").caret(0):i.val()&&s.click(),!1}if(9==e.which){if(e.shiftKey){var a=i.closest("li").prev("li").find(".tag-editor-tag");if(a.length)a.click().find("input").caret(0);else{if(!i.val()||o.maxTags&&s.data("tags").length>=o.maxTags)return r.attr("disabled","disabled"),void setTimeout(function(){r.removeAttr("disabled")},30);t(d).insertBefore(i.closest("li")).find(".tag-editor-tag").click()}return!1}var l=i.closest("li").next("li").find(".tag-editor-tag");if(l.length)l.click().find("input").caret(0);else{if(!i.val())return;s.click()}return!1}if(!(46!=e.which||t.trim(i.val())&&i.caret()!=i.val().length)){var l=i.closest("li").next("li").find(".tag-editor-tag");return l.length?l.click().find("input").caret(0):i.val()&&s.click(),!1}if(13==e.which)return s.trigger("click",[i.closest("li").next("li").find(".tag-editor-tag")]),o.maxTags&&s.data("tags").length>=o.maxTags&&s.find("input").blur(),!1;if(36!=e.which||i.caret()){if(35==e.which&&i.caret()==i.val().length)s.find(".tag-editor-tag").last().click();else if(27==e.which)return i.val(i.data("old_tag")?i.data("old_tag"):"").blur(),!1}else s.find(".tag-editor-tag").first().click()});for(var h=o.initialTags.length?o.initialTags:r.val().split(o.dregex),u=0;u<h.length&&!(o.maxTags&&u>=o.maxTags);u++){var v=t.trim(h[u].replace(/ +/," "));v&&(o.forceLowercase&&(v=v.toLowerCase()),c.push(v),s.append('<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag">'+l(v)+'</div><div class="tag-editor-delete"><i></i></div></li>'))}i(!0),o.sortable&&t.fn.sortable&&s.sortable({distance:5,cancel:".tag-editor-spacer, input",helper:"clone",update:function(){i()}})})},t.fn.tagEditor.defaults={initialTags:[],maxTags:0,maxLength:50,delimiter:",;",placeholder:"",forceLowercase:!0,removeDuplicates:!0,clickDelete:!1,animateDelete:175,sortable:!0,autocomplete:null,onChange:function(){},beforeTagSave:function(){},beforeTagDelete:function(){}}}(jQuery);
+},{}],23:[function(require,module,exports){
 (function (global){
 /*! UIkit 2.27.2 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(addon) {
@@ -4208,7 +4187,7 @@ module.exports = Editable;
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],21:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 /*! UIkit 2.27.2 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(addon) {
 
@@ -4399,7 +4378,7 @@ module.exports = Editable;
     return notify;
 });
 
-},{}],22:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.8
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -8540,11 +8519,11 @@ angular.module('ngAnimate', [], function initAngularHelpers() {
 
 })(window, window.angular);
 
-},{}],23:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 require('./angular-animate');
 module.exports = 'ngAnimate';
 
-},{"./angular-animate":22}],24:[function(require,module,exports){
+},{"./angular-animate":25}],27:[function(require,module,exports){
 /**
  * An Angular module that gives you access to the browsers local storage
  * @version v0.5.0 - 2016-08-29
@@ -9091,11 +9070,11 @@ angular
       }];
   });
 })(window, window.angular);
-},{}],25:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 require('./dist/angular-local-storage.js');
 module.exports = 'LocalStorageModule';
 
-},{"./dist/angular-local-storage.js":24}],26:[function(require,module,exports){
+},{"./dist/angular-local-storage.js":27}],29:[function(require,module,exports){
 (function() {
   'use strict';
 
@@ -9605,12 +9584,12 @@ module.exports = 'LocalStorageModule';
 
 angular.module("toastr").run(["$templateCache", function($templateCache) {$templateCache.put("directives/progressbar/progressbar.html","<div class=\"toast-progress\"></div>\n");
 $templateCache.put("directives/toast/toast.html","<div class=\"{{toastClass}} {{toastType}}\" ng-click=\"tapToast()\">\n  <div ng-switch on=\"allowHtml\">\n    <div ng-switch-default ng-if=\"title\" class=\"{{titleClass}}\" aria-label=\"{{title}}\">{{title}}</div>\n    <div ng-switch-default class=\"{{messageClass}}\" aria-label=\"{{message}}\">{{message}}</div>\n    <div ng-switch-when=\"true\" ng-if=\"title\" class=\"{{titleClass}}\" ng-bind-html=\"title\"></div>\n    <div ng-switch-when=\"true\" class=\"{{messageClass}}\" ng-bind-html=\"message\"></div>\n  </div>\n  <progress-bar ng-if=\"progressBar\"></progress-bar>\n</div>\n");}]);
-},{}],27:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 require('./dist/angular-toastr.tpls.js');
 module.exports = 'toastr';
 
 
-},{"./dist/angular-toastr.tpls.js":26}],28:[function(require,module,exports){
+},{"./dist/angular-toastr.tpls.js":29}],31:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.8
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -41379,11 +41358,11 @@ $provide.value("$locale", {
 })(window);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],29:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":28}],30:[function(require,module,exports){
+},{"./angular":31}],33:[function(require,module,exports){
 //! moment.js
 //! version : 2.15.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -45618,4 +45597,4 @@ module.exports = angular;
     return _moment;
 
 }));
-},{}]},{},[11]);
+},{}]},{},[12]);

@@ -35,7 +35,7 @@
     .image-details {
         margin-top: 10px;
 
-        input[name="photo_credit"] { width: 400px !important; }
+        input[name="photo_credit"] { width: 400px; }
     }
 
     .ui.basic.button.white { 
@@ -43,3 +43,20 @@
         box-shadow: 0px 0px 0px 1px rgba(255,255,255,0.15) inset; 
     }
 }
+
+
+
+/*------------------------------------*\
+    RESPONSIVENESS
+\*------------------------------------*/
+@media only screen
+and (max-width : 535px) {
+    .article__header-image { 
+        padding: 30px 15px;
+
+        .image-details input[name="photo_credit"] {
+            width: 100%;
+        }
+    }
+}
+

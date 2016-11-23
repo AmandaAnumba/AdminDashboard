@@ -14,8 +14,7 @@
 	cursor: pointer;
 }
 
-.btn-black 
-{
-    margin: 15px 0;
+.btn-black {
     @include black-button();
+    margin: 15px 0;
 }

@@ -4,13 +4,13 @@
             <li data-ng-click="vm.goBack()"><i class="icon-arrow-left"></i></li>
 
             {% if article.status != 'published' %}
-                <li data-ng-click="vm.articlePublish()">Publish</li>
+                <li data-toggle="modal" data-target="#publishModal">Publish</li>
             {% endif %}
             
-            <li data-toggle="modal" data-target="#saveModal" data-ng-click="vm.articleSave()">Save</li>
+            <li data-toggle="modal" data-target="#saveModal">Save</li>
 
             {% if data.page != 'write' and article.status != 'published' %}
-                <li data-toggle="modal" data-target="#deleteModal" data-ng-click="vm.articleDelete()">Delete</li>
+                <li data-toggle="modal" data-target="#deleteModal">Delete</li>
             {% endif %}
         </ul>
     </div>
